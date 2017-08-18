@@ -1,0 +1,40 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/3.4/types.yaml
+  - {{ ONAPTEMPLATE_RAWREPOURL_org_onap_dcaegen2 }}/type_files/cdap/14.0.2/cdap_types.yaml
+
+inputs:
+  hello_world_jar_url:
+    type: string
+  connected_broker_dns_name:
+    type: string
+    default : "cdap_broker"
+
+node_templates:
+
+  hw_cdap_app:
+    type: dcae.nodes.MicroService.cdap
+    properties:
+      service_component_type:
+        'hello_world'
+      jar_url: { get_input : hello_world_jar_url }
+      artifact_name: "HelloWorld"
+      artifact_version: "3.4.3"
+      namespace: "cloudifyhwtest"
+      programs:
+        [{"program_type" : "flows", "program_id" : "WhoFlow"}, {"program_type" : "services", "program_id" : "Greeting"}]
+      streamname:
+        'who'
+      service_endpoints:
+        [{"service_name" : "Greeting", "service_endpoint" : "greet", "endpoint_method" : "GET"}]
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          inputs:
+            connected_broker_dns_name: { get_input: connected_broker_dns_name }
+   
+outputs: 
+  hw_cdap_app_name:
+    value:
+      {get_attribute:[hw_cdap_app, service_component_name]}

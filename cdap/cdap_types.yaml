@@ -1,0 +1,90 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+    - http://www.getcloudify.org/spec/cloudify/3.4/types.yaml
+plugins:
+  cdap_deploy:
+    executor: central_deployment_agent
+    package_name: cdapcloudify
+    package_version: 14.0.2
+
+data_types:
+    cdap_connections:
+        properties:
+            services_calls:
+                default: []
+            streams_publishes:
+                default: []
+            streams_subscribes:
+                default: []
+
+node_types:  
+  dcae.nodes.MicroService.cdap:
+    derived_from: cloudify.nodes.Root
+    properties:
+      service_component_type:
+        type: string
+      #####
+      #For the following parameters in this block, see the Broker API
+      #####
+      jar_url:
+        type: string
+      artifact_name:
+        type: string
+      artifact_version:
+        type: string    
+      connections: 
+        type: cdap_connections
+      app_config:
+        default: {}
+      app_preferences:
+        default: {}
+      program_preferences:
+        default: []
+      programs:
+        default: []
+      streamname:
+        #currently, we only support CDAP apps written that read from a
+        #stream. This is not the only ingest mechanism for CDAP. This may have to change/get
+        type: string
+      namespace:
+        #the namespace to deploy the CDAP app into
+        #defaults to the default cdap namespace which is called "default"
+        type: string
+        default : "default"
+      service_endpoints:
+        default: []
+    
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: cdap_deploy.cdapcloudify.cdap_plugin.create
+          inputs:
+            connected_broker_dns_name: 
+              type: string
+              description: This is the broker's DNS name. There could be multiple brokers/clusters at a site. Could by populated via an intrinsic_function in a blueprint, or manually via inputs file
+              default: "cdap_broker"
+        start:
+          cdap_deploy.cdapcloudify.cdap_plugin.deploy_and_start_application
+        delete:
+          cdap_deploy.cdapcloudify.cdap_plugin.stop_and_undeploy_application
+      reconfiguration:
+        app_config_reconfigure:
+            implementation: cdap_deploy.cdapcloudify.cdap_plugin.app_config_reconfigure
+            inputs:
+                new_config_template:
+                    description: "new unbound config for the CDAP AppConfig as a JSON"
+                    default: {}
+        app_preferences_reconfigure:
+            implementation: cdap_deploy.cdapcloudify.cdap_plugin.app_preferences_reconfigure
+            inputs:
+                new_config_template:
+                    description: "new bound config for the CDAP AppPreferences as a JSON"
+                    default: {}
+        app_smart_reconfigure:
+            implementation: cdap_deploy.cdapcloudify.cdap_plugin.app_smart_reconfigure
+            inputs:
+                new_config_template:
+                    description: "new unbound config for the CDAP AppConfig as a JSON"
+                    default: {}
+

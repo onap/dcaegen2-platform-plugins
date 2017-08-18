@@ -1,0 +1,4 @@
+#!/bin/bash
+cfy executions start -d cdap-hello-world -w execute_operation -p '{"operation" : "reconfiguration.app_config_reconfigure", "node_ids" : ["hw_cdap_app"], "operation_kwargs" : {"new_config_template" : {"foo":"bar"}}, "allow_kwargs_override": true}'
+cfy executions start -d cdap-hello-world -w execute_operation -p '{"operation" : "reconfiguration.app_preferences_reconfigure", "node_ids" : ["hw_cdap_app"], "operation_kwargs" : {"new_config_template" : {"fooprefs":"barprefs"}}, "allow_kwargs_override": true}'
+cfy executions start -d cdap-hello-world -w execute_operation -p '{"operation" : "reconfiguration.app_smart_reconfigure", "node_ids" : ["hw_cdap_app"], "operation_kwargs" : {"new_config_template" : {"fooprefs":"SO SMARTTTTTT", "foo":"SO SMART AGAINNNNN"}}, "allow_kwargs_override": true}'

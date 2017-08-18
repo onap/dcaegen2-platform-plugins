@@ -1,0 +1,148 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/3.4/types.yaml
+  - {{ ONAPTEMPLATE_RAWREPOURL_org_onap_dcaegen2 }}/type_files/cdap/14.0.2/cdap_types.yaml
+  - {{ ONAPTEMPLATE_RAWREPOURL_org_onap_dcaegen2 }}/type_files/dmaap/1.1.0/dmaap.yaml
+
+inputs:
+  hello_world_jar_url:
+    type: string
+  connected_broker_dns_name:
+    type: string
+    default : "cdap_broker"
+
+  #aaf inputs
+  client_role:
+    type: string
+  topic00fqtn:
+    type: string
+  topic01fqtn:
+    type: string
+  aafu0: 
+    type: string
+    default: "foo0"
+  aafp0:
+    type: string
+    default: "bar0"
+  aafu1:
+    type: string
+    default : "foo1"
+  aafp1:
+    type: string
+    default : "bar1"
+  aafu2: 
+    type: string
+    default: "foo2"
+  aafp2:
+    type: string
+    default: "bar2"
+  aafu3:
+    type: string
+    default : "foo3"
+  aafp3:
+    type: string
+    default : "bar3"
+  
+node_templates:
+  topic00:
+    type: dcae.nodes.ExistingTopic
+    properties:
+      fqtn: { get_input : topic00fqtn } 
+  topic01:
+    type: dcae.nodes.ExistingTopic
+    properties:
+      fqtn: { get_input : topic01fqtn }
+  feed00:
+     type: dcae.nodes.Feed
+     properties: 
+        feed_name: "FEEDME-12"
+        feed_description: "Tommy Test feed for CDAP Publishes"
+        feed_version: 6.6.6
+        aspr_classification: "unclassified"
+
+  hw_cdap_app:
+    type: dcae.nodes.MicroService.cdap
+    properties:
+      service_component_type: 'hello_world'
+      jar_url: { get_input : hello_world_jar_url }
+      artifact_name: "HelloWorld"
+      artifact_version: "3.4.3"
+      namespace: "cloudifyhwtest"
+      programs:
+        [{"program_type" : "flows", "program_id" : "WhoFlow"}, {"program_type" : "services", "program_id" : "Greeting"}]
+      streamname:
+        'who'
+      service_endpoints:
+        [{"service_name" : "Greeting", "service_endpoint" : "greet", "endpoint_method" : "GET"}]
+      
+      #special key for CDAP plugin
+      connections:
+        streams_publishes: 
+          - name: topic00                       #MR pub 1
+            location: mtc5
+            client_role: { get_input: client_role }
+            type: message_router
+            config_key:   "myconfigkey0"
+            aaf_username: { get_input: aafu0 }
+            aaf_password: { get_input: aafp0 }
+          - name: topic01                       #MR pub 2
+            location: mtc5
+            client_role: { get_input: client_role }
+            type: message_router
+            config_key:  "myconfigkey1"
+            aaf_username: { get_input: aafu1 }
+            aaf_password: { get_input: aafp1 }
+          - name: feed00                      #Feed pub 1
+            location: mtc5
+            type: data_router
+            config_key: "mydrconfigkey"
+        streams_subscribes: 
+          - name: topic00                        #MEANT FOR DEMO ONLY! Subscribing and publishing to same topic. Not real example.
+            location: mtc5
+            client_role: { get_input: client_role }
+            type: message_router
+            config_key:   "myconfigkey2"
+            aaf_username: { get_input: aafu2 }
+            aaf_password: { get_input: aafp2 }
+          - name: topic01
+            location: mtc5
+            client_role: { get_input: client_role }
+            type: message_router
+            config_key:  "myconfigkey3"
+            aaf_username: { get_input: aafu3 }
+            aaf_password: { get_input: aafp3 }
+
+    relationships:
+      - type: dcae.relationships.publish_events
+        target: topic00                           #MEANT FOR DEMO ONLY! Subscribing and publishing to same topic. Not real example.
+      - type: dcae.relationships.publish_events
+        target: topic01
+      - type: dcae.relationships.subscribe_to_events
+        target: topic00
+      - type: dcae.relationships.subscribe_to_events
+        target: topic01
+      - type: dcae.relationships.publish_files
+        target: feed00
+
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          inputs:
+            connected_broker_dns_name: { get_input: connected_broker_dns_name }
+   
+outputs: 
+  hw_cdap_app_name:
+    value: {get_attribute:[hw_cdap_app, service_component_name]}
+  
+  topic00_data:
+    description: "Topic 00 data"
+    value: { get_attribute: [hw_cdap_app, topic00]}
+   
+  topic01_data:
+    description: "Topic 01 data"
+    value: { get_attribute: [hw_cdap_app, topic01]}
+
+
+
+
