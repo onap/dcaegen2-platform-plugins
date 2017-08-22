@@ -228,4 +228,11 @@ def app_smart_reconfigure(new_config_template, **kwargs):
     except Exception as e:
         raise NonRecoverableError("CDAP Reconfigure error: {0}".format(e))
 
+@operation
+def delete_all_registered_apps(connected_broker_dns_name, **kwargs):
+    """
+    Used in the cdap broker deleter node.
+    Deletes all registered applications (in the broker)
+    """
+    discovery.delete_all_registered_apps(connected_broker_dns_name, ctx.logger)
 

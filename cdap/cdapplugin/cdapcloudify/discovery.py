@@ -22,22 +22,22 @@ import json
 
 CONSUL_HOST = "http://localhost:8500"
 
+def _get_connection_info_from_consul(service_component_name, logger):
+    """
+    Call consul's catalog
+    TODO: currently assumes there is only one service
+    """
+    url = "{0}/v1/catalog/service/{1}".format(CONSUL_HOST, service_component_name)
+    logger.info("Trying to query: {0}".format(url))
+    res = requests.get(url)
+    res.raise_for_status()
+    services = res.json()
+    return services[0]["ServiceAddress"], services[0]["ServicePort"]
+
 def _get_broker_url(cdap_broker_name, service_component_name, logger):
     """
     fetch the broker connection information from Consul
     """
-    def _get_connection_info_from_consul(service_component_name, logger):
-        """
-        Call consul's catalog
-        TODO: currently assumes there is only one service
-        """
-        url = "{0}/v1/catalog/service/{1}".format(CONSUL_HOST, service_component_name)
-        logger.info("Trying to query: {0}".format(url))
-        res = requests.get(url)
-        res.raise_for_status()
-        services = res.json()
-        return services[0]["ServiceAddress"], services[0]["ServicePort"]
-
     broker_ip, broker_port = _get_connection_info_from_consul(cdap_broker_name, logger)
     broker_url = "http://{ip}:{port}/application/{appname}".format(ip=broker_ip, port=broker_port, appname=service_component_name)
     logger.info("Trying to connect to broker endpoint: {0}".format(broker_url))
@@ -102,4 +102,18 @@ def delete_on_broker(cdap_broker_name, service_component_name, logger):
     response = requests.delete(_get_broker_url(cdap_broker_name, service_component_name, logger))
     logger.info((response, response.status_code, response.text))
     response.raise_for_status() #bomb if not 2xx
+
+def delete_all_registered_apps(cdap_broker_name, logger):
+    #get the broker connection
+    broker_ip, broker_port = _get_connection_info_from_consul(cdap_broker_name, logger)
+    broker_url = "http://{ip}:{port}".format(ip=broker_ip, port=broker_port)
+
+    #binge and purge
+    logger.info("Trying to connect to broker called {0} at {1}".format(cdap_broker_name, broker_url))
+    registered_apps = json.loads(requests.get("{0}/application".format(broker_url)).text) #should be proper list of strings (appnames)
+    logger.info("Trying to delete: {0}".format(registered_apps))
+    r = requests.post("{0}/application/delete".format(broker_url),
+                 headers = {'content-type':'application/json'},
+                 json = {"appnames" : registered_apps})
+    logger.info("Response: {0}, Response Status: {1}".format(r.text, r.status_code))
 
