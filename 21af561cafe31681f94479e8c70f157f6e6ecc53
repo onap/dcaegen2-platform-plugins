@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a437d4f_505ff872",
+        "filename": "docker/docker-node-type.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1907
+      },
+      "writtenOn": "2017-08-23T18:57:00Z",
+      "side": 1,
+      "message": "FYI - The review tool marks all trailing whitespace in red.  These may get flagged further downstream.",
+      "revId": "21af561cafe31681f94479e8c70f157f6e6ecc53",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a437d4f_30547453",
+        "filename": "docker/setup.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1907
+      },
+      "writtenOn": "2017-08-23T18:57:00Z",
+      "side": 1,
+      "message": "Should there be a license\u003d\u0027Apache 2.0\u0027?",
+      "revId": "21af561cafe31681f94479e8c70f157f6e6ecc53",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
