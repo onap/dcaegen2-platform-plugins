@@ -1,0 +1,65 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+    - http://www.getcloudify.org/spec/cloudify/3.4/types.yaml
+
+plugins:
+  relationships:
+    executor: 'central_deployment_agent'
+    package_name: relationshipplugin
+    package_version: 1.0.0
+
+relationships:
+    # The relationship type here is to be used between service component nodes. What is achieved here is
+    # functionality in providing this relationship information to the service components so that they can
+    # do service discovery.
+    #
+    # This function will create/add to the rels list for components. So going from a "collector node -> analytics node"
+    # for example, this is kind of the edge and will add:
+    # 
+    # ```
+    # "collector_name:rel": ["analytics_name"]
+    # ```
+    #
+    # To the key value store.
+    #
+    dcae.relationships.component_connected_to:
+        derived_from: cloudify.relationships.connected_to
+        # These operations are for adding and removing relationships from Consul
+        # http://getcloudify.org/guide/3.1/reference-builtin-workflows.html
+        target_interfaces:
+            cloudify.interfaces.relationship_lifecycle:
+                preconfigure:
+                    # Adds target to the source relationship list
+                    implementation: relationships.relationshipplugin.add_relationship
+                unlink:
+                    # Removes target from the source relationship list
+                    implementation: relationships.relationshipplugin.remove_relationship
+
+    dcae.relationships.component_contained_in:
+        derived_from: cloudify.relationships.contained_in
+        target_interfaces:
+            cloudify.interfaces.relationship_lifecycle:
+                preconfigure:
+                    implementation: relationships.relationshipplugin.forward_destination_info
+                # TODO: Is there a need for "unlink"?
+
+    dcae.relationships.component_registered_to:
+        #Operates on a relationship A -> B and makes the following assumptions:
+        derived_from: cloudify.relationships.connected_to
+        target_interfaces:
+            cloudify.interfaces.relationship_lifecycle:
+                preconfigure:
+                    implementation: relationships.relationshipplugin.tasks.registered_to
+                    inputs:
+                       address_to_register:
+                           type: string
+                       port_to_register:
+                           type: string
+                       name_to_register:
+                           type: string
+                unlink:
+                    implementation: relationships.relationshipplugin.tasks.registered_to_delete
+
+
+

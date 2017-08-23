@@ -1,0 +1,24 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/3.4/types.yaml
+  - {{ ONAPTEMPLATE_RAWREPOURL_org_onap_dcaegen2 }}/type_files/relationship/1.0.0/node-type.yaml
+
+node_templates:
+
+    src:
+        type: cloudify.nodes.Root
+        relationships:
+          - type: dcae.relationships.component_registered_to
+            target: tgt #agree this is kind of weird to be a relationship type now with a dummy target
+            target_interfaces:
+                cloudify.interfaces.relationship_lifecycle:
+                    preconfigure:
+                        inputs:
+                            address_to_register: "666.666.666.666"
+                            port_to_register: "666"
+                            name_to_register: "TEST_REGISTERED_TO_SERVICE"
+                            location_id: "rework-central"
+
+    tgt: #do relationships always need targets? 
+        type: cloudify.nodes.Root

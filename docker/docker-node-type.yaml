@@ -1,0 +1,244 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+    - http://www.getcloudify.org/spec/cloudify/3.4/types.yaml
+
+plugins:
+  docker:
+    executor: 'central_deployment_agent'
+    package_name: dockerplugin
+    package_version: 2.3.0
+
+node_types:
+    # The DockerContainerForComponents node type is to be used for DCAE service components that 
+    # are to be run in a Docker container.  This node type goes beyond that of a ordinary Docker
+    # plugin where it has DCAE platform specific functionality:
+    #
+    #   * Generation of the service component name
+    #   * Managing of service component configuration information
+    #
+    # The Docker run command arguments are intentionally not visible. This node type is
+    # not intended to be a generic all-purpose Docker container thing. This should be thought
+    # to be an interface to how Docker containers are to be run in the rework context.
+    dcae.nodes.DockerContainerForComponents:
+        derived_from: cloudify.nodes.Root
+        properties:
+            service_component_type:
+                type: string
+                description: Service component type of the application being run in the container
+
+            service_id:
+                type: string
+                description: Unique id for this DCAE service instance this component belongs to
+
+            location_id:
+                type: string
+                description: Location id of where to run the container
+
+            service_component_name_override:
+                type: string
+                description: >
+                    Manually override and set the name for this Docker container node. If this
+                    is set, then the name will not be auto-generated. Platform services are the
+                    specific use cases for using this parameter because they have static
+                    names for example the CDAP broker.
+                default: Null
+
+            application_config:
+                default: {}
+                description: >
+                  Application configuration for this Docker component. The data strcture is
+                  expected to be a complex map (native YAML) and to be constructed and filled
+                  by the creator of the blueprint.
+
+            docker_config:
+                default: {}
+                description: >
+                  This is what is the auxilary portion of the component spec that contains things
+                  like healthcheck definitions for the Docker component. Health checks are
+                  optional.
+
+            image:
+                type: string
+                description: Full uri of the Docker image
+
+        interfaces:
+            cloudify.interfaces.lifecycle:
+                create:
+                    # Generate service component name and populate config into Consul
+                    implementation: docker.dockerplugin.create_for_components
+                start:
+                    # Create Docker container and start
+                    implementation: docker.dockerplugin.create_and_start_container_for_components
+                stop:
+                    # Stop and remove Docker container
+                    implementation: docker.dockerplugin.stop_and_remove_container
+                delete:
+                    # Delete configuration from Consul
+                    implementation: docker.dockerplugin.cleanup_discovery
+
+
+    # This node type is intended for DCAE service components that use DMaaP and must use the 
+    # DMaaP plugin.
+    dcae.nodes.DockerContainerForComponentsUsingDmaap:
+        derived_from: dcae.nodes.DockerContainerForComponents
+        properties:
+            streams_publishes:
+                description: >
+                  List of DMaaP streams used for publishing.
+
+                  Message router items look like:
+                    
+                    name: topic00
+                    location: mtc5
+                    client_role: XXXX
+                    type: message_router
+
+                  Data router items look like:
+
+                    name: feed00
+                    location: mtc5
+                    type: data_router
+
+                  This information is forwarded to the dmaap plugin to provision
+                default: []
+            streams_subscribes:
+                description: >
+                  List of DMaaP streams used for subscribing.
+                
+                  Message router items look like:
+
+                    name: topic00
+                    location: mtc5
+                    client_role: XXXX
+                    type: message_router
+
+                  Data router items look like:
+
+                    name: feed00
+                    location: mtc5
+                    type: data_router
+                    username: king
+                    password: 123456
+                    route: some-path
+                    scheme: https
+
+                  Note that username and password is optional. If not provided or null then the
+                  plugin will generate them.
+
+                default: []
+        interfaces:
+            cloudify.interfaces.lifecycle:
+                create:
+                    # Generate service component name and populate config into Consul
+                    implementation: docker.dockerplugin.create_for_components_with_streams
+                start:
+                    # Create Docker container and start
+                    implementation: docker.dockerplugin.create_and_start_container_for_components_with_streams
+
+
+    # DockerContainerForPlatforms is intended for DCAE platform services.  Unlike the components,
+    # platform services have well-known names and well-known ports.
+    dcae.nodes.DockerContainerForPlatforms:
+        derived_from: cloudify.nodes.Root
+        properties:
+            name:
+                description: >
+                  Container name used to register with Consul
+
+            application_config:
+                default: {}
+                description: >
+                  Application configuration for this Docker component. The data strcture is
+                  expected to be a complex map (native YAML) and to be constructed and filled
+                  by the creator of the blueprint.
+
+            docker_config:
+                default: {}
+                description: >
+                  This is what is the auxilary portion of the component spec that contains things
+                  like healthcheck definitions for the Docker component. Health checks are
+                  optional.
+
+            image:
+                type: string
+                description: Full uri of the Docker image
+
+            host_port:
+                type: integer
+                description: >
+                  Network port that the platform service is expecting to expose on the host
+                default: 0
+
+            container_port:
+                type: integer
+                description: >
+                  Network port that the platform service exposes in the container
+                default: 0
+
+        interfaces:
+            cloudify.interfaces.lifecycle:
+                create:
+                    # Populate config into Consul
+                    implementation: docker.dockerplugin.create_for_platforms
+                start:
+                    # Create Docker container and start
+                    implementation: docker.dockerplugin.create_and_start_container_for_platforms
+                stop:
+                    # Stop and remove Docker container
+                    implementation: docker.dockerplugin.stop_and_remove_container
+                delete:
+                    # Delete configuration from Consul
+                    implementation: docker.dockerplugin.cleanup_discovery
+
+
+    # DockerContainer is intended to be more of an all-purpose Docker container node
+    # for non-componentized applications.
+    dcae.nodes.DockerContainer:
+        derived_from: cloudify.nodes.Root
+        properties:
+            name:
+                type: string
+                description: Name of the Docker container to be given
+            image:
+                type: string
+                description: Full uri of the Docker image
+        interfaces:
+            cloudify.interfaces.lifecycle:
+                start:
+                    # Create Docker container and start
+                    implementation: docker.dockerplugin.create_and_start_container
+                stop:
+                    # Stop and remove Docker container
+                    implementation: docker.dockerplugin.stop_and_remove_container
+
+
+    # TODO: Revisit using Docker swarm
+    # The DockerSwarm node type provides the connection information of an available Docker swarm
+    # cluster to be used to run Docker containers given search contraints like location.
+    # This node type is not responsible for instantiating and managing the Docker swarm clusters.
+  
+    # The DockerHost node is responsible for selecting a pre-existing Docker host to run
+    # Docker containers on. It is not responsible for instantiating new Docker hosts or expanding
+    # more resources.
+    dcae.nodes.SelectedDockerHost:
+        derived_from: cloudify.nodes.Root
+        properties:
+            location_id:
+                type: string
+                description: Location id of the Docker host to use
+
+            # REVIEW: This field should really be optional but because there's no functionality
+            # that provides the dynamic solution sought after yet, it has been promoted to be
+            # required.
+            docker_host_override:
+                type: string
+                description: Docker hostname here is used as a manual override
+
+        interfaces:
+            cloudify.interfaces.lifecycle:
+                create:
+                    # Provide the Docker host to use for containers
+                    implementation: docker.dockerplugin.select_docker_host
+                delete:
+                    implementation: docker.dockerplugin.unselect_docker_host

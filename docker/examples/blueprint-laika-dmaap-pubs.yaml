@@ -1,0 +1,148 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+description: >
+  This Blueprint installs a chain of two laika instances on a Docker cluster
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/3.4/types.yaml
+  - {{ ONAPTEMPLATE_RAWREPOURL_org_onap_dcaegen2 }}/type_files/docker/2.2.0/node-type.yaml
+  - {{ ONAPTEMPLATE_RAWREPOURL_org_onap_dcaegen2 }}/type_files/relationship/1.0.0/node-type.yaml
+  - {{ ONAPTEMPLATE_RAWREPOURL_org_onap_dcaegen2 }}/type_files/dmaap/1.1.0/dmaap.yaml
+
+inputs:
+
+  service_id:
+    description: Unique id used for an instance of this DCAE service. Use deployment id
+    default: 'foobar'
+
+  topic00_aaf_username:
+  topic00_aaf_password:
+  topic00_location:
+    default: mtc5
+  topic00_client_role: 
+
+  topic01_aaf_username:
+  topic01_aaf_password:
+  topic01_location:
+    default: mtc5
+  topic01_client_role:
+
+  feed00_location:
+    default: mtc5
+
+  feed01_location:
+    default: mtc5
+  
+  topic00fqtn:
+    type: string
+  topic01fqtn:
+    type: string
+  laika_image:
+    type: string
+
+node_templates:
+
+  topic00:
+    type: dcae.nodes.ExistingTopic
+    properties:
+      fqtn: { get_input : topic00fqtn } 
+  
+  topic01:
+    type: dcae.nodes.ExistingTopic
+    properties:
+      fqtn: { get_input : topic01fqtn }
+
+  feed00:
+     type: dcae.nodes.Feed
+     properties:
+        # NOTE: Had to manually make unique feed names per test because I've been told there's
+        # an issue with feeds not being deleted by uninstall.
+        feed_name: "feed00-pub-laika"
+        feed_description: "Feed00 to test pub for laika"
+        feed_version: 1.0.0
+        aspr_classification: "unclassified"
+
+  feed01:
+     type: dcae.nodes.Feed
+     properties: 
+        feed_name: "feed01-pub-laika"
+        feed_description: "Feed01 to test pub for laika"
+        feed_version: 1.0.0
+        aspr_classification: "unclassified"
+
+  laika-one:
+    type: dcae.nodes.DockerContainerForComponentsUsingDmaap
+    properties:
+        service_component_type:
+            'laika'
+        service_id:
+            { get_input: service_id }
+        location_id:
+            'rework-central'
+        application_config:
+            some-param: "Lorem ipsum dolor sit amet"
+            streams_publishes:
+              topic-alpha:
+                aaf_username: { get_input: topic00_aaf_username }
+                aaf_password: { get_input: topic00_aaf_password }
+                type: "message_router"
+                dmaap_info: "<< topic00 >>"
+              topic-beta:
+                aaf_username: { get_input: topic01_aaf_username }
+                aaf_password: { get_input: topic01_aaf_password }
+                type: "message_router"
+                dmaap_info: "<< topic01 >>"
+              feed-gamma:
+                type: "data_router"
+                dmaap_info: "<< feed00 >>"
+              feed-kappa:
+                type: "data_router"
+                dmaap_info: "<< feed01 >>"
+            streams_subscribes: {}
+            services_calls: {}
+        image: { get_input : laika_image }
+        docker_config:
+            healthcheck:
+                type: "http"
+                endpoint: "/health"
+        streams_publishes:
+            - name: topic00
+              location: { get_input: topic00_location }
+              client_role: { get_input: topic00_client_role }
+              type: message_router
+            - name: topic01
+              location: { get_input: topic01_location }
+              client_role: { get_input: topic01_client_role }
+              type: message_router
+            - name: feed00
+              location: { get_input: feed00_location }
+              type: data_router
+            - name: feed01
+              location: { get_input: feed01_location }
+              type: data_router
+        streams_subscribes: []
+    relationships:
+      - type: dcae.relationships.component_contained_in
+        target: docker_host
+      - type: dcae.relationships.publish_events
+        target: topic00
+      - type: dcae.relationships.publish_events
+        target: topic01
+      - type: dcae.relationships.publish_files
+        target: feed00
+      - type: dcae.relationships.publish_files
+        target: feed01
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        stop:
+          inputs:
+            cleanup_image:
+              False
+
+  docker_host:
+    type: dcae.nodes.SelectedDockerHost
+    properties:
+        location_id:
+            'rework-central'
+        docker_host_override:
+            'component_dockerhost'
