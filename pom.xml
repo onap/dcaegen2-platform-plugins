@@ -6,11 +6,6 @@
     <artifactId>oparent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <!-- parent>
-    <groupId>org.onap.dcae.platform</groupId>
-    <artifactId>plugins</artifactId>
-    <version>1.0.0</version>
-  </parent -->
   <groupId>org.onap.dcaegen2.platform</groupId>
   <artifactId>plugins</artifactId>
   <name>plugins</name>
@@ -19,6 +14,8 @@
   <packaging>pom</packaging>
   <modules>
      <module>cdap</module>
+     <module>docker</module>
+     <module>relationships</module>
   </modules>
 
 </project>

@@ -26,8 +26,8 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
     <version>1.0.0-SNAPSHOT</version>
   </parent>
   <groupId>org.onap.dcaegen2.platform.plugins</groupId>
-  <artifactId>cdap</artifactId>
-  <name>cdap-plugin</name>
+  <artifactId>relationships</artifactId>
+  <name>relationships-plugin</name>
   <version>1.0.0-SNAPSHOT</version>
   <url>http://maven.apache.org</url>
   <properties>
