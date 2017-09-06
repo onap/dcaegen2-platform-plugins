@@ -47,19 +47,17 @@ def _wrap_consul_call(consul_func, *args, **kwargs):
         raise DiscoveryConnectionError(e)
 
 
-def generate_service_component_name(service_component_type, service_id, location_id):
+def generate_service_component_name(service_component_type):
     """Generate service component id used to pass into the service component
     instance and used as the key to the service component configuration.
 
     Format:
-    <service component id>.<service component type>.<service id>.<location id>.dcae.com
-
-    TODO: The format will evolve.
+    <service component id>_<service component type>
     """
     # Random generated
-    service_component_id = str(uuid.uuid4())
-    return "{0}.{1}.{2}.{3}.dcae.com".format(
-            service_component_id, service_component_type, service_id, location_id)
+    # Copied from cdap plugin
+    return "{0}_{1}".format(str(uuid.uuid4()).replace("-",""),
+            service_component_type)
 
 
 def create_kv_conn(host):
@@ -204,3 +202,41 @@ def add_to_entry(conn, key, add_name, add_value):
         updated = conn.kv.put(key, new_vstring, cas=mod_index)       # if the key has changed since retrieval, this will return false
         if updated:
             return v
+
+
+def _find_matching_services(services, name_search, tags):
+    """Find matching services given search criteria"""
+    def is_match(service):
+        srv_name, srv_tags = service
+        return name_search in srv_name and \
+                all(map(lambda tag: tag in srv_tags, tags))
+
+    return [ srv[0] for srv in services.items() if is_match(srv) ]
+
+def search_services(conn, name_search, tags):
+    """Search for services that match criteria
+
+    Args:
+    -----
+    name_search: (string) Name to search for as a substring
+    tags: (list) List of strings that are tags. A service must match **all** the
+        tags in the list.
+
+    Retruns:
+    --------
+    List of names of services that matched
+    """
+    # srvs is dict where key is service name and value is list of tags
+    catalog_get_services_func = partial(_wrap_consul_call, conn.catalog.services)
+    index, srvs = catalog_get_services_func()
+
+    if srvs:
+        matches = _find_matching_services(srvs, name_search, tags)
+
+        if matches:
+            return matches
+
+        raise DiscoveryServiceNotFoundError(
+                "No matches found: {0}, {1}".format(name_search, tags))
+    else:
+        raise DiscoveryServiceNotFoundError("No services found")

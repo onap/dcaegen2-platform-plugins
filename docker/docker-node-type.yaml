@@ -7,7 +7,7 @@ plugins:
   docker:
     executor: 'central_deployment_agent'
     package_name: dockerplugin
-    package_version: 2.3.0
+    package_version: 2.3.0+t.0.3
 
 node_types:
     # The DockerContainerForComponents node type is to be used for DCAE service components that 
@@ -29,11 +29,18 @@ node_types:
 
             service_id:
                 type: string
-                description: Unique id for this DCAE service instance this component belongs to
+                description: >
+                  Unique id for this DCAE service instance this component belongs to. This value
+                  will be applied as a tag in the registration of this component with Consul.
+                default: Null
 
             location_id:
                 type: string
-                description: Location id of where to run the container
+                description: >
+                  Location id of where to run the container.
+                  DEPRECATED - No longer used. Infer the location from the docker host service 
+                    and/or node.
+                default: Null
 
             service_component_name_override:
                 type: string
@@ -228,12 +235,18 @@ node_types:
                 type: string
                 description: Location id of the Docker host to use
 
+            name_search:
+                type: string
+                description: String to use when matching for names
+                default: component-dockerhost
+
             # REVIEW: This field should really be optional but because there's no functionality
             # that provides the dynamic solution sought after yet, it has been promoted to be
             # required.
             docker_host_override:
                 type: string
                 description: Docker hostname here is used as a manual override
+                default: Null
 
         interfaces:
             cloudify.interfaces.lifecycle:

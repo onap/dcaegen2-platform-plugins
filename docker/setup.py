@@ -24,7 +24,7 @@ from setuptools import setup
 setup(
     name='dockerplugin',
     description='Cloudify plugin for applications run in Docker containers',
-    version="2.3.0",
+    version="2.3.0+t.0.3",
     author='Michael Hwang, Tommy Carpenter',
     packages=['dockerplugin'],
     zip_safe=False,

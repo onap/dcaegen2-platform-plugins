@@ -25,6 +25,17 @@ import dockerplugin
 from dockerplugin import tasks
 
 
+def test_generate_component_name():
+    kwargs = { "service_component_type": "doodle",
+            "service_component_name_override": None }
+
+    assert "doodle" in tasks._generate_component_name(**kwargs)["name"]
+
+    kwargs["service_component_name_override"] = "yankee"
+
+    assert "yankee" == tasks._generate_component_name(**kwargs)["name"]
+
+
 def test_parse_streams(monkeypatch):
     # Good case for streams_publishes
     test_input = { "streams_publishes": [{"name": "topic00", "type": "message_router"},
@@ -166,33 +177,42 @@ def test_update_delivery_url(monkeypatch):
 def test_enhance_docker_params():
     # Good - Test empty docker config
 
-    test_kwargs = { "docker_config": {} }
+    test_kwargs = { "docker_config": {}, "service_id": None }
     actual = tasks._enhance_docker_params(**test_kwargs)
 
-    assert actual == {'envs': {}, 'docker_config': {}}
+    assert actual == {'envs': {"SERVICE_TAGS": ""}, 'docker_config': {}, "service_id": None }
 
     # Good - Test just docker config ports and volumes
 
     test_kwargs = { "docker_config": { "ports": ["1:1", "2:2"],
-        "volumes": [{"container": "somewhere", "host": "somewhere else"}] } }
+        "volumes": [{"container": "somewhere", "host": "somewhere else"}] },
+        "service_id": None }
     actual = tasks._enhance_docker_params(**test_kwargs)
 
-    assert actual == {'envs': {}, 'docker_config': {'ports': ['1:1', '2:2'],
+    assert actual == {'envs': {"SERVICE_TAGS": ""}, 'docker_config': {'ports': ['1:1', '2:2'],
         'volumes': [{'host': 'somewhere else', 'container': 'somewhere'}]},
         'ports': ['1:1', '2:2'], 'volumes': [{'host': 'somewhere else',
-            'container': 'somewhere'}]}
+            'container': 'somewhere'}], "service_id": None}
 
     # Good - Test just docker config ports and volumes with overrrides
 
     test_kwargs = { "docker_config": { "ports": ["1:1", "2:2"],
         "volumes": [{"container": "somewhere", "host": "somewhere else"}] },
         "ports": ["3:3", "4:4"], "volumes": [{"container": "nowhere", "host":
-        "nowhere else"}]}
+        "nowhere else"}],
+        "service_id": None }
     actual = tasks._enhance_docker_params(**test_kwargs)
 
-    assert actual == {'envs': {}, 'docker_config': {'ports': ['1:1', '2:2'],
+    assert actual == {'envs': {"SERVICE_TAGS": ""}, 'docker_config': {'ports': ['1:1', '2:2'],
         'volumes': [{'host': 'somewhere else', 'container': 'somewhere'}]},
         'ports': ['1:1', '2:2', '3:3', '4:4'], 'volumes': [{'host': 'somewhere else', 
             'container': 'somewhere'}, {'host': 'nowhere else', 'container':
-            'nowhere'}]}
+            'nowhere'}], "service_id": None}
 
+    # Good
+
+    test_kwargs = { "docker_config": {}, "service_id": "zed",
+            "deployment_id": "abc" }
+    actual = tasks._enhance_docker_params(**test_kwargs)
+
+    assert actual["envs"] == {"SERVICE_TAGS": "abc,zed"}

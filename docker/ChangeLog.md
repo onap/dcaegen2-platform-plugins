@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.3.0+t.0.3]
+
+* Enhance `SelectedDockerHost` node type with `name_search` and add default to `docker_host_override`
+* Implement the functionality in the `select_docker_host` task to query Consul given location id and name search
+* Deprecate `location_id` on the `DockerContainerForComponents*` node types
+* Change `service_id` to be optional for `DockerContainerForComponents*` node types
+* Add deployment id as a tag for registration on the component
+
 ## [2.3.0]
 
 * Rip out dockering and use common python-dockering library

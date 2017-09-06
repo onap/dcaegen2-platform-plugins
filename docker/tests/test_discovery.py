@@ -38,3 +38,18 @@ def test_wrap_consul_call():
     wrapped_foo = partial(dis._wrap_consul_call, foo_connection_error)
     with pytest.raises(dis.DiscoveryConnectionError):
         wrapped_foo("a", "b", "c")
+
+
+def test_find_matching_services():
+    services = { "component_dockerhost_1": ["foo", "bar"],
+            "platform_dockerhost": [], "component_dockerhost_2": ["baz"] }
+    assert sorted(["component_dockerhost_1", "component_dockerhost_2"]) \
+        == sorted(dis._find_matching_services(services, "component_dockerhost", []))
+
+    assert ["component_dockerhost_1"] == dis._find_matching_services(services, \
+            "component_dockerhost", ["foo", "bar"])
+
+    assert ["component_dockerhost_1"] == dis._find_matching_services(services, \
+            "component_dockerhost", ["foo"])
+
+    assert [] == dis._find_matching_services(services, "unknown", ["foo"])
