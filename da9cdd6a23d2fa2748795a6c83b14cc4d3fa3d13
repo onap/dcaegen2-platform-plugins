@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a437d4f_67b1fae0",
+        "filename": "docker/ChangeLog.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 515
+      },
+      "writtenOn": "2017-09-06T22:34:52Z",
+      "side": 1,
+      "message": "Whose location-id is this?",
+      "revId": "da9cdd6a23d2fa2748795a6c83b14cc4d3fa3d13",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9a437d4f_87ba9ebe",
+        "filename": "docker/docker-node-type.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 515
+      },
+      "writtenOn": "2017-09-06T22:34:52Z",
+      "side": 1,
+      "message": "The platform installation blueprints use SelectedDockerHost. It is used for platform nodes and component nodes. When I now re-deploy the platform, the dockerized nodes would get a default value for \"component-dockerhost\". Does this break all those blueprints? Otherwise, what is the effect of \"component-dockerhost\" as the default on the platform installation?",
+      "revId": "da9cdd6a23d2fa2748795a6c83b14cc4d3fa3d13",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
