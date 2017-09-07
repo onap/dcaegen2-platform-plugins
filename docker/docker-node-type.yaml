@@ -7,7 +7,7 @@ plugins:
   docker:
     executor: 'central_deployment_agent'
     package_name: dockerplugin
-    package_version: 2.3.0+t.0.3
+    package_version: 2.4.0
 
 node_types:
     # The DockerContainerForComponents node type is to be used for DCAE service components that 
@@ -83,6 +83,10 @@ node_types:
                 delete:
                     # Delete configuration from Consul
                     implementation: docker.dockerplugin.cleanup_discovery
+            dcae.interfaces.policy:
+                # This is to be invoked by the policy handler upon policy updates
+                policy_update:
+                    implementation: docker.dockerplugin.policy_update
 
 
     # This node type is intended for DCAE service components that use DMaaP and must use the 

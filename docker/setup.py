@@ -24,13 +24,14 @@ from setuptools import setup
 setup(
     name='dockerplugin',
     description='Cloudify plugin for applications run in Docker containers',
-    version="2.3.0+t.0.3",
+    version="2.4.0",
     author='Michael Hwang, Tommy Carpenter',
     packages=['dockerplugin'],
     zip_safe=False,
     install_requires=[
         "python-consul>=0.6.0,<1.0.0",
         "python-dockering>=1.0.0,<2.0.0",
-        "uuid==1.30"
+        "uuid==1.30",
+        "dcaepolicy>=0.0.4"
     ]
 )

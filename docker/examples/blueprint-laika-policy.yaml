@@ -7,12 +7,40 @@ imports:
   - http://www.getcloudify.org/spec/cloudify/3.4/types.yaml
   - {{ ONAPTEMPLATE_RAWREPOURL_org_onap_dcaegen2 }}/type_files/docker/2.3.0/node-type.yaml
   - {{ ONAPTEMPLATE_RAWREPOURL_org_onap_dcaegen2 }}/type_files/relationship/1.0.0/node-type.yaml
+  - {{ ONAPTEMPLATE_RAWREPOURL_org_onap_dcaegen2 }}/type_files/dcaepolicy/1.0.0/node-type.yaml
 
 inputs:
   laika_image:
     type: string
 
+  host_capacity_policy_id:
+    type: string
+    default: DCAE_alex.Config_host_capacity_policy_id_value
+
+  host_location_policy_id:
+    type: string
+    default: DCAE_alex.Config_host_location_policy_id_value
+
+  db_server_policy_id:
+    type: string
+    default: DCAE_alex.Config_db_server_policy_id_value
+
 node_templates:
+
+  host_capacity_policy:
+    type: dcae.nodes.policy
+    properties:
+        policy_id: { get_input: host_capacity_policy_id }
+
+  host_location_policy:
+    type: dcae.nodes.policy
+    properties:
+        policy_id: { get_input: host_location_policy_id }
+
+  db_server_policy:
+    type: dcae.nodes.policy
+    properties:
+        policy_id: { get_input: db_server_policy_id }
 
   laika-zero:
     type: dcae.nodes.DockerContainerForComponents
@@ -31,12 +59,19 @@ node_templates:
             healthcheck:
                 type: "http"
                 endpoint: "/health"
+            policy:
+                trigger_type: "docker"
+                script_path: "/bin/echo"
     relationships:
       # Link to downstream laika
       - type: dcae.relationships.component_connected_to
         target: laika-one
       - type: dcae.relationships.component_contained_in
         target: docker_host
+      - type: cloudify.relationships.depends_on
+        target: host_capacity_policy
+      - type: cloudify.relationships.depends_on
+        target: host_location_policy
     interfaces:
       cloudify.interfaces.lifecycle:
         start:
@@ -64,6 +99,8 @@ node_templates:
     relationships:
       - type: dcae.relationships.component_contained_in
         target: docker_host
+      - type: cloudify.relationships.depends_on
+        target: db_server_policy
     interfaces:
       cloudify.interfaces.lifecycle:
         stop:

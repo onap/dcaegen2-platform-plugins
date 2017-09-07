@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.4.0]
+
+* Change *components* to be policy reconfigurable:
+    - Add policy execution operation
+    - Add policy decorators to task so that application configuration will be merged with policy
+* Fetch Docker logins from Consul
+
 ## [2.3.0+t.0.3]
 
 * Enhance `SelectedDockerHost` node type with `name_search` and add default to `docker_host_override`
