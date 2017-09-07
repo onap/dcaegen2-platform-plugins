@@ -6,7 +6,7 @@ plugins:
   cdap_deploy:
     executor: central_deployment_agent
     package_name: cdapcloudify
-    package_version: 14.1.0
+    package_version: 14.2.0
 
 data_types:
     cdap_connections:
@@ -68,6 +68,17 @@ node_types:
           cdap_deploy.cdapcloudify.cdap_plugin.deploy_and_start_application
         delete:
           cdap_deploy.cdapcloudify.cdap_plugin.stop_and_undeploy_application
+      
+      dcae.interfaces.policy:
+        policy_update:
+          implementation:
+              cdap_deploy.cdapcloudify.cdap_plugin.policy_update
+          inputs:
+            updated_policies:
+              description: "list of policy objects"
+              default: []
+
+      #TODO: These can probably go away after policy_update is implemented
       reconfiguration:
         app_config_reconfigure:
             implementation: cdap_deploy.cdapcloudify.cdap_plugin.app_config_reconfigure

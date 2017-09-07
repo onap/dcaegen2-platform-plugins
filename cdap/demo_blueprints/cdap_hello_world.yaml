@@ -2,7 +2,9 @@ tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
   - http://www.getcloudify.org/spec/cloudify/3.4/types.yaml
-  - {{ ONAPTEMPLATE_RAWREPOURL_org_onap_dcaegen2 }}/type_files/cdap/14.0.2/cdap_types.yaml
+  #- {{ ONAPTEMPLATE_RAWREPOURL_org_onap_dcaegen2 }}/type_files/cdap/14.0.2/cdap_types.yaml
+  - {{ ONAPTEMPLATE_RAWREPOURL_org_onap_dcaegen2 }}/type_files/cdap/14.2.0/cdap_types.yaml
+  #TODO: IMPORT ALEX'S TYPE FILE
 
 inputs:
   hello_world_jar_url:
@@ -11,7 +13,30 @@ inputs:
     type: string
     default : "cdap_broker"
 
+#TODO: THIS WILL GO AWAY ONCE TYPE FILE IS IMP[ORTED
+node_types:
+    dcae.nodes.policy:
+        derived_from: cloudify.nodes.Root
+        properties:
+            policy_id:
+                description: PK to policy
+                type: string
+                default: DCAE_alex.Config_empty-policy
+            policy_apply_mode:
+                description: choice of how to apply the policy update - none or script
+                type: string
+                default: none
+        interfaces:
+            cloudify.interfaces.lifecycle:
+                create:
+                    implementation: cdap_deploy.cdapcloudify.cdap_plugin.policy_get
+#TODO: THIS WILL GO AWAY ONCE TYPE FILE IS IMP[ORTED
+
 node_templates:
+  hw_app_policy_test:
+    type: dcae.nodes.policy
+    properties:
+      policy_id : DCAE_alex.Config_test_cdap_policy
 
   hw_cdap_app:
     type: dcae.nodes.MicroService.cdap
@@ -28,11 +53,17 @@ node_templates:
         'who'
       service_endpoints:
         [{"service_name" : "Greeting", "service_endpoint" : "greet", "endpoint_method" : "GET"}]
+      app_config: {"foo" : "foo-test"}
+      app_preferences: {"foo_updated" : "foo-pref-test"}
+      
     interfaces:
       cloudify.interfaces.lifecycle:
         create:
           inputs:
             connected_broker_dns_name: { get_input: connected_broker_dns_name }
+    relationships:
+      - target: hw_app_policy_test
+        type: cloudify.relationships.depends_on
    
 outputs: 
   hw_cdap_app_name:
