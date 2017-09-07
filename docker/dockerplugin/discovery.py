@@ -38,6 +38,9 @@ class DiscoveryConnectionError(RuntimeError):
 class DiscoveryServiceNotFoundError(RuntimeError):
     pass
 
+class DiscoveryKVEntryNotFoundError(RuntimeError):
+    pass
+
 
 def _wrap_consul_call(consul_func, *args, **kwargs):
     """Wrap Consul call to map errors"""
@@ -82,6 +85,20 @@ def push_service_component_config(kv_conn, service_component_name, config):
 def remove_service_component_config(kv_conn, service_component_name):
     kv_delete_func = partial(_wrap_consul_call, kv_conn.kv.delete)
     kv_delete_func(service_component_name)
+
+
+def get_kv_value(kv_conn, key):
+    """Get a key-value entry's value from Consul
+
+    Raises DiscoveryKVEntryNotFoundError if entry not found
+    """
+    kv_get_func = partial(_wrap_consul_call, kv_conn.kv.get)
+    (index, val) = kv_get_func(key)
+
+    if val:
+        return json.loads(val['Value']) # will raise ValueError if not JSON, let it propagate
+    else:
+        raise DiscoveryKVEntryNotFoundError("{0} kv entry not found".format(key))
 
 
 def _create_rel_key(service_component_name):
