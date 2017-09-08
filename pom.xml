@@ -8,7 +8,7 @@
   </parent>
   <groupId>org.onap.dcaegen2.platform</groupId>
   <artifactId>plugins</artifactId>
-  <name>plugins</name>
+  <name>dcaegen2-platform-plugins</name>
   <version>1.0.0-SNAPSHOT</version>
   <url>http://maven.apache.org</url>
   <packaging>pom</packaging>
