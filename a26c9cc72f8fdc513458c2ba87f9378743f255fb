@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a437d4f_882a998e",
+        "filename": "docker/examples/blueprint-laika-policy.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 515
+      },
+      "writtenOn": "2017-09-11T23:02:32Z",
+      "side": 1,
+      "message": "is rework-central and ONAP location/",
+      "revId": "a26c9cc72f8fdc513458c2ba87f9378743f255fb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
