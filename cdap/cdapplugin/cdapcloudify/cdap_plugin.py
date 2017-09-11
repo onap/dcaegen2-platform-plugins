@@ -46,15 +46,17 @@ class BadConnections(NonRecoverableError):
 def _trigger_update(updated_policies):
     """
     Helper function for reconfiguring after a policy update
+
+    updated_policies is assumed to be a list of JSONs that are applicable to the brokers smart interface
     """
     for p in updated_policies:
         ctx.logger.info("Reconfiguring CDAP application via smart interface")
-        return discovery.reconfigure_in_broker(cdap_broker_name = ctx.instance.runtime_properties[SELECTED_BROKER],
-                                        service_component_name = ctx.instance.runtime_properties[SERVICE_COMPONENT_NAME],
-                                        config = p,
-                                        reconfiguration_type = "program-flowlet-smart",
-                                        logger = ctx.logger)
-
+        return discovery.reconfigure_in_broker(
+            cdap_broker_name = ctx.instance.runtime_properties[SELECTED_BROKER],
+            service_component_name = ctx.instance.runtime_properties[SERVICE_COMPONENT_NAME],
+            config = p,
+            reconfiguration_type = "program-flowlet-smart",
+            logger = ctx.logger)
 
 def _validate_conns(connections):
     """
@@ -106,19 +108,6 @@ def _services_calls_iterator(services_calls):
         #form (or append to) the dict the component will get, including the template for the CBS
         for_config[s["config_key"]] = "{{ " + s["service_component_type"] + " }}" #will get bound by CBS
     return for_config
-
-
-######################
-# TEMPORARY!!!!!!
-# THIS WILL GO AWAY ONCE ALEX HAS A NODE TYPE AND PLUGIN
-######################
-@operation
-@Policies.populate_policy_on_node
-def policy_get(**kwargs):
-    """decorate with @Policies.populate_policy_on_node on dcae.policy node to
-    retrieve the latest policy_body for policy_id property and save it in runtime_properties
-    """
-    pass
 
 ######################
 # Cloudify Operations
@@ -252,11 +241,7 @@ def app_smart_reconfigure(new_config_template, **kwargs):
     """
     try:
         ctx.logger.info("Reconfiguring CDAP application via smart interface")
-        discovery.reconfigure_in_broker(cdap_broker_name = ctx.instance.runtime_properties[SELECTED_BROKER],
-                                        service_component_name = ctx.instance.runtime_properties[SERVICE_COMPONENT_NAME],
-                                        config = new_config_template, #This keyname will likely change per policy handler
-                                        reconfiguration_type = "program-flowlet-smart",
-                                        logger = ctx.logger)
+        _trigger_update([new_config_template])
     except Exception as e:
         raise NonRecoverableError("CDAP Reconfigure error: {0}".format(e))
 
