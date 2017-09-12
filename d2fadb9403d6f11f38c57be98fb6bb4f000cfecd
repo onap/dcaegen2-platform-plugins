@@ -1,0 +1,8 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Alex Shatov <alexs@att.com>
+Code-Review+2: Tony Hansen <tony@att.com>
+Submitted-by: Tony Hansen <tony@att.com>
+Submitted-at: Tue, 12 Sep 2017 17:29:04 +0000
+Reviewed-on: http://gerrit.onap.org/r/11997
+Project: dcaegen2/platform/plugins
+Branch: refs/heads/master
