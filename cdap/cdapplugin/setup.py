@@ -22,7 +22,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = "cdapcloudify",
-    version = "14.2.1",
+    version = "14.2.2",
     packages=find_packages(),
     author = "Tommy Carpenter",
     author_email = "tommy at research dot eh tee tee dot com",
@@ -32,7 +32,7 @@ setup(
     url = "https://gerrit.onap.org/r/#/admin/projects/dcaegen2/platform/plugins",
     zip_safe=False,
     install_requires = [
-        "dcaepolicy==0.0.4",
+        "dcaepolicy==1.0.0",
         "uuid==1.30"
     ]
 )
