@@ -31,11 +31,15 @@ node_templates:
     type: dcae.nodes.policy
     properties:
         policy_id: { get_input: host_capacity_policy_id }
+        # Use this property to toggle whether policy is required meaning errors are considered
+        # critical otherwise errors are silenced.
+        policy_required: true
 
   host_location_policy:
     type: dcae.nodes.policy
     properties:
         policy_id: { get_input: host_location_policy_id }
+        policy_required: true
 
   db_server_policy:
     type: dcae.nodes.policy

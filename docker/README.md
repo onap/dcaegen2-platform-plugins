@@ -4,6 +4,21 @@ This repository contains Cloudify artifacts used to orchestrate the deployment o
 
 More details about what is expected from Docker components can be found in the DCAE ONAP documentation.
 
+## Pre-requisites
+
+### Docker logins
+
+The Docker plugin requires a key-value entry in Consul that holds all the Docker login credentials needed to access remote registries.  The expected key is `docker_plugin/docker_logins` and the corresponding value is a json array with json objects:
+
+```
+[
+    { "username": "bob", "password": "123456", "registry": "this-docker-registry.com" },
+    { "username": "jane", "password": "7890ab", "registry": "that-docker-registry.com" }
+]
+```
+
+If there are no required Docker logins then set the value to empty list `[]`.
+
 ## Input parameters
 
 ### start
