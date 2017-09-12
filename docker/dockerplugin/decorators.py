@@ -25,6 +25,7 @@ from dockering import utils as doc
 from dockerplugin import discovery as dis
 from dockerplugin.exceptions import DockerPluginDeploymentError, \
     DockerPluginDependencyNotReadyError
+from dockerplugin import utils
 
 
 def monkeypatch_loggers(task_func):
@@ -62,19 +63,40 @@ def wrap_error_handling_start(task_start_func):
     return wrapper
 
 
+def _wrapper_merge_inputs(task_func, properties, **kwargs):
+    """Merge Cloudify properties with input kwargs before calling task func"""
+    inputs = copy.deepcopy(properties)
+    # Recursively update
+    utils.update_dict(inputs, kwargs)
+
+    # Apparently kwargs contains "ctx" which is cloudify.context.CloudifyContext
+    # This has to be removed and not copied into runtime_properties else you get
+    # JSON serialization errors.
+    if "ctx" in inputs:
+        del inputs["ctx"]
+
+    return task_func(**inputs)
+
+def merge_inputs_for_create(task_create_func):
+    """Merge all inputs for start operation into one dict"""
+
+    # Needed to wrap the wrapper because I was seeing issues with
+    # "RuntimeError: No context set in current execution thread"
+    def wrapper(**kwargs):
+        # NOTE: ctx.node.properties is an ImmutableProperties instance which is
+        # why it is passed into a mutable dict so that it can be deep copied
+        return _wrapper_merge_inputs(task_create_func,
+                dict(ctx.node.properties), **kwargs)
+
+    return wrapper
+
 def merge_inputs_for_start(task_start_func):
     """Merge all inputs for start operation into one dict"""
 
-    def wrapper (**kwargs):
-        start_inputs = copy.deepcopy(ctx.instance.runtime_properties)
-        start_inputs.update(kwargs)
-
-        # Apparently kwargs contains "ctx" which is cloudify.context.CloudifyContext
-        # This has to be removed and not copied into runtime_properties else you get
-        # JSON serialization errors.
-        if "ctx" in start_inputs:
-            del start_inputs["ctx"]
-
-        return task_start_func(**start_inputs)
+    # Needed to wrap the wrapper because I was seeing issues with
+    # "RuntimeError: No context set in current execution thread"
+    def wrapper(**kwargs):
+        return _wrapper_merge_inputs(task_start_func,
+                ctx.instance.runtime_properties, **kwargs)
 
     return wrapper

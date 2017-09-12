@@ -20,9 +20,24 @@
 
 import string
 import random
+import collections
 
 
 def random_string(n):
     """Random generate an ascii string of "n" length"""
     corpus = string.ascii_lowercase + string.ascii_uppercase + string.digits
     return ''.join(random.choice(corpus) for x in range(n))
+
+
+def update_dict(d, u):
+    """Recursively updates dict
+
+    Update dict d with dict u
+    """
+    for k, v in u.iteritems():
+        if isinstance(v, collections.Mapping):
+            r = update_dict(d.get(k, {}), v)
+            d[k] = r
+        else:
+            d[k] = u[k]
+    return d

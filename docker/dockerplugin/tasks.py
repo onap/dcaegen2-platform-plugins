@@ -28,7 +28,7 @@ import dockering as doc
 from dcaepolicy import Policies, POLICIES, POLICY_MESSAGE_TYPE
 from dockerplugin import discovery as dis
 from dockerplugin.decorators import monkeypatch_loggers, wrap_error_handling_start, \
-    merge_inputs_for_start
+    merge_inputs_for_start, merge_inputs_for_create
 from dockerplugin.exceptions import DockerPluginDeploymentError, \
     DockerPluginDependencyNotReadyError
 from dockerplugin import utils
@@ -119,10 +119,11 @@ def _merge_policy_updates(**kwargs):
     return kwargs
 
 
+@merge_inputs_for_create
 @monkeypatch_loggers
 @Policies.gather_policies_to_node
 @operation
-def create_for_components(**kwargs):
+def create_for_components(**create_inputs):
     """Create step for Docker containers that are components
 
     This interface is responible for:
@@ -134,7 +135,7 @@ def create_for_components(**kwargs):
             **_setup_for_discovery(
                 **_merge_policy_updates(
                     **_generate_component_name(
-                        **ctx.node.properties))))
+                        **create_inputs))))
 
 
 def _parse_streams(**kwargs):
@@ -201,10 +202,11 @@ def _setup_for_discovery_streams(**kwargs):
         return kwargs
 
 
+@merge_inputs_for_create
 @monkeypatch_loggers
 @Policies.gather_policies_to_node
 @operation
-def create_for_components_with_streams(**kwargs):
+def create_for_components_with_streams(**create_inputs):
     """Create step for Docker containers that are components that use DMaaP
 
     This interface is responible for:
@@ -220,12 +222,13 @@ def create_for_components_with_streams(**kwargs):
                     **_merge_policy_updates(
                         **_parse_streams(
                             **_generate_component_name(
-                                **ctx.node.properties))))))
+                                **create_inputs))))))
 
 
+@merge_inputs_for_create
 @monkeypatch_loggers
 @operation
-def create_for_platforms(**kwargs):
+def create_for_platforms(**create_inputs):
     """Create step for Docker containers that are platform components
 
     This interface is responible for:
@@ -234,7 +237,7 @@ def create_for_platforms(**kwargs):
     """
     _done_for_create(
             **_setup_for_discovery(
-                **ctx.node.properties))
+                **create_inputs))
 
 
 def _lookup_service(service_component_name, consul_host=CONSUL_HOST,
