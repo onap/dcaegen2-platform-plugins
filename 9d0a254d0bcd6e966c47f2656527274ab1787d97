@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a437d4f_1627e313",
+        "filename": "docker/dockerplugin/utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 515
+      },
+      "writtenOn": "2017-09-13T01:17:13Z",
+      "side": 1,
+      "message": "just for fun.. this function isn\u0027t tail recursive. Not that that matters for Python, but it helps writing stuff tail recursively for when you are in a lang that makes use of it.\n\nwith that said, after a few minutes, the transformation of this wasn\u0027t obvious. the killer is that in a deeply nested dict each stack frame has to stick around to wait for the  r\u003dupdate_dict call to resolve. \n\ni think it would have to be some kind of update_dict(d, u, current_stack) or something and instead of the loop push the vs onto the stack and return a call as the last operation.",
+      "revId": "9d0a254d0bcd6e966c47f2656527274ab1787d97",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
