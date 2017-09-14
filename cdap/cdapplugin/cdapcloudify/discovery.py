@@ -5,9 +5,9 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #      http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,18 +46,18 @@ def _get_broker_url(cdap_broker_name, service_component_name, logger):
 """
 public
 """
-def put_broker(cdap_broker_name, 
-               service_component_name, 
-               namespace, 
-               streamname, 
+def put_broker(cdap_broker_name,
+               service_component_name,
+               namespace,
+               streamname,
                jar_url,
-               artifact_name, 
+               artifact_name,
                artifact_version,
                app_config,
-               app_preferences, 
-               service_endpoints, 
-               programs, 
-               program_preferences, 
+               app_preferences,
+               service_endpoints,
+               programs,
+               program_preferences,
                logger):
     """
     Conforms to Broker API 4.X
@@ -75,16 +75,17 @@ def put_broker(cdap_broker_name,
     data["services"] = service_endpoints
     data["programs"] = programs
     data["program_preferences"] = program_preferences
-    
+
     #register with the broker
     response = requests.put(_get_broker_url(cdap_broker_name, service_component_name, logger),
-                            json = data, 
+                            json = data,
                             headers = {'content-type':'application/json'})
     logger.info((response, response.status_code, response.text))
-    response.raise_for_status() #bomb if not 2xx
 
-def reconfigure_in_broker(cdap_broker_name, 
-                          service_component_name, 
+    return response #let the caller deal with the response
+
+def reconfigure_in_broker(cdap_broker_name,
+                          service_component_name,
                           config,
                           reconfiguration_type,
                           logger):
@@ -92,16 +93,17 @@ def reconfigure_in_broker(cdap_broker_name,
     #man am I glad I broke the broker API from 3 to 4 to standardize this interface because now I only need one function here
     response = requests.put("{u}/reconfigure".format(u = _get_broker_url(cdap_broker_name, service_component_name, logger)),
                             headers = {'content-type':'application/json'},
-                            json = {"reconfiguration_type" : reconfiguration_type, 
+                            json = {"reconfiguration_type" : reconfiguration_type,
                                     "config" : config})
     logger.info((response, response.status_code, response.text))
-    response.raise_for_status() #bomb if not 2xx
+
+    return response #let the caller deal with the response
 
 def delete_on_broker(cdap_broker_name, service_component_name, logger):
     #deregister with the broker
     response = requests.delete(_get_broker_url(cdap_broker_name, service_component_name, logger))
     logger.info((response, response.status_code, response.text))
-    response.raise_for_status() #bomb if not 2xx
+    return response
 
 def delete_all_registered_apps(cdap_broker_name, logger):
     #get the broker connection
@@ -112,8 +114,9 @@ def delete_all_registered_apps(cdap_broker_name, logger):
     logger.info("Trying to connect to broker called {0} at {1}".format(cdap_broker_name, broker_url))
     registered_apps = json.loads(requests.get("{0}/application".format(broker_url)).text) #should be proper list of strings (appnames)
     logger.info("Trying to delete: {0}".format(registered_apps))
-    r = requests.post("{0}/application/delete".format(broker_url),
+    response = requests.post("{0}/application/delete".format(broker_url),
                  headers = {'content-type':'application/json'},
                  json = {"appnames" : registered_apps})
-    logger.info("Response: {0}, Response Status: {1}".format(r.text, r.status_code))
+    logger.info("Response: {0}, Response Status: {1}".format(response.text, response.status_code))
+    return response
 

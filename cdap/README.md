@@ -175,4 +175,4 @@ The above (without having defined streams) will lead to:
 Note that the value is always a list of IP:Ports because there could be multiple identical services that satisfy the client (A in this case). This is client side load balancing. 
 
 # Tests
-To run the tests, you need `tox`. You can get it with `pip install tox`. After that, simply run `tox` from inside the `cdapplugin` directory to run the tests.
+To run the tests, you need `tox`. You can get it with `pip install tox`. After that, simply run `tox -c tox-local.ini` from inside the `cdapplugin` directory to run the tests and generate a coverage report.

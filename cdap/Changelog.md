@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [14.2.3] - Sep 14 2017
+* Remove the raise for status from discovery into tasks, allows for unit testing
+* Unit test discovery
+
+## [14.2.2] - MISSING
+
+## [14.2.1] - MISSING
+
 ## [14.2.0]
 * Integrate with Policy handler. Policy handling for CDAP is done.
 

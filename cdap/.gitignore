@@ -1,1 +1,4 @@
 cfyhelper.sh
+cdapplugin/.coveragerc
+cdapplugin/coverage-reports/
+cdapplugin/xunit-reports/*
