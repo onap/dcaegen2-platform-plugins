@@ -2,7 +2,7 @@ tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
   - http://www.getcloudify.org/spec/cloudify/3.4/types.yaml
-  - {{ ONAPTEMPLATE_RAWREPOURL_org_onap_dcaegen2 }}/type_files/cdap/14.2.3/cdap_types.yaml
+  - {{ ONAPTEMPLATE_RAWREPOURL_org_onap_dcaegen2 }}/type_files/cdap/14.2.4/cdap_types.yaml
   - {{ ONAPTEMPLATE_RAWREPOURL_org_onap_dcaegen2 }}/type_files/docker/2.3.0/node-type.yaml
   - {{ ONAPTEMPLATE_RAWREPOURL_org_onap_dcaegen2 }}/type_files/relationship/1.0.0/node-type.yaml
 

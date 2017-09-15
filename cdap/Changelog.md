@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [14.2.4] - Sep 15 2017
+* Add decorator usage to DRY up code
+
 ## [14.2.3] - Sep 14 2017
 * Remove the raise for status from discovery into tasks, allows for unit testing
 * Unit test discovery

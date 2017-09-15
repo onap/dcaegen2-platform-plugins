@@ -63,7 +63,7 @@ def test_put_broker(monkeypatch):
             "test_se",
             "test_p",
             "test_pp",
-            logger)
+            logger = logger)
 
     assert R.text == "URL: http://666.666.666.666:666/application/test_scn, headers {'content-type': 'application/json'}"
     assert R.json == {'app_preferences': 'test_ap', 'services': 'test_se', 'namespace': 'test_ns', 'programs': 'test_p', 'cdap_application_type': 'program-flowlet', 'app_config': 'test_ac', 'streamname': 'test_sn', 'program_preferences': 'test_pp', 'artifact_name': 'test_an', 'jar_url': 'test_ju', 'artifact_version': 'test_av'}
@@ -77,7 +77,7 @@ def test_reconfigure_in_broker(monkeypatch):
             _TEST_SCN,
             {"redome" : "baby"},
             "program-flowlet-app-config",
-            logger)
+            logger = logger)
     assert R.text == "URL: http://666.666.666.666:666/application/test_scn/reconfigure, headers {'content-type': 'application/json'}"
     assert R.json == {'reconfiguration_type': 'program-flowlet-app-config', 'config': {'redome': 'baby'}}
     assert R.status_code == 200
@@ -88,8 +88,7 @@ def test_delete_on_broker(monkeypatch):
     R = discovery.delete_on_broker(
             _TEST_BROKER_NAME,
             _TEST_SCN,
-            logger)
-    print(R.text)
+            logger = logger)
     assert R.text == "URL: http://666.666.666.666:666/application/test_scn"
     assert R.status_code == 200
 
@@ -108,7 +107,7 @@ def test_multi_delete(monkeypatch):
     monkeypatch.setattr('requests.post', _fake_putpost)
     R = discovery.delete_all_registered_apps(
             _TEST_BROKER_NAME,
-            logger)
+            logger = logger)
 
     assert R.text == "URL: http://666.666.666.666:666/application/delete, headers {'content-type': 'application/json'}"
     assert R.status_code == 200

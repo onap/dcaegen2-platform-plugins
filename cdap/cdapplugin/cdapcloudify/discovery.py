@@ -44,8 +44,25 @@ def _get_broker_url(cdap_broker_name, service_component_name, logger):
     return broker_url
 
 """
+decorators
+"""
+def run_response(func):
+    """
+    decorator for generic http call, log the response, and return the flask response
+
+    make sure you call the functons below using logger as a kwarg!
+    """
+    def inner(*args, **kwargs):
+        logger = kwargs["logger"]
+        response = func(*args, **kwargs)
+        logger.info((response, response.status_code, response.text))
+        return response #let the caller deal with the response
+    return inner
+
+"""
 public
 """
+@run_response
 def put_broker(cdap_broker_name,
                service_component_name,
                namespace,
@@ -77,13 +94,11 @@ def put_broker(cdap_broker_name,
     data["program_preferences"] = program_preferences
 
     #register with the broker
-    response = requests.put(_get_broker_url(cdap_broker_name, service_component_name, logger),
+    return  requests.put(_get_broker_url(cdap_broker_name, service_component_name, logger),
                             json = data,
                             headers = {'content-type':'application/json'})
-    logger.info((response, response.status_code, response.text))
 
-    return response #let the caller deal with the response
-
+@run_response
 def reconfigure_in_broker(cdap_broker_name,
                           service_component_name,
                           config,
@@ -91,20 +106,17 @@ def reconfigure_in_broker(cdap_broker_name,
                           logger):
     #trigger a reconfiguration with the broker
     #man am I glad I broke the broker API from 3 to 4 to standardize this interface because now I only need one function here
-    response = requests.put("{u}/reconfigure".format(u = _get_broker_url(cdap_broker_name, service_component_name, logger)),
+    return requests.put("{u}/reconfigure".format(u = _get_broker_url(cdap_broker_name, service_component_name, logger)),
                             headers = {'content-type':'application/json'},
                             json = {"reconfiguration_type" : reconfiguration_type,
                                     "config" : config})
-    logger.info((response, response.status_code, response.text))
 
-    return response #let the caller deal with the response
-
+@run_response
 def delete_on_broker(cdap_broker_name, service_component_name, logger):
     #deregister with the broker
-    response = requests.delete(_get_broker_url(cdap_broker_name, service_component_name, logger))
-    logger.info((response, response.status_code, response.text))
-    return response
+    return requests.delete(_get_broker_url(cdap_broker_name, service_component_name, logger))
 
+@run_response
 def delete_all_registered_apps(cdap_broker_name, logger):
     #get the broker connection
     broker_ip, broker_port = _get_connection_info_from_consul(cdap_broker_name, logger)
@@ -114,9 +126,7 @@ def delete_all_registered_apps(cdap_broker_name, logger):
     logger.info("Trying to connect to broker called {0} at {1}".format(cdap_broker_name, broker_url))
     registered_apps = json.loads(requests.get("{0}/application".format(broker_url)).text) #should be proper list of strings (appnames)
     logger.info("Trying to delete: {0}".format(registered_apps))
-    response = requests.post("{0}/application/delete".format(broker_url),
+    return requests.post("{0}/application/delete".format(broker_url),
                  headers = {'content-type':'application/json'},
                  json = {"appnames" : registered_apps})
-    logger.info("Response: {0}, Response Status: {1}".format(response.text, response.status_code))
-    return response
 
