@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9a437d4f_5ed9d420",
+        "filename": "cdap/cdapplugin/requirements.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1949
+      },
+      "writtenOn": "2017-09-21T18:57:33Z",
+      "side": 1,
+      "message": "you need to remove dcaepolicy",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 17
+      },
+      "revId": "d09e1dbe75a0c840ed50ac86e73ac8ee5746693a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
