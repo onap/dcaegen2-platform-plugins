@@ -16,7 +16,7 @@
 # ============LICENSE_END=========================================================
 #
 # ECOMP is a trademark and service mark of AT&T Intellectual Property.
-from dcaepolicy import Policies
+from onap_dcae_dcaepolicy_lib import Policies
 
 import requests
 from cloudify import ctx

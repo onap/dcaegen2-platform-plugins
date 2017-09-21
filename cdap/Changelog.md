@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [14.2.5] - Sep 21 2017
+* Use the public pypi version of policy lib
+
 ## [14.2.4] - Sep 15 2017
 * Add decorator usage to DRY up code
 
