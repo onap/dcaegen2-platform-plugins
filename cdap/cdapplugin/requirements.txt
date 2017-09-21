@@ -1,3 +1,2 @@
---extra-index-url {{ TODO }}/simple
-dcaepolicy==1.0.0
+onap-dcae-dcaepolicy-lib==1.0.0
 uuid==1.30

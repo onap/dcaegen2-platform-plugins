@@ -22,17 +22,17 @@ from setuptools import setup, find_packages
 
 setup(
     name = "cdapcloudify",
-    version = "14.2.4",
+    version = "14.2.5",
     packages=find_packages(),
     author = "Tommy Carpenter",
-    author_email = "tommy at research dot eh tee tee dot com",
+    author_email = "tommy@research.att.com",
     description = ("Cloudify plugin for CDAP"),
     license = "",
     keywords = "",
     url = "https://gerrit.onap.org/r/#/admin/projects/dcaegen2/platform/plugins",
     zip_safe=False,
     install_requires = [
-        "dcaepolicy==1.0.0",
+        "onap-dcae-dcaepolicy-lib",
         "uuid==1.30"
     ]
 )
