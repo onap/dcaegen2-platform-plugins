@@ -1,6 +1,4 @@
 bottle==0.12.7
-cloudify-plugins-common==3.4
-cloudify-rest-client==3.4
 Jinja2==2.7.2
 MarkupSafe==0.23
 networkx==1.8.1
