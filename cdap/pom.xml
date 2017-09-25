@@ -32,22 +32,17 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
   <url>http://maven.apache.org</url>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <sonar.skip>true</sonar.skip>
-    <sonar.sources>.</sonar.sources>
-    <!-- customize the SONARQUBE URL -->
-    <!-- sonar.host.url>http://localhost:9000</sonar.host.url -->
-    <!-- below are language dependent -->
-    <!-- for Python -->
-    <sonar.language>py</sonar.language>
-    <sonar.pluginName>Python</sonar.pluginName>
-    <sonar.inclusions>**/*.py</sonar.inclusions>
-    <!-- for JavaScaript -->
-    <!--
-    <sonar.language>js</sonar.language>
-    <sonar.pluginName>JS</sonar.pluginName>
-    <sonar.inclusions>**/*.js</sonar.inclusions>
-    -->
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <!-- sonar -->
+      <sonar.skip>false</sonar.skip>
+      <sonar.sources>cdapplugin/</sonar.sources>
+      <sonar.junit.reportspath>cdapplugin/xunit-reports/xunit-result-cdapcloudify.xml</sonar.junit.reportspath>
+      <sonar.python.coverage.reportpath>cdapplugin/coverage-reports/coverage-cdapcloudify.xml</sonar.python.coverage.reportpath>
+      <sonar.language>py</sonar.language>
+      <sonar.pluginname>python</sonar.pluginname>
+      <sonar.inclusions>*/cdapcloudify/**.py</sonar.inclusions>
+      <sonar.host.url>http://135.205.228.63:9000</sonar.host.url>
+  
   </properties>
   <build>
     <finalName>${project.artifactId}-${project.version}</finalName>
