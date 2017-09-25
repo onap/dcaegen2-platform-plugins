@@ -25,7 +25,7 @@ from cloudify import ctx
 from cloudify.decorators import operation
 from cloudify.exceptions import NonRecoverableError, RecoverableError
 import dockering as doc
-from dcaepolicy import Policies, POLICIES, POLICY_MESSAGE_TYPE
+from onap_dcae_dcaepolicy_lib import Policies, POLICIES, POLICY_MESSAGE_TYPE
 from dockerplugin import discovery as dis
 from dockerplugin.decorators import monkeypatch_loggers, wrap_error_handling_start, \
     merge_inputs_for_start, merge_inputs_for_create

@@ -1,5 +1,2 @@
-# TODO: May need to add the following line
-# --extra-index-url <onap pypi url>
---extra-index-url {{ ONAPTEMPLATE_PYPIURL_org_onap_dcaegen2 }}
-python-dockering==1.3.0
-dcaepolicy==1.0.0
+onap-dcae-dockering==1.3.0
+onap-dcae-dcaepolicy-lib==1.0.0

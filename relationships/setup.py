@@ -29,7 +29,6 @@ setup(
     packages=['relationshipplugin'],
     zip_safe=False,
     install_requires=[
-        "python-consul>=0.6.0",
-        "cloudify-plugins-common==3.4.0"
+        "python-consul>=0.6.0"
     ]
 )

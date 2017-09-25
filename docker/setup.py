@@ -30,8 +30,8 @@ setup(
     zip_safe=False,
     install_requires=[
         "python-consul>=0.6.0,<1.0.0",
-        "python-dockering>=1.0.0,<2.0.0",
+        "onap-dcae-dockering>=1.0.0,<2.0.0",
         "uuid==1.30",
-        "dcaepolicy>=1.0.0"
+        "onap-dcae-dcaepolicy-lib>=1.0.0"
     ]
 )
