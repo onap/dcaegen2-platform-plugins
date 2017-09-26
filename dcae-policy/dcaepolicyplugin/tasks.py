@@ -32,28 +32,43 @@ from cloudify.exceptions import NonRecoverableError
 
 from .discovery import discover_service_url
 
-SERVICE_NAME_POLICY_HANDLER = "policy_handler"
-X_ECOMP_REQUESTID = 'X-ECOMP-RequestID'
 POLICY_ID = 'policy_id'
 POLICY_REQUIRED = 'policy_required'
 POLICY_BODY = 'policy_body'
 DCAE_POLICY_TYPE = 'dcae.nodes.policy'
 
-POLICY_HANDLER_URL = discover_service_url(SERVICE_NAME_POLICY_HANDLER)
+class PolicyHandler(object):
+    """talk to policy-handler"""
+    SERVICE_NAME_POLICY_HANDLER = "policy_handler"
+    X_ECOMP_REQUESTID = 'X-ECOMP-RequestID'
+    _url = None
 
-def _get_latest_policy(policy_id):
-    """retrieve the latest policy for policy_id from policy-handler"""
-    ph_path = "{0}/policy_latest/{1}".format(POLICY_HANDLER_URL, policy_id)
-    headers = {X_ECOMP_REQUESTID: str(uuid.uuid4())}
+    @staticmethod
+    def _lazy_init():
+        """discover policy-handler"""
+        if PolicyHandler._url:
+            return
 
-    ctx.logger.info("getting latest policy from {0} headers={1}".format( \
-        ph_path, json.dumps(headers)))
-    res = requests.get(ph_path, headers=headers)
-    res.raise_for_status()
+        PolicyHandler._url = "{0}/policy_latest".format(
+            discover_service_url(PolicyHandler.SERVICE_NAME_POLICY_HANDLER)
+        )
 
-    if res.status_code == requests.codes.ok:
-        return res.json()
-    return {}
+    @staticmethod
+    def get_latest_policy(policy_id):
+        """retrieve the latest policy for policy_id from policy-handler"""
+        PolicyHandler._lazy_init()
+
+        ph_path = "{0}/{1}".format(PolicyHandler._url, policy_id)
+        headers = {PolicyHandler.X_ECOMP_REQUESTID: str(uuid.uuid4())}
+
+        ctx.logger.info("getting latest policy from {0} headers={1}".format( \
+            ph_path, json.dumps(headers)))
+        res = requests.get(ph_path, headers=headers)
+        res.raise_for_status()
+
+        if res.status_code == requests.codes.ok:
+            return res.json()
+        return {}
 
 #########################################################
 @operation
@@ -71,7 +86,7 @@ def policy_get(**kwargs):
 
     try:
         policy_id = ctx.node.properties[POLICY_ID]
-        policy = _get_latest_policy(policy_id)
+        policy = PolicyHandler.get_latest_policy(policy_id)
         if not policy:
             raise NonRecoverableError("policy not found for policy_id {0}".format(policy_id))
 
