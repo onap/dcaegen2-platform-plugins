@@ -251,11 +251,18 @@ upload_raw_file()
     OUTPUT_FILE_TYPE='application/octet-stream'
   fi
 
-
+  # for multi module projects, the raw repo path must match with project name, not project + module
+  # FQDN is project + module
+  # GROUPID is project name
+  if [ "$MVN_PROJECT_ARTIFACTID" == "$MVN_PROJECT_MODULEID" ]; then
+    PROJECT_NAME=${MVN_PROJECT_GROUPID}
+  else
+    PROJECT_NAME=${FQDN}
+  fi
   if [ "$MVN_DEPLOYMENT_TYPE" == 'SNAPSHOT' ]; then
-    SEND_TO="${REPO}/${FQDN}/snapshots"
+    SEND_TO="${REPO}/${PROJECT_NAME}/snapshots"
   elif [ "$MVN_DEPLOYMENT_TYPE" == 'STAGING' ]; then
-    SEND_TO="${REPO}/${FQDN}/releases"
+    SEND_TO="${REPO}/${PROJECT_NAME}/releases"
   else
     echo "Unreconfnized deployment type, quit"
     exit
