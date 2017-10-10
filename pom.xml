@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.onap.oparent</groupId>
     <artifactId>oparent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>0.1.1</version>
   </parent>
   <groupId>org.onap.dcaegen2.platform</groupId>
   <artifactId>plugins</artifactId>
@@ -16,6 +16,126 @@
      <module>cdap</module>
      <module>docker</module>
      <module>relationships</module>
+     <module>dcae-policy</module>
   </modules>
+  <properties>
+    <onap.nexus.url>https://nexus.onap.org</onap.nexus.url>
+    <!-- properties for Nexus raw repo -->
+    <onap.nexus.rawrepo.baseurl.upload>https://nexus.onap.org/content/sites/raw</onap.nexus.rawrepo.baseurl.upload>
+    <onap.nexus.rawrepo.baseurl.download>https://nexus.onap.org/service/local/repositories/raw/content</onap.nexus.rawrepo.baseurl.download>
+    <onap.nexus.rawrepo.serverid>ecomp-raw</onap.nexus.rawrepo.serverid>
+    <!-- properties for Nexus Docker registry -->
+    <onap.nexus.dockerregistry.snapshot>nexus3.onap.org:10003</onap.nexus.dockerregistry.snapshot>
+    <onap.nexus.dockerregistry.release>nexus3.onap.org:10003</onap.nexus.dockerregistry.release>
+    <onap.nexus.dockerregistry.public>nexus3.onap.org:10001</onap.nexus.dockerregistry.public>
+    <onap.nexus.dockerregistry.snapshot.serverid>nexus3.onap.org:10003</onap.nexus.dockerregistry.snapshot.serverid>
+    <onap.nexus.dockerregistry.release.serverid>nexus3.onap.org:10003</onap.nexus.dockerregistry.release.serverid>
+    <onap.nexus.dockerregistry.public.serverid>nexus3.onap.org:10001</onap.nexus.dockerregistry.public.serverid>
+    <!-- properties for Pypi server -->
+    <onap.nexus.pypiserver.baseurl>https://nexus3.onap.org/repository/PyPi</onap.nexus.pypiserver.baseurl>
+    <onap.nexus.pypiserver.serverid>onap-pypi</onap.nexus.pypiserver.serverid>
+  </properties>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.sonatype.plugins</groupId>
+          <artifactId>nexus-staging-maven-plugin</artifactId>
+          <version>1.6.7</version>
+          <configuration>
+            <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <!-- This version supports the "deployAtEnd" parameter -->
+          <version>2.8</version>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
+        </plugin>
+        <!-- first disable the default Java plugins at various stages -->
+        <!-- maven-resources-plugin is called during "*resource" phases by default behavior.  it prepares 
+         the resources dir.  we do not need it -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>2.6</version>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
+        </plugin>
+        <!-- maven-compiler-plugin is called during "compile" phases by default behavior.  we do not need it -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.1</version>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
+        </plugin>
+        <!-- maven-jar-plugin is called during "compile" phase by default behavior.  we do not need it -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.4</version>
+          <executions>
+            <execution>
+              <id>default-jar</id>
+              <phase/>
+            </execution>
+          </executions>
+        </plugin>
+        <!-- maven-install-plugin is called during "install" phase by default behavior.  it tries to copy stuff under 
+         target dir to ~/.m2.  we do not need it -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>2.4</version>
+          <configuration>
+            <skip>true</skip>
+          </configuration>
+        </plugin>
+        <!-- maven-surefire-plugin is called during "test" phase by default behavior.  it triggers junit test.
+         we do not need it -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.12.4</version>
+          <configuration>
+            <skipTests>true</skipTests>
+          </configuration>
+        </plugin>
 
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>1.2.1</version>
+          <configuration>
+            <executable>${session.executionRootDirectory}/mvn-phase-script.sh</executable>
+            <environmentVariables>
+              <!-- make mvn properties as env for our script -->
+              <!-- make mvn properties as env for our script -->
+              <MVN_PROJECT_GROUPID>${project.groupId}</MVN_PROJECT_GROUPID>
+              <MVN_PROJECT_ARTIFACTID>${project.artifactId}</MVN_PROJECT_ARTIFACTID>
+              <MVN_PROJECT_VERSION>${project.version}</MVN_PROJECT_VERSION>
+              <MVN_NEXUSPROXY>${onap.nexus.url}</MVN_NEXUSPROXY>
+              <MVN_RAWREPO_BASEURL_UPLOAD>${onap.nexus.rawrepo.baseurl.upload}</MVN_RAWREPO_BASEURL_UPLOAD>
+              <MVN_RAWREPO_BASEURL_DOWNLOAD>${onap.nexus.rawrepo.baseurl.download}</MVN_RAWREPO_BASEURL_DOWNLOAD>
+              <MVN_RAWREPO_SERVERID>${onap.nexus.rawrepo.serverid}</MVN_RAWREPO_SERVERID>
+              <MVN_DOCKERREGISTRY_SNAPSHOT>${onap.nexus.dockerregistry.snapshot}</MVN_DOCKERREGISTRY_SNAPSHOT>
+              <MVN_DOCKERREGISTRY_RELEASE>${onap.nexus.dockerregistry.release}</MVN_DOCKERREGISTRY_RELEASE>
+              <MVN_DOCKERREGISTRY_PUBLIC>${onap.nexus.dockerregistry.public}</MVN_DOCKERREGISTRY_PUBLIC>
+              <MVN_DOCKERREGISTRY_SNAPSHOT_SERVERID>${onap.nexus.dockerregistry.snapshot.serverid}</MVN_DOCKERREGISTRY_SNAPSHOT_SERVERID>
+              <MVN_DOCKERREGISTRY_RELEASE_SERVERID>${onap.nexus.dockerregistry.release.serverid}</MVN_DOCKERREGISTRY_RELEASE_SERVERID>
+              <MVN_DOCKERREGISTRY_PUBLIC_SERVERID>${onap.nexus.dockerregistry.public.serverid}</MVN_DOCKERREGISTRY_PUBLIC_SERVERID>
+              <MVN_PYPISERVER_BASEURL>${onap.nexus.pypiserver.baseurl}</MVN_PYPISERVER_BASEURL>
+              <MVN_PYPISERVER_SERVERID>${onap.nexus.pypiserver.serverid}</MVN_PYPISERVER_SERVERID>
+            </environmentVariables>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 </project>
