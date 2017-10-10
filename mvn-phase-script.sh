@@ -80,8 +80,9 @@ echo "MVN_RAWREPO_BASEURL_DOWNLOAD is    [$MVN_RAWREPO_BASEURL_DOWNLOAD]"
 MVN_RAWREPO_HOST=$(echo "$MVN_RAWREPO_BASEURL_UPLOAD" | cut -f3 -d'/' |cut -f1 -d':')
 echo "MVN_RAWREPO_HOST is                [$MVN_RAWREPO_HOST]"
 echo "MVN_RAWREPO_SERVERID is            [$MVN_RAWREPO_SERVERID]"
-echo "MVN_DOCKERREGISTRY_DAILY is        [$MVN_DOCKERREGISTRY_DAILY]"
+echo "MVN_DOCKERREGISTRY_SNAPSHOT is     [$MVN_DOCKERREGISTRY_SNAPSHOT]"
 echo "MVN_DOCKERREGISTRY_RELEASE is      [$MVN_DOCKERREGISTRY_RELEASE]"
+echo "MVN_DOCKERREGISTRY_PUBLIC is       [$MVN_DOCKERREGISTRY_PUBLIC]"
 
 
 source "${PROJECT_ROOT}"/mvn-phase-lib.sh 
@@ -114,9 +115,7 @@ install)
   ;;
 deploy)
   echo "==> deploy phase script"
-  cd $MVN_PROJECT_MODULEID
   upload_wagons_and_type_yamls
-  cd ${PROJECT_ROOT}
   ;;
 *)
   echo "==> unprocessed phase"
