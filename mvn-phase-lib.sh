@@ -307,9 +307,9 @@ upload_wagons_and_type_yamls()
       exit -1
     fi
 
-    echo upload_raw_file "$NEWFILENAME" type_files/${PLUGIN_NAME}/${PLUGIN_VERSION_MAJOR}
-    echo upload_raw_file "$NEWFILENAME" type_files/${PLUGIN_NAME}/${PLUGIN_VERSION_MAJOR_MINOR}
-    echo upload_raw_file "${WAGONFILE_NAME}" "plugins/${PLUGIN_NAME}"
+    upload_raw_file "$NEWFILENAME" type_files/${PLUGIN_NAME}/${PLUGIN_VERSION_MAJOR}
+    upload_raw_file "$NEWFILENAME" type_files/${PLUGIN_NAME}/${PLUGIN_VERSION_MAJOR_MINOR}
+    upload_raw_file "${WAGONFILE_NAME}" "plugins/${PLUGIN_NAME}"
    
     rm -r $WAGONFILE_NAME
     if [ "$TYPEFILE_NAME" != "$NEWFILENAME" ]; then
