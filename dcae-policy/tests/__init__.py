@@ -1,4 +1,3 @@
-# ============LICENSE_START=======================================================
 # org.onap.dcae
 # ================================================================================
 # Copyright (c) 2017 AT&T Intellectual Property. All rights reserved.
@@ -17,22 +16,3 @@
 # ============LICENSE_END=========================================================
 #
 # ECOMP is a trademark and service mark of AT&T Intellectual Property.
-
-from setuptools import setup
-
-setup(
-    name='dcaepolicyplugin',
-    description='Cloudify plugin for dcae.nodes.policy node to retrieve the policy config',
-    version="2.0.0",
-    author='Alex Shatov',
-    packages=['dcaepolicyplugin'],
-    install_requires=[
-        "requests>=2.11.0,<3.0.0"
-    ],
-    keywords='policy dcae controller cloudify plugin',
-    classifiers=[
-        'Development Status :: 4 - Beta',
-        'Intended Audience :: Developers',
-        'Programming Language :: Python :: 2.7'
-    ]
-)

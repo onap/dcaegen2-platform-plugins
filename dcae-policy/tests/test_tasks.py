@@ -1,3 +1,4 @@
+"""unit tests for tasks in dcaepolicyplugin"""
 # ============LICENSE_START=======================================================
 # org.onap.dcae
 # ================================================================================
@@ -23,23 +24,21 @@ import logging
 from datetime import datetime, timedelta
 
 import pytest
-
-from cloudify.state import current_ctx
 from cloudify.exceptions import NonRecoverableError
-
-from mock_cloudify_ctx import MockCloudifyContextFull, TARGET_NODE_ID, TARGET_NODE_NAME
-from log_ctx import CtxLogger
+from cloudify.state import current_ctx
 
 from dcaepolicyplugin import tasks
+from tests.log_ctx import CtxLogger
+from tests.mock_cloudify_ctx import (TARGET_NODE_ID, TARGET_NODE_NAME,
+                                     MockCloudifyContextFull)
 
-DCAE_POLICY_TYPE = 'dcae.nodes.policy'
 POLICY_ID = 'policy_id'
 POLICY_VERSION = "policyVersion"
 POLICY_NAME = "policyName"
 POLICY_BODY = 'policy_body'
 POLICY_CONFIG = 'config'
 MONKEYED_POLICY_ID = 'monkeyed.Config_peach'
-LOG_FILE = 'test_dcaepolicyplugin.log'
+LOG_FILE = 'logs/test_dcaepolicyplugin.log'
 
 RUN_TS = datetime.utcnow()
 
@@ -85,7 +84,7 @@ class MonkeyedPolicyBody(object):
             POLICY_VERSION: this_ver,
             POLICY_CONFIG: config,
             "matchingConditions": {
-                "ECOMPName": "DCAE",
+                "ONAPName": "DCAE",
                 "ConfigName": "alex_config_name"
             },
             "responseAttributes": {},
@@ -108,12 +107,15 @@ class MonkeyedPolicyBody(object):
         for key in policy_body_1.keys():
             if key not in policy_body_2:
                 return False
-            if isinstance(policy_body_1[key], dict):
-                return MonkeyedPolicyBody.is_the_same_dict(
-                    policy_body_1[key], policy_body_2[key])
-            if (policy_body_1[key] is None and policy_body_2[key] is not None) \
-            or (policy_body_1[key] is not None and policy_body_2[key] is None) \
-            or (policy_body_1[key] != policy_body_2[key]):
+
+            val_1 = policy_body_1[key]
+            val_2 = policy_body_2[key]
+            if isinstance(val_1, dict) \
+            and not MonkeyedPolicyBody.is_the_same_dict(val_1, val_2):
+                return False
+            if (val_1 is None and val_2 is not None) \
+            or (val_1 is not None and val_2 is None) \
+            or (val_1 != val_2):
                 return False
         return True
 
@@ -154,22 +156,33 @@ class MonkeyedNode(object):
         )
         MonkeyedLogHandler.add_handler_to(self.ctx.logger)
 
+def monkeyed_discovery_get_failure(full_path):
+    """monkeypatch for the GET to consul"""
+    return MonkeyedResponse(full_path, {}, None)
+
+def test_discovery_failure(monkeypatch):
+    """test finding policy-handler in consul"""
+    monkeypatch.setattr('requests.get', monkeyed_discovery_get_failure)
+    expected = None
+    tasks.PolicyHandler._lazy_init()
+    assert expected == tasks.PolicyHandler._url
+
 def monkeyed_discovery_get(full_path):
     """monkeypatch for the GET to consul"""
     return MonkeyedResponse(full_path, {}, \
         [{"ServiceAddress":"monkey-policy-handler-address", "ServicePort": "9999"}])
 
+def test_discovery(monkeypatch):
+    """test finding policy-handler in consul"""
+    monkeypatch.setattr('requests.get', monkeyed_discovery_get)
+    expected = "http://monkey-policy-handler-address:9999"
+    tasks.PolicyHandler._lazy_init()
+    assert expected == tasks.PolicyHandler._url
+
 def monkeyed_policy_handler_get(full_path, headers):
     """monkeypatch for the GET to policy-engine"""
     return MonkeyedResponse(full_path, headers, \
         MonkeyedPolicyBody.create_policy(MONKEYED_POLICY_ID))
-
-def test_discovery(monkeypatch):
-    """test finding policy-handler in consul"""
-    monkeypatch.setattr('requests.get', monkeyed_discovery_get)
-    expected = "http://monkey-policy-handler-address:9999/policy_latest"
-    tasks.PolicyHandler._lazy_init()
-    assert expected == tasks.PolicyHandler._url
 
 def test_policy_get(monkeypatch):
     """test policy_get operation on dcae.nodes.policy node"""
@@ -178,7 +191,7 @@ def test_policy_get(monkeypatch):
     node_policy = MonkeyedNode(
         'test_dcae_policy_node_id',
         'test_dcae_policy_node_name',
-        DCAE_POLICY_TYPE,
+        tasks.DCAE_POLICY_TYPE,
         {POLICY_ID: MONKEYED_POLICY_ID}
     )
 
@@ -206,7 +219,55 @@ def test_policy_get(monkeypatch):
         with pytest.raises(NonRecoverableError) as excinfo:
             tasks.policy_get()
         CtxLogger.log_ctx_info("node_ms not policy type boom: {0}".format(str(excinfo.value)))
-        assert "can only invoke policy_get on node of type dcae.nodes.policy" in str(excinfo.value)
+        assert "unexpected node type " in str(excinfo.value)
+
+    finally:
+        MockCloudifyContextFull.clear()
+        current_ctx.clear()
+
+def monkeyed_policy_handler_find(full_path, json, headers):
+    """monkeypatch for the GET to policy-engine"""
+    return MonkeyedResponse(full_path, headers, \
+        {MONKEYED_POLICY_ID: MonkeyedPolicyBody.create_policy(MONKEYED_POLICY_ID)})
+
+def test_policy_find(monkeypatch):
+    """test policy_get operation on dcae.nodes.policies node"""
+    monkeypatch.setattr('requests.post', monkeyed_policy_handler_find)
+
+    node_policies = MonkeyedNode(
+        'test_dcae_policies_node_id',
+        'test_dcae_policies_node_name',
+        tasks.DCAE_POLICIES_TYPE,
+        {tasks.POLICY_FILTER: {POLICY_NAME: MONKEYED_POLICY_ID}}
+    )
+
+    try:
+        current_ctx.set(node_policies.ctx)
+        CtxLogger.log_ctx_info("before policy_get")
+        tasks.policy_get()
+        CtxLogger.log_ctx_info("after policy_get")
+
+        expected = {
+            tasks.POLICIES_FILTERED: {
+                MONKEYED_POLICY_ID: MonkeyedPolicyBody.create_policy(MONKEYED_POLICY_ID)}}
+
+        result = node_policies.ctx.instance.runtime_properties
+        node_policies.ctx.logger.info("expected runtime_properties: {0}".format(
+            json.dumps(expected)))
+        node_policies.ctx.logger.info("runtime_properties: {0}".format(json.dumps(result)))
+        assert MonkeyedPolicyBody.is_the_same_dict(result, expected)
+        assert MonkeyedPolicyBody.is_the_same_dict(expected, result)
+
+        node_ms_multi = MonkeyedNode('test_ms_multi_id', 'test_ms_multi_name', "ms.nodes.type", \
+            None, \
+            [{TARGET_NODE_ID: node_policies.node_id,
+              TARGET_NODE_NAME: node_policies.node_name}])
+        current_ctx.set(node_ms_multi.ctx)
+        CtxLogger.log_ctx_info("ctx of node_ms_multi not policy type")
+        with pytest.raises(NonRecoverableError) as excinfo:
+            tasks.policy_get()
+        CtxLogger.log_ctx_info("node_ms_multi not policy type boom: {0}".format(str(excinfo.value)))
+        assert "unexpected node type " in str(excinfo.value)
 
     finally:
         MockCloudifyContextFull.clear()
