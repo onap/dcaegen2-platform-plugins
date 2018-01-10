@@ -1,4 +1,3 @@
-# ============LICENSE_START=======================================================
 # org.onap.dcae
 # ================================================================================
 # Copyright (c) 2017 AT&T Intellectual Property. All rights reserved.
@@ -17,7 +16,3 @@
 # ============LICENSE_END=========================================================
 #
 # ECOMP is a trademark and service mark of AT&T Intellectual Property.
-
-""":policyplugin: gets the policy from policy-handler and stores it into runtime properties"""
-
-from .tasks import policy_get

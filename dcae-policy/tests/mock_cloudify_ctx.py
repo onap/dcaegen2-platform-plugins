@@ -1,4 +1,3 @@
-
 # ============LICENSE_START=======================================================
 # org.onap.dcae
 # ================================================================================
@@ -18,6 +17,8 @@
 # ============LICENSE_END=========================================================
 #
 # ECOMP is a trademark and service mark of AT&T Intellectual Property.
+
+"""mock cloudify context with relationships and type_hierarchy"""
 
 from cloudify.mocks import MockCloudifyContext, MockNodeInstanceContext, MockNodeContext
 

@@ -27,20 +27,58 @@ plugins:
   dcaepolicy:
     executor: 'central_deployment_agent'
     package_name: dcaepolicyplugin
-    package_version: 1.0.0
+    package_version: 2.0.0
+
+data_types:
+    # the properties inside dcae.data.policy_filter are identical to /getConfig API of policy-engine except the requestID field.
+    # refer to policy-engine /getConfig wiki for explanation of these properties.
+    # policy-engine /getConfig wiki: The filter works as a combined "AND" operation.
+    #                                To retrieve all policies using "sample" as configName,
+    #                                   the request needs to have policyName = ".*"  and configName as = "sample"
+    # configAttributes is a key-value dictionary
+    dcae.data.policy_filter:
+        properties:
+            policyName:
+                type: string
+                default: "DCAE.Config_.*"
+            configName:
+                type: string
+                default: ""
+            onapName:
+                type: string
+                default: "DCAE"
+            configAttributes:
+                default: {}
+            unique:
+                type: boolean
+                default: false
 
 node_types:
+    # node that points to a single latest policy identified by policy_id
+    #   policy_id is the versionless left part of policyName in policy-engine
     dcae.nodes.policy:
         derived_from: cloudify.nodes.Root
         properties:
             policy_id:
-                description: PK to policy in policy-engine
+                description: versionless key to policy in policy-engine
                 type: string
                 default: DCAE.Config_unknown-policy
             policy_required:
                 description: whether to throw an exception when failed to get the policy
                 type: boolean
-                default: true
+                default: false
+        interfaces:
+            cloudify.interfaces.lifecycle:
+                create:
+                    implementation: dcaepolicy.dcaepolicyplugin.policy_get
+
+    # node that points to varying collection of policies by selection criteria = policy_filter.
+    dcae.nodes.policies:
+        derived_from: cloudify.nodes.Root
+        properties:
+            policy_filter:
+                type: dcae.data.policy_filter
+                default: {}
         interfaces:
             cloudify.interfaces.lifecycle:
                 create:

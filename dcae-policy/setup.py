@@ -18,12 +18,14 @@
 #
 # ECOMP is a trademark and service mark of AT&T Intellectual Property.
 
+"""package for dcaepolicyplugin - getting policies from policy-engine through policy-handler"""
+
 from setuptools import setup
 
 setup(
     name='dcaepolicyplugin',
     description='Cloudify plugin for dcae.nodes.policy node to retrieve the policy config',
-    version="1.0.0",
+    version="2.0.0",
     author='Alex Shatov',
     packages=['dcaepolicyplugin'],
     install_requires=[
