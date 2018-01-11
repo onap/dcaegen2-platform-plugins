@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "5a93c517_7ebaad6f",
+        "filename": "dcae-policy/dcaepolicy-node-type.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1949
+      },
+      "writtenOn": "2018-01-11T15:28:47Z",
+      "side": 1,
+      "message": "we have the new type for R2 - dcae.nodes.policies that is the base for all the massive enhancement in R2 - everything else of the policy in DCAE in R2 depends on this -- so it is 2.0.0  \u003d breaking",
+      "parentUuid": "5a93c517_1e27e913",
+      "revId": "4297275005ec78e0948c2ff027e77dccee3cfbf1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a93c517_3e22e501",
         "filename": "dcae-policy/dcaepolicyplugin/tasks.py",
         "patchSetId": 1
@@ -47,6 +65,24 @@
       "writtenOn": "2018-01-11T14:23:20Z",
       "side": 1,
       "message": "I don\u0027t think (k, v) for (k, v) is necessary, I think you could have just done deepcopy(dict(ctx.node.properties.get(POLICY_FILTER, {}))",
+      "revId": "4297275005ec78e0948c2ff027e77dccee3cfbf1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_de93c1f8",
+        "filename": "dcae-policy/dcaepolicyplugin/tasks.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1949
+      },
+      "writtenOn": "2018-01-11T15:28:47Z",
+      "side": 1,
+      "message": "The key point is on the next line - we need to slim filter the dict - getting only k-v with non-empty values or boolean-int-float value:\nif v or isinstance(v, (int, float))",
+      "parentUuid": "5a93c517_de20a1f9",
       "revId": "4297275005ec78e0948c2ff027e77dccee3cfbf1",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -82,6 +118,24 @@
       "side": 1,
       "message": "license text should be first in the file",
       "parentUuid": "5a93c517_fe1b1dc8",
+      "revId": "4297275005ec78e0948c2ff027e77dccee3cfbf1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_9e645923",
+        "filename": "dcae-policy/tests/mock_cloudify_ctx.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1949
+      },
+      "writtenOn": "2018-01-11T15:28:47Z",
+      "side": 1,
+      "message": "agree - i will move the module description string below the license text in patch 2",
+      "parentUuid": "5a93c517_de4e61c1",
       "revId": "4297275005ec78e0948c2ff027e77dccee3cfbf1",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
