@@ -67,6 +67,41 @@
       "revId": "4297275005ec78e0948c2ff027e77dccee3cfbf1",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_de4e61c1",
+        "filename": "dcae-policy/tests/mock_cloudify_ctx.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2018-01-11T15:08:22Z",
+      "side": 1,
+      "message": "license text should be first in the file",
+      "parentUuid": "5a93c517_fe1b1dc8",
+      "revId": "4297275005ec78e0948c2ff027e77dccee3cfbf1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_fe49ddb7",
+        "filename": "dcae-policy/tests/test_tasks.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2018-01-11T15:08:22Z",
+      "side": 1,
+      "message": "license text should be first in the file",
+      "revId": "4297275005ec78e0948c2ff027e77dccee3cfbf1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
