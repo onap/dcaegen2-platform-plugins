@@ -1,7 +1,7 @@
 # ============LICENSE_START=======================================================
 # org.onap.dcae
 # ================================================================================
-# Copyright (c) 2017 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2018 AT&T Intellectual Property. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -71,6 +71,8 @@ class PolicyHandler(object):
         ctx.logger.info("getting latest policy from {0} headers={1}".format( \
             ph_path, json.dumps(headers)))
         res = requests.get(ph_path, headers=headers)
+        ctx.logger.info("latest policy for policy_id({0}) status({1}) response: {2}"
+                        .format(policy_id, res.status_code, res.text))
 
         if res.status_code == PolicyHandler.STATUS_CODE_POLICIES_NOT_FOUND:
             return
@@ -92,6 +94,8 @@ class PolicyHandler(object):
             ph_path, json.dumps(policy_filter), json.dumps(headers)))
 
         res = requests.post(ph_path, json=policy_filter, headers=headers)
+        ctx.logger.info("latest policies status({0}) response: {1}"
+                        .format(res.status_code, res.text))
 
         if res.status_code == PolicyHandler.STATUS_CODE_POLICIES_NOT_FOUND:
             return
@@ -109,26 +113,31 @@ def _policy_get():
         return
 
     policy_id = ctx.node.properties.get(POLICY_ID)
+    policy_required = ctx.node.properties.get(POLICY_REQUIRED)
     if not policy_id:
         error = "no {0} found in ctx.node.properties".format(POLICY_ID)
         ctx.logger.error(error)
         raise NonRecoverableError(error)
 
+    policy = None
     try:
         policy = PolicyHandler.get_latest_policy(policy_id)
-        if not policy:
-            raise NonRecoverableError("policy not found for policy_id {0}".format(policy_id))
-
-        ctx.logger.info("found policy {0}: {1}".format(policy_id, json.dumps(policy)))
-        if POLICY_BODY in policy:
-            ctx.instance.runtime_properties[POLICY_BODY] = policy[POLICY_BODY]
-
     except Exception as ex:
         error = "failed to get policy({0}): {1}".format(policy_id, str(ex))
         ctx.logger.error("{0}: {1}".format(error, traceback.format_exc()))
-        if ctx.node.properties.get(POLICY_REQUIRED, True):
+        if policy_required:
             raise NonRecoverableError(error)
 
+    if not policy:
+        error = "policy not found for policy_id {0}".format(policy_id)
+        ctx.logger.info(error)
+        if policy_required:
+            raise NonRecoverableError(error)
+        return True
+
+    ctx.logger.info("found policy {0}: {1}".format(policy_id, json.dumps(policy)))
+    if POLICY_BODY in policy:
+        ctx.instance.runtime_properties[POLICY_BODY] = policy[POLICY_BODY]
     return True
 
 def _policies_find():
@@ -171,9 +180,8 @@ def _policies_find():
 def policy_get(**kwargs):
     """retrieve the policy or policies and save it in runtime_properties"""
     if ctx.type != NODE_INSTANCE:
-        error = "can only invoke policy_get on node of types: {0}".format(DCAE_POLICY_TYPES)
-        ctx.logger.error(error)
-        raise NonRecoverableError(error)
+        raise NonRecoverableError("can only invoke policy_get on node of types: {0}"
+                                  .format(DCAE_POLICY_TYPES))
 
     if not _policy_get() and not _policies_find():
         error = "unexpected node type {0} for policy_get - expected types: {1}" \
