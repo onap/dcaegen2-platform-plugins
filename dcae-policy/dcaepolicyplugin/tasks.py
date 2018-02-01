@@ -38,6 +38,7 @@ POLICY_REQUIRED = 'policy_required'
 POLICY_BODY = 'policy_body'
 POLICIES_FILTERED = 'policies_filtered'
 POLICY_FILTER = 'policy_filter'
+LATEST_POLICIES = "latest_policies"
 
 REQUEST_ID = "requestID"
 
@@ -101,7 +102,7 @@ class PolicyHandler(object):
             return
 
         res.raise_for_status()
-        return res.json()
+        return res.json().get(LATEST_POLICIES)
 
 def _policy_get():
     """

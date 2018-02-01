@@ -1,7 +1,7 @@
 # ============LICENSE_START=======================================================
 # org.onap.dcae
 # ================================================================================
-# Copyright (c) 2017 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2018 AT&T Intellectual Property. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,6 +38,8 @@ POLICY_VERSION = "policyVersion"
 POLICY_NAME = "policyName"
 POLICY_BODY = 'policy_body'
 POLICY_CONFIG = 'config'
+LATEST_POLICIES = "latest_policies"
+
 MONKEYED_POLICY_ID = 'monkeyed.Config_peach'
 LOG_FILE = 'logs/test_dcaepolicyplugin.log'
 
@@ -127,6 +129,7 @@ class MonkeyedResponse(object):
         self.status_code = 200
         self.headers = headers
         self.resp_json = resp_json
+        self.text = json.dumps(resp_json or {})
 
     def json(self):
         """returns json of response"""
@@ -229,7 +232,8 @@ def test_policy_get(monkeypatch):
 def monkeyed_policy_handler_find(full_path, json, headers):
     """monkeypatch for the GET to policy-engine"""
     return MonkeyedResponse(full_path, headers, \
-        {MONKEYED_POLICY_ID: MonkeyedPolicyBody.create_policy(MONKEYED_POLICY_ID)})
+        {LATEST_POLICIES: {
+            MONKEYED_POLICY_ID: MonkeyedPolicyBody.create_policy(MONKEYED_POLICY_ID)}})
 
 def test_policy_find(monkeypatch):
     """test policy_get operation on dcae.nodes.policies node"""
