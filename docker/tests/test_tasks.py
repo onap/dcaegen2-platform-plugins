@@ -20,9 +20,10 @@
 
 import copy
 import pytest
-from cloudify.exceptions import NonRecoverableError
+from cloudify.exceptions import NonRecoverableError, RecoverableError
 import dockerplugin
 from dockerplugin import tasks
+from dockerplugin.exceptions import DockerPluginDeploymentError
 
 
 def test_generate_component_name():
@@ -89,6 +90,28 @@ def test_parse_streams(monkeypatch):
     assert expected == tasks._parse_streams(**test_input)
 
 
+def test_setup_for_discovery(monkeypatch):
+    test_input = { "name": "some-name",
+            "application_config": { "one": "a", "two": "b" } }
+
+    def fake_push_config(conn, name, application_config):
+        return
+
+    monkeypatch.setattr(dockerplugin.discovery, "push_service_component_config",
+            fake_push_config)
+
+    assert test_input == tasks._setup_for_discovery(**test_input)
+
+    def fake_push_config_connection_error(conn, name, application_config):
+        raise dockerplugin.discovery.DiscoveryConnectionError("Boom")
+
+    monkeypatch.setattr(dockerplugin.discovery, "push_service_component_config",
+            fake_push_config_connection_error)
+
+    with pytest.raises(RecoverableError):
+        tasks._setup_for_discovery(**test_input)
+
+
 def test_setup_for_discovery_streams(monkeypatch):
     test_input = {'feed01': {'type': 'data_router', 'name': 'feed01',
                 'username': 'hero', 'password': '123456', 'location': 'Bedminster'},
@@ -145,6 +168,37 @@ def test_setup_for_discovery_streams(monkeypatch):
 
     with pytest.raises(NonRecoverableError):
         tasks._setup_for_discovery_streams(**test_input)
+
+
+def test_lookup_service(monkeypatch):
+    def fake_lookup(conn, scn):
+        return [{"ServiceAddress": "192.168.1.1", "ServicePort": "80"}]
+
+    monkeypatch.setattr(dockerplugin.discovery, "lookup_service",
+            fake_lookup)
+
+    assert "192.168.1.1" == tasks._lookup_service("some-component")
+    assert "192.168.1.1:80" == tasks._lookup_service("some-component",
+            with_port=True)
+
+
+def test_verify_container(monkeypatch):
+    def fake_is_healthy_success(ch, scn):
+        return True
+
+    monkeypatch.setattr(dockerplugin.discovery, "is_healthy",
+            fake_is_healthy_success)
+
+    assert tasks._verify_container("some-name", 3)
+
+    def fake_is_healthy_never_good(ch, scn):
+        return False
+
+    monkeypatch.setattr(dockerplugin.discovery, "is_healthy",
+            fake_is_healthy_never_good)
+
+    with pytest.raises(DockerPluginDeploymentError):
+        tasks._verify_container("some-name", 2)
 
 
 def test_update_delivery_url(monkeypatch):
@@ -216,3 +270,8 @@ def test_enhance_docker_params():
     actual = tasks._enhance_docker_params(**test_kwargs)
 
     assert actual["envs"] == {"SERVICE_TAGS": "abc,zed"}
+
+
+def test_notify_container():
+    test_input = { "docker_config": { "trigger_type": "unknown" } }
+    assert test_input == tasks._notify_container(**test_input)
