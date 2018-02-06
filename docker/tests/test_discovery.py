@@ -1,7 +1,7 @@
 # ============LICENSE_START=======================================================
 # org.onap.dcae
 # ================================================================================
-# Copyright (c) 2017 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2018 AT&T Intellectual Property. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,6 +40,12 @@ def test_wrap_consul_call():
         wrapped_foo("a", "b", "c")
 
 
+def test_generate_service_component_name():
+    component_type = "some-component-type"
+    name = dis.generate_service_component_name(component_type)
+    assert name.split("_")[1] == component_type
+
+
 def test_find_matching_services():
     services = { "component_dockerhost_1": ["foo", "bar"],
             "platform_dockerhost": [], "component_dockerhost_2": ["baz"] }
@@ -53,3 +59,11 @@ def test_find_matching_services():
             "component_dockerhost", ["foo"])
 
     assert [] == dis._find_matching_services(services, "unknown", ["foo"])
+
+
+def test_is_healthy_pure():
+    def fake_is_healthy(name):
+        return 0, [{ "Checks": [{"Status": "passing"}] }]
+
+    assert True == dis._is_healthy_pure(fake_is_healthy, "some-component")
+
