@@ -1,0 +1,199 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_c5e5e5dc",
+        "filename": "dcae-policy/dcaepolicy-node-type.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2018-02-12T17:57:47Z",
+      "side": 1,
+      "message": "change to 2017-2018",
+      "range": {
+        "startLine": 4,
+        "startChar": 16,
+        "endLine": 4,
+        "endChar": 25
+      },
+      "revId": "990d0260fa4d098885cd4ac2db890d7ca5d0ffbf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_e5ea61ab",
+        "filename": "dcae-policy/dcaepolicyplugin/__init__.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2018-02-12T17:57:47Z",
+      "side": 1,
+      "message": "change to 2017-2018",
+      "range": {
+        "startLine": 4,
+        "startChar": 16,
+        "endLine": 4,
+        "endChar": 24
+      },
+      "revId": "990d0260fa4d098885cd4ac2db890d7ca5d0ffbf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_85d35d03",
+        "filename": "dcae-policy/dcaepolicyplugin/discovery.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2018-02-12T17:57:47Z",
+      "side": 1,
+      "message": "change to 2017-2018",
+      "revId": "990d0260fa4d098885cd4ac2db890d7ca5d0ffbf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_a5d0d9f6",
+        "filename": "dcae-policy/dcaepolicyplugin/tasks.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2018-02-12T17:57:47Z",
+      "side": 1,
+      "message": "change to 2017-2018",
+      "revId": "990d0260fa4d098885cd4ac2db890d7ca5d0ffbf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_45d9d520",
+        "filename": "dcae-policy/pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2018-02-12T17:57:47Z",
+      "side": 1,
+      "message": "change to 2017-2018",
+      "range": {
+        "startLine": 4,
+        "startChar": 14,
+        "endLine": 4,
+        "endChar": 23
+      },
+      "revId": "990d0260fa4d098885cd4ac2db890d7ca5d0ffbf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_65d651f3",
+        "filename": "dcae-policy/setup.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2018-02-12T17:57:47Z",
+      "side": 1,
+      "message": "change to 2017-2018",
+      "range": {
+        "startLine": 4,
+        "startChar": 16,
+        "endLine": 4,
+        "endChar": 25
+      },
+      "revId": "990d0260fa4d098885cd4ac2db890d7ca5d0ffbf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_05074d83",
+        "filename": "dcae-policy/tests/log_ctx.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2018-02-12T17:57:47Z",
+      "side": 1,
+      "message": "change to 2017-2018",
+      "range": {
+        "startLine": 3,
+        "startChar": 16,
+        "endLine": 3,
+        "endChar": 25
+      },
+      "revId": "990d0260fa4d098885cd4ac2db890d7ca5d0ffbf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_250cc9a4",
+        "filename": "dcae-policy/tests/mock_cloudify_ctx.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2018-02-12T17:57:47Z",
+      "side": 1,
+      "message": "change to 2017-2018",
+      "range": {
+        "startLine": 4,
+        "startChar": 16,
+        "endLine": 4,
+        "endChar": 24
+      },
+      "revId": "990d0260fa4d098885cd4ac2db890d7ca5d0ffbf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_c5fc0575",
+        "filename": "dcae-policy/tests/test_tasks.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2018-02-12T17:57:47Z",
+      "side": 1,
+      "message": "change to 2017-2018",
+      "range": {
+        "startLine": 4,
+        "startChar": 16,
+        "endLine": 4,
+        "endChar": 25
+      },
+      "revId": "990d0260fa4d098885cd4ac2db890d7ca5d0ffbf",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
