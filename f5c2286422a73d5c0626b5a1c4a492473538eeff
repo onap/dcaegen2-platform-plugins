@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_3a613aa9",
+        "filename": "docker/tests/test_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 515
+      },
+      "writtenOn": "2018-02-16T20:23:50Z",
+      "side": 1,
+      "message": "what is this for? there are UUID libs in python",
+      "revId": "f5c2286422a73d5c0626b5a1c4a492473538eeff",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
