@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_988e56cf",
+        "filename": "docker/tests/test_discovery.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2018-02-19T16:29:07Z",
+      "side": 1,
+      "message": "should be 2017-2018",
+      "revId": "939ee8c6950b66a61032ac35415d1c7b04801112",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_38bf0263",
+        "filename": "docker/tests/test_tasks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2018-02-19T16:29:07Z",
+      "side": 1,
+      "message": "should be 2017-2018",
+      "revId": "939ee8c6950b66a61032ac35415d1c7b04801112",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
