@@ -33,13 +33,14 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
 
   <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-      <sonar.sources>cdapplugin/</sonar.sources>
-      <sonar.junit.reportspath>cdapplugin/xunit-results.xml</sonar.junit.reportspath>
-      <sonar.python.coverage.reportpath>cdapplugin/coverage.xml</sonar.python.coverage.reportpath>
+      <sonar.sources>.</sonar.sources>
+      <sonar.modules>cdapplugin</sonar.modules>
+      <cdapplugin.sonar.junit.reportsPath>xunit-results.xml</cdapplugin.sonar.junit.reportsPath>
+      <cdapplugin.sonar.python.coverage.reportPath>coverage.xml</cdapplugin.sonar.python.coverage.reportPath>
       <sonar.language>py</sonar.language>
       <sonar.pluginname>Python</sonar.pluginname>
-      <sonar.inclusions>cdapcloudify/**/*.py</sonar.inclusions>
-      <sonar.exclusions>cdapcloudify/test/*,cdapcloudify/setup.py</sonar.exclusions>
+      <cdapplugin.sonar.inclusions>**/*.py</cdapplugin.sonar.inclusions>
+      <cdapplugin.sonar.exclusions>tests/*,setup.py</cdapplugin.sonar.exclusions>
   </properties>
   <build>
     <finalName>${project.artifactId}-${project.version}</finalName>
