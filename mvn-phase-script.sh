@@ -58,10 +58,7 @@ if [ -z "$WORKSPACE" ]; then
     WORKSPACE=$(pwd)
 fi
 
-if [ -z "$SETTINGS_FILE" ]; then
-    echo "SETTINGS_FILE environment variable not set.  Cannot proceed"
-    exit
-fi
+export SETTINGS_FILE=${SETTINGS_FILE:-$HOME/.m2/settings.xml}
    
 
 
@@ -105,6 +102,7 @@ compile)
   ;;
 test)
   echo "==> test phase script"
+  run_tox_test
   ;;
 package)
   echo "==> package phase script"

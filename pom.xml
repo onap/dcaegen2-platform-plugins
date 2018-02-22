@@ -55,6 +55,10 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
     <!-- properties for Pypi server -->
     <onap.nexus.pypiserver.baseurl>https://nexus3.onap.org/repository/PyPi</onap.nexus.pypiserver.baseurl>
     <onap.nexus.pypiserver.serverid>onap-pypi</onap.nexus.pypiserver.serverid>
+    <!-- customize the SONARQUBE URL -->
+    <sonar.host.url>http://localhost:9000</sonar.host.url>
+    <!-- taken care of in the children -->
+    <sonar.exclusions>**/*.py</sonar.exclusions>
   </properties>
   <build>
     <pluginManagement>

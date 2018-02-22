@@ -52,10 +52,7 @@ if [ -z "$WORKSPACE" ]; then
     WORKSPACE=$(pwd)
 fi
 
-if [ -z "$SETTINGS_FILE" ]; then
-    echo "SETTINGS_FILE environment variable not set.  Cannot proceed"
-    exit
-fi
+export SETTINGS_FILE=${SETTINGS_FILE:-$HOME/.m2/settings.xml}
 
 
 
@@ -144,7 +141,7 @@ expand_templates()
     VALUE=$(echo "$TEMPLATE" | cut -f2 -d'=')
     VALUE2=$(echo "$TEMPLATE" | cut -f2 -d'=' |sed 's/\//\\\//g')
     set +e
-    FILES=$(grep -rl "$KEY")
+    FILES=$(grep -rl "$KEY" .)
     set -e
 
     if [ -z "$FILES" ]; then
@@ -167,8 +164,8 @@ expand_templates()
 
     #if [ ! -z "$FILES" ]; then
     #   echo "====> Resolving template $VALUE to value $VALUE"
-    #   #CMD="grep -rl \"$VALUE\" | tr '\n' '\0' | xargs -0 sed -i \"s/{{[[:space:]]*$VALUE[[:space:]]*}}/$VALUE/g\""
-    #   grep -rl "$KEY" | tr '\n' '\0' | xargs -0 sed -i 's/$KEY/$VALUE2/g'
+    #   #CMD="grep -rl \"$VALUE\" . | tr '\n' '\0' | xargs -0 sed -i \"s/{{[[:space:]]*$VALUE[[:space:]]*}}/$VALUE/g\""
+    #   grep -rl "$KEY" . | tr '\n' '\0' | xargs -0 sed -i 's/$KEY/$VALUE2/g'
     #   #echo $CMD
     #   #eval $CMD
     #fi
