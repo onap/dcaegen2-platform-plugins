@@ -172,7 +172,6 @@ def _policies_find():
     except Exception as ex:
         error = "failed to find policies: {0}".format(str(ex))
         ctx.logger.error("{0}: {1}".format(error, traceback.format_exc()))
-        raise NonRecoverableError(error)
 
     return True
 
