@@ -451,6 +451,8 @@ def _update_delivery_url(**kwargs):
 
         for dr_sub in dr_subs:
             scheme = dr_sub["scheme"] if "scheme" in dr_sub else DEFAULT_SCHEME
+            if "route" not in dr_sub:
+                raise NonRecoverableError("'route' key missing from data router subscriber")
             path = dr_sub["route"]
             dr_sub["delivery_url"] = "{scheme}://{host}/{path}".format(
                     scheme=scheme, host=subscriber_host, path=path)
