@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_45a9a222",
+        "filename": "mvn-phase-lib.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2018-03-01T22:40:38Z",
+      "side": 1,
+      "message": "Should we specify the version of wagon to use?  When I install it now, I get version 0.7.0.",
+      "revId": "cda58fd48a853adbafe23961fda34f28e0b6b2c1",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
