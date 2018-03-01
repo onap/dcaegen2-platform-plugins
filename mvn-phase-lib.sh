@@ -205,7 +205,7 @@ build_wagons()
   virtualenv ./venv-pkg
   source ./venv-pkg/bin/activate
   pip install --upgrade pip 
-  pip install wagon
+  pip install wagon==0.7.0
   
   CURDIR=$(pwd)
   for SETUPFILE in $SETUPFILES; do
@@ -215,7 +215,7 @@ build_wagons()
 
     echo "In $PLUGIN_DIR, build plugin $PLUGIN_NAME, version $PLUGIN_VERSION"
 
-    wagon create --format tar.gz "${PLUGIN_DIR}"
+    wagon create -r "${PLUGIN_DIR}/requirements.txt" --format tar.gz "${PLUGIN_DIR}"
 
     PKG_FILE_NAMES=( "${PLUGIN_NAME}-${PLUGIN_VERSION}"*.wgn )
     echo Built package: "${PKG_FILE_NAMES[@]}"
