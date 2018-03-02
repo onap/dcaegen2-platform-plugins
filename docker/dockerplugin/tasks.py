@@ -25,7 +25,7 @@ from cloudify import ctx
 from cloudify.decorators import operation
 from cloudify.exceptions import NonRecoverableError, RecoverableError
 import dockering as doc
-from onap_dcae_dcaepolicy_lib import Policies
+from onap_dcae_dcaepolicy_lib import Policies, POLICIES, POLICY_MESSAGE_TYPE
 from dockerplugin import discovery as dis
 from dockerplugin.decorators import monkeypatch_loggers, wrap_error_handling_start, \
     merge_inputs_for_start, merge_inputs_for_create
@@ -113,10 +113,15 @@ def _done_for_create(**kwargs):
     ctx.logger.info("Done setting up: {0}".format(name))
     return kwargs
 
+def _merge_policy_updates(**kwargs):
+    app_config = kwargs[APPLICATION_CONFIG]
+    kwargs[APPLICATION_CONFIG] = Policies.shallow_merge_policies_into(app_config)
+    return kwargs
+
 
 @merge_inputs_for_create
 @monkeypatch_loggers
-@Policies.gather_policies_to_node()
+@Policies.gather_policies_to_node
 @operation
 def create_for_components(**create_inputs):
     """Create step for Docker containers that are components
@@ -128,8 +133,9 @@ def create_for_components(**create_inputs):
     """
     _done_for_create(
             **_setup_for_discovery(
+                **_merge_policy_updates(
                     **_generate_component_name(
-                        **create_inputs)))
+                        **create_inputs))))
 
 
 def _parse_streams(**kwargs):
@@ -198,7 +204,7 @@ def _setup_for_discovery_streams(**kwargs):
 
 @merge_inputs_for_create
 @monkeypatch_loggers
-@Policies.gather_policies_to_node()
+@Policies.gather_policies_to_node
 @operation
 def create_for_components_with_streams(**create_inputs):
     """Create step for Docker containers that are components that use DMaaP
@@ -213,9 +219,10 @@ def create_for_components_with_streams(**create_inputs):
     _done_for_create(
             **_setup_for_discovery(
                 **_setup_for_discovery_streams(
+                    **_merge_policy_updates(
                         **_parse_streams(
                             **_generate_component_name(
-                                **create_inputs)))))
+                                **create_inputs))))))
 
 
 @merge_inputs_for_create
@@ -579,7 +586,6 @@ def stop_and_remove_container(**kwargs):
         raise NonRecoverableError(e)
 
 @monkeypatch_loggers
-@Policies.cleanup_policies_on_node
 @operation
 def cleanup_discovery(**kwargs):
     """Delete configuration from Consul"""
@@ -600,15 +606,11 @@ def _notify_container(**kwargs):
         if dc["policy"]["trigger_type"] == "docker":
             # REVIEW: Need to finalize on the docker config policy data structure
             script_path = dc["policy"]["script_path"]
+            app_config = kwargs["application_config"]
             updated_policies = kwargs["updated_policies"]
-            removed_policies = kwargs["removed_policies"]
-            policies = kwargs["policies"]
             cmd = doc.build_policy_update_cmd(script_path, use_sh=False,
-                    msg_type="policies",
                     updated_policies=updated_policies,
-                    removed_policies=removed_policies,
-                    policies=policies
-                    )
+                    application_config=app_config)
 
             docker_host = kwargs[SELECTED_CONTAINER_DESTINATION]
             docker_host_ip = _lookup_service(docker_host)
@@ -622,10 +624,16 @@ def _notify_container(**kwargs):
 
     return kwargs
 
+def _done_for_policy_update(**kwargs):
+    name = kwargs['name']
+    ctx.instance.runtime_properties.update(kwargs)
+    ctx.logger.info("Done updating for policy: {0}".format(name))
+    return kwargs
+
 @monkeypatch_loggers
-@Policies.update_policies_on_node()
+@Policies.update_policies_on_node(configs_only=True)
 @operation
-def policy_update(updated_policies, removed_policies=None, policies=None, **kwargs):
+def policy_update(updated_policies, **kwargs):
     """Policy update task
 
     This method is responsible for updating the application configuration and
@@ -637,10 +645,12 @@ def policy_update(updated_policies, removed_policies=None, policies=None, **kwar
     """
     update_inputs = copy.deepcopy(ctx.instance.runtime_properties)
     update_inputs["updated_policies"] = updated_policies
-    update_inputs["removed_policies"] = removed_policies
-    update_inputs["policies"] = policies
 
-    _notify_container(**update_inputs)
+    # Merge in policy updates into application config and make available
+    _done_for_policy_update(
+            **_notify_container(
+                **_setup_for_discovery(
+                    **_merge_policy_updates(**update_inputs))))
 
 
 # Lifecycle interface calls for dcae.nodes.DockerHost
