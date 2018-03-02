@@ -32,6 +32,6 @@ setup(
         "python-consul>=0.6.0,<1.0.0",
         "onap-dcae-dockering>=1.0.0,<2.0.0",
         "uuid==1.30",
-        "onap-dcae-dcaepolicy-lib>=1.0.0"
+        "onap-dcae-dcaepolicy-lib>=1.0.0,<2.0.0"
     ]
 )

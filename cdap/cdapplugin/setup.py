@@ -32,7 +32,7 @@ setup(
     url = "https://gerrit.onap.org/r/#/admin/projects/dcaegen2/platform/plugins",
     zip_safe=False,
     install_requires = [
-        "onap-dcae-dcaepolicy-lib",
+        "onap-dcae-dcaepolicy-lib>=1.0.0,<2.0.0"
         "uuid==1.30"
     ]
 )
