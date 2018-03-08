@@ -80,12 +80,15 @@ echo "MVN_RAWREPO_SERVERID is            [$MVN_RAWREPO_SERVERID]"
 echo "MVN_DOCKERREGISTRY_SNAPSHOT is     [$MVN_DOCKERREGISTRY_SNAPSHOT]"
 echo "MVN_DOCKERREGISTRY_RELEASE is      [$MVN_DOCKERREGISTRY_RELEASE]"
 echo "MVN_DOCKERREGISTRY_PUBLIC is       [$MVN_DOCKERREGISTRY_PUBLIC]"
+OJECT_ROOT}"/mvn-phase-lib.sh
+
 
 set -e
 if ! wget -O ${PROJECT_ROOT}/mvn-phase-lib.sh \
-  "$MVN_RAWREPO_BASEURL_DOWNLOAD"/org.onap.dcaegen2.utils/releases/scripts/mvn-phase-lib.sh; then
+  "$MVN_RAWREPO_BASEURL_DOWNLOAD"/org.onap.dcaegen2.utils/R2/scripts/mvn-phase-lib.sh; then
   cp "${PROJECT_ROOT}"/scripts/mvn-phase-lib.sh "${PROJECT_ROOT}/mvn-phase-lib.sh"
 fi
+
 source "${PROJECT_ROOT}"/mvn-phase-lib.sh
 
 
