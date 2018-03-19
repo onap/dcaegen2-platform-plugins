@@ -55,16 +55,27 @@ test)
   ;;
 package)
   echo "==> package phase script"
-  build_wagons
-  build_archivess_for_wagons
+  case $MVN_PROJECT_MODULEID in
+  cdap|dcae-policy|docker|relationships)
+    build_wagons
+    build_archivess_for_wagons
+    ;;
+  *)
+    ;;
+  esac
   ;;
 install)
   echo "==> install phase script"
   ;;
 deploy)
   echo "==> deploy phase script"
-  upload_wagons_and_type_yamls
-  upload_wagon_archives
+  case $MVN_PROJECT_MODULEID in
+  cdap|dcae-policy|docker|relationships)
+    upload_wagons_and_type_yamls
+    upload_wagon_archives
+  *)
+    ;;
+  esac
   ;;
 *)
   echo "==> unprocessed phase"
