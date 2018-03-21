@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.0]
+
+* Update docker plugin to use dcaepolicy 2.1.0.  This involved all sorts of updates in how policy is expected to work for the component where the updates are not backwards friendly.
+
 ## [2.4.0]
 
 * Change *components* to be policy reconfigurable:
