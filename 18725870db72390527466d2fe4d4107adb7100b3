@@ -16,6 +16,29 @@
       "revId": "18725870db72390527466d2fe4d4107adb7100b3",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_a3d5a3ba",
+        "filename": "k8s/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1949
+      },
+      "writtenOn": "2018-03-22T20:41:15Z",
+      "side": 1,
+      "message": "the same as in other comment: 2017-2018",
+      "range": {
+        "startLine": 4,
+        "startChar": 14,
+        "endLine": 4,
+        "endChar": 18
+      },
+      "revId": "18725870db72390527466d2fe4d4107adb7100b3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
