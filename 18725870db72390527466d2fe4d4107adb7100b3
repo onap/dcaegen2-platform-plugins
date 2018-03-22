@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "5a93c517_7e565208",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1071
+      },
+      "writtenOn": "2018-03-22T22:11:35Z",
+      "side": 1,
+      "message": "Looks to me that you will attempt to do a clean up automatically upon an exception.  This is a different approach from the docker plugin (and possibly the cdap plugin) where failures were simply reported.  The idea was to give operators the opportunity to investigate.  Clean up was a manual second step.  Should we change our approach?",
+      "revId": "18725870db72390527466d2fe4d4107adb7100b3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a93c517_28f89048",
         "filename": "k8s/k8splugin/tasks.py",
         "patchSetId": 2
@@ -13,6 +30,74 @@
       "writtenOn": "2018-03-22T19:17:29Z",
       "side": 1,
       "message": "2018?",
+      "revId": "18725870db72390527466d2fe4d4107adb7100b3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_5e64b6e4",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1071
+      },
+      "writtenOn": "2018-03-22T22:11:35Z",
+      "side": 1,
+      "message": "Just want to point out that evaluating \"configure()\" here makes unit testing a bit trickier and impacts all unit tests that fall under tasks.  An alt approach is to do a lazy evaluation by invoking getter type functions when configuration parameters are needed.  Not a blocker because I see that you have the \"mockconfig\" fixture.",
+      "revId": "18725870db72390527466d2fe4d4107adb7100b3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_9ea9dee1",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1071
+      },
+      "writtenOn": "2018-03-22T22:11:35Z",
+      "side": 1,
+      "message": "Want to point out that doing this copy shouldn\u0027t be necessary because it should have been done by the \"merge_inputs_for_*\" decorators.",
+      "revId": "18725870db72390527466d2fe4d4107adb7100b3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_1e470e4d",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1071
+      },
+      "writtenOn": "2018-03-22T22:11:35Z",
+      "side": 1,
+      "message": "The data router subscriber case may potentially need to be updated.  I\u0027m not sure if it will be the case that components will register with Consul going forward.  If they will not then the \"_lookup_service\" call will need to change to get the ip or hostname from somewhere else.",
+      "revId": "18725870db72390527466d2fe4d4107adb7100b3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_fe6022d1",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 1071
+      },
+      "writtenOn": "2018-03-22T22:11:35Z",
+      "side": 1,
+      "message": "With the removal of the \"SelectedDockerHost\" node types, we have taken a step back in terms of multi-site support and will need to come up with an answer for this.  Not sure if the plan will be to deploy a cluster per site and thus we will need a cluster selector.",
       "revId": "18725870db72390527466d2fe4d4107adb7100b3",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
