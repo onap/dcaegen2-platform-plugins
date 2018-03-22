@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_3e40ca34",
+        "filename": "k8s/k8splugin/discovery.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1071
+      },
+      "writtenOn": "2018-03-22T22:11:35Z",
+      "side": 1,
+      "message": "I understand that there are naming constraints on K8s but as a warning we ran into a lot of headaches doing this sort of name manipulations specifically replacing underbars to dash.  This I believe was only on the onboarding side.  I can\u0027t think of any potential pain points downstream of the deployment as long as the component reads its name from the SERVICE_NAME or HOSTNAME environment variables.  So this is just a warning from experience.",
+      "revId": "6400058e8e7a69c81034c0b1088f45fe8a3a535a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
