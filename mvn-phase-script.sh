@@ -56,7 +56,7 @@ test)
 package)
   echo "==> package phase script"
   case $MVN_PROJECT_MODULEID in
-  cdap|dcae-policy|docker|relationships)
+  cdap|dcae-policy|docker|relationships|k8s)
     build_archives_for_wagons
     build_wagons
     ;;
@@ -70,7 +70,7 @@ install)
 deploy)
   echo "==> deploy phase script"
   case $MVN_PROJECT_MODULEID in
-  cdap|dcae-policy|docker|relationships)
+  cdap|dcae-policy|docker|relationships|k8s)
     upload_wagons_and_type_yamls
     upload_wagon_archives
     ;;

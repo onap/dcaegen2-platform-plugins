@@ -1,0 +1,353 @@
+# ================================================================================
+# Copyright (c) 2017-2018 AT&T Intellectual Property. All rights reserved.
+# ================================================================================
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ============LICENSE_END=========================================================
+#
+# ECOMP is a trademark and service mark of AT&T Intellectual Property.
+
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+    - http://www.getcloudify.org/spec/cloudify/3.4/types.yaml
+
+plugins:
+  k8s:
+    executor: 'central_deployment_agent'
+    package_name: k8splugin
+    package_version: 1.0.0
+
+data_types:
+
+  dcae.types.MSBRegistration:
+    description: >
+      Information for registering an HTTP service into MSB.  It's optional to do so,
+      but if MSB registration is desired at least the port property must be provided.
+      If 'port' property is not provided, the plugin will not do the registration.
+      (The properties all have to be declared as not required, otherwise the
+      'msb_registration' property on the node would also be required.)
+    properties:
+      port:
+        description: The container port at which the service is exposed
+        type: string
+        required: false
+      version:
+        description: The version identifier for the service
+        type: string
+        required: false
+      url_path:
+        description: The URL path (e.g., "/api", not the full URL) to the service endpoint
+        type: string
+        required: false
+      uses_ssl:
+        description: Set to true if service endpoint uses SSL (TLS)
+        type: boolean
+        required: false
+
+  dcae.types.LoggingInfo:
+    description: >
+      Information for setting up centralized logging via ELK using a "sidecar" container.
+      If 'log_directory' is not provided, the plugin will not set up ELK logging.
+      (The properties all have to be declared as not required, otherwise the
+      'log_info' property on the node would also be required.)
+    properties:
+      log_directory:
+        description: >
+          The path in the container where the component writes its logs.
+          If the component is following the EELF requirements, this would be
+          the directory where the four EELF files are being written.
+          (Other logs can be placed in the directory--if their names in '.log',
+          they'll also be sent into ELK.)
+        type: string
+        required: false
+      alternate_fb_path:
+        description: >
+          Hope not to use this.  By default, the plugin will mount the log volume
+          at /var/log/onap/<component_type> in the sidecar container's file system.
+          'alternate_fb_path' allows overriding the default.  Will affect how the log
+          data can be found in the ELK system.
+        type: string
+        required: false
+
+node_types:
+    # The ContainerizedServiceComponent node type is to be used for DCAE service components that 
+    # are to be run in a Docker container.  This node type goes beyond that of a ordinary Docker
+    # plugin where it has DCAE platform specific functionality:
+    #
+    #   * Generation of the service component name
+    #   * Managing of service component configuration information
+    #
+    # The plugin deploys the container into a Kubernetes cluster with a very specific choice
+    # of Kubernetes elements that are deliberately not under the control of the blueprint author. 
+    # The idea is to deploy all service components in a consistent way, with the details abstracted
+    # away from the blueprint author.
+    dcae.nodes.ContainerizedServiceComponent:
+        derived_from: cloudify.nodes.Root
+        properties:
+            service_component_type:
+                type: string
+                description: Service component type of the application being run in the container
+
+            service_id:
+                type: string
+                description: >
+                  Unique id for this DCAE service instance this component belongs to. This value
+                  will be applied as a tag in the registration of this component with Consul.
+                default: Null
+
+            location_id:
+                type: string
+                description: >
+                  Location id of where to run the container.  Not used by the plugin.  Here for backward compatibility.
+                default: Null
+                required: False
+
+            service_component_name_override:
+                type: string
+                description: >
+                    Manually override and set the name for this Docker container node. If this
+                    is set, then the name will not be auto-generated. Platform services are the
+                    specific use cases for using this parameter because they have static
+                    names for example the CDAP broker.
+                default: Null
+
+            application_config:
+                default: {}
+                description: >
+                  Application configuration for this Docker component. The data structure is
+                  expected to be a complex map (native YAML) and to be constructed and filled
+                  by the creator of the blueprint.
+
+            docker_config:
+                default: {}
+                description: >
+                  This is what is the auxilary portion of the component spec that contains things
+                  like healthcheck definitions for the Docker component. Health checks are
+                  optional.
+
+            image:
+                type: string
+                description: Full uri of the Docker image
+
+            log_info:
+              type: dcae.types.LoggingInfo
+              description: >
+                Information for setting up centralized logging via ELK.
+              required: false
+
+            replicas:
+              type: integer
+              description: >
+                The number of instances of the component that should be launched initially
+              default: 1
+
+            always_pull_image:
+              type: boolean
+              description: >
+                Set to true if the orchestrator should always pull a new copy of the image 
+                before deploying.  By default the orchestrator pulls only if the image is
+                not already present on the Docker host where the container is being launched.
+              default: false
+
+        interfaces:
+            cloudify.interfaces.lifecycle:
+                create:
+                    # Generate service component name and populate config into Consul
+                    implementation: k8s.k8splugin.create_for_components
+                start:
+                    # Create Docker container and start
+                    implementation: k8s.k8splugin.create_and_start_container_for_components
+                stop:
+                    # Stop and remove Docker container
+                    implementation: k8s.k8splugin.stop_and_remove_container
+                delete:
+                    # Delete configuration from Consul
+                    implementation: k8s.k8splugin.cleanup_discovery
+            dcae.interfaces.policy:
+                # This is to be invoked by the policy handler upon policy updates
+                policy_update:
+                    implementation: k8s.k8splugin.policy_update
+            dcae.interfaces.scale:
+                scale:
+                    implementation: k8s.k8splugin.scale
+
+
+    # This node type is intended for DCAE service components that use DMaaP and must use the 
+    # DMaaP plugin.
+    dcae.nodes.ContainerizedServiceComponentUsingDmaap:
+        derived_from: dcae.nodes.ContainerizedServiceComponent
+        properties:
+            streams_publishes:
+                description: >
+                  List of DMaaP streams used for publishing.
+
+                  Message router items look like:
+
+                    name: topic00
+                    location: mtc5
+                    client_role: XXXX
+                    type: message_router
+
+                  Data router items look like:
+
+                    name: feed00
+                    location: mtc5
+                    type: data_router
+
+                  This information is forwarded to the dmaap plugin to provision
+                default: []
+            streams_subscribes:
+                description: >
+                  List of DMaaP streams used for subscribing.
+
+                  Message router items look like:
+
+                    name: topic00
+                    location: mtc5
+                    client_role: XXXX
+                    type: message_router
+
+                  Data router items look like:
+
+                    name: feed00
+                    location: mtc5
+                    type: data_router
+                    username: king
+                    password: 123456
+                    route: some-path
+                    scheme: https
+
+                  Note that username and password is optional. If not provided or null then the
+                  plugin will generate them.
+
+                default: []
+        interfaces:
+            cloudify.interfaces.lifecycle:
+                create:
+                    # Generate service component name and populate config into Consul
+                    implementation: k8s.k8splugin.create_for_components_with_streams
+                start:
+                    # Create Docker container and start
+                    implementation: k8s.k8splugin.create_and_start_container_for_components_with_streams
+
+
+    # ContainerizedPlatformComponent is intended for DCAE platform services.  Unlike the components,
+    # platform services have well-known names and well-known ports.
+    dcae.nodes.ContainerizedPlatformComponent:
+        derived_from: cloudify.nodes.Root
+        properties:
+            name:
+                description: >
+                  Container name used to register with Consul
+            dns_name:
+                required: false
+                description: >
+                  Name to be registered in the DNS for the service provided by the container.  
+                  If not provided, the 'name' field is used.
+                  This is a work-around for the Kubernetes restriction on having '_' in a DNS name.
+                  Having this field allows a component to look up its configuration using a name that
+                  includes a '_' while providing a legal Kubernetes DNS name.
+
+            application_config:
+                default: {}
+                description: >
+                  Application configuration for this Docker component. The data strcture is
+                  expected to be a complex map (native YAML) and to be constructed and filled
+                  by the creator of the blueprint.
+
+            docker_config:
+                default: {}
+                description: >
+                  This is what is the auxilary portion of the component spec that contains things
+                  like healthcheck definitions for the Docker component. Health checks are
+                  optional.
+
+            image:
+                type: string
+                description: Full uri of the Docker image
+
+            host_port:
+                type: integer
+                description: >
+                  Network port that the platform service is expecting to expose on the host
+                default: 0
+
+            container_port:
+                type: integer
+                description: >
+                  Network port that the platform service exposes in the container
+                default: 0
+
+            msb_registration:
+              type: dcae.types.MSBRegistration
+              description: >
+                Information for registering with MSB
+              required: false
+
+            log_info:
+              type: dcae.types.LoggingInfo
+              description: >
+                Information for setting up centralized logging via ELK.
+              required: false
+
+            replicas:
+              type: integer
+              description: >
+                The number of instances of the component that should be launched initially
+              default: 1
+
+            always_pull_image:
+              type: boolean
+              description: >
+                Set to true if the orchestrator should always pull a new copy of the image 
+                before deploying.  By default the orchestrator pulls only if the image is
+                not already present on the Docker host where the container is being launched.
+              default: false
+
+        interfaces:
+            cloudify.interfaces.lifecycle:
+                create:
+                    # Populate config into Consul
+                    implementation: k8s.k8splugin.create_for_platforms
+                start:
+                    # Create Docker container and start
+                    implementation: k8s.k8splugin.create_and_start_container_for_platforms
+                stop:
+                    # Stop and remove Docker container
+                    implementation: k8s.k8splugin.stop_and_remove_container
+                delete:
+                    # Delete configuration from Consul
+                    implementation: k8s.k8splugin.cleanup_discovery
+            dcae.interfaces.scale:
+                scale:
+                    implementation: k8s.k8splugin.tasks.scale
+
+    # ContainerizedApplication is intended to be more of an all-purpose Docker container node
+    # for non-componentized applications.
+    dcae.nodes.ContainerizedApplication:
+        derived_from: cloudify.nodes.Root
+        properties:
+            name:
+                type: string
+                description: Name of the Docker container to be given
+            image:
+                type: string
+                description: Full uri of the Docker image
+        interfaces:
+            cloudify.interfaces.lifecycle:
+                start:
+                    # Create Docker container and start
+                    implementation: k8s.k8splugin.create_and_start_container
+                stop:
+                    # Stop and remove Docker container
+                    implementation: k8s.k8splugin.stop_and_remove_container
