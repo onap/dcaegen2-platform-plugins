@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "5a93c517_47ace68c",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2018-03-23T12:13:25Z",
+      "side": 1,
+      "message": "I think the difference is that the Docker plugin essentially attempted to create and deploy one thing--a container.  k8sclient creates multiple k8s entries (none of which are known to the caller) as part of the deploy operation. The caller is not aware of the different k8s entities deployed by k8sclient, so it would not know how to do a cleanup.",
+      "parentUuid": "5a93c517_7e565208",
+      "revId": "18725870db72390527466d2fe4d4107adb7100b3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a93c517_28f89048",
         "filename": "k8s/k8splugin/tasks.py",
         "patchSetId": 2
