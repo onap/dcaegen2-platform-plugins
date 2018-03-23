@@ -1,9 +1,11 @@
 # dcae-policy plugin and node-type
+
 - python-package dcaepolicyplugin to be used in cloudify plugins to retrieve the policy from policy-handler
 
 ---
 
 ## dcaepolicy node type [dcaepolicy-node-type.yaml](./dcaepolicy-node-type.yaml)
+
 - node type for dcae.nodes.policy
 
 ---
@@ -14,7 +16,7 @@ import the dcaepolicy-node-type.yaml into your blueprint to use the dcae.nodes.t
 
 ```yaml
 imports:
-    - https://YOUR_NEXUS_RAW_SERVER/type_files/dcaepolicy/1.0.0/node-type.yaml
+    - https://YOUR_NEXUS_RAW_SERVER/type_files/dcaepolicy/2.1.0/node-type.yaml
 ```
 
 provide the value for policy_id property

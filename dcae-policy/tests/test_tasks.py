@@ -1,5 +1,3 @@
-# ============LICENSE_START=======================================================
-# org.onap.dcae
 # ================================================================================
 # Copyright (c) 2017-2018 AT&T Intellectual Property. All rights reserved.
 # ================================================================================
@@ -39,6 +37,7 @@ POLICY_NAME = "policyName"
 POLICY_BODY = 'policy_body'
 POLICY_CONFIG = 'config'
 LATEST_POLICIES = "latest_policies"
+CONFIG_NAME = "ConfigName"
 
 MONKEYED_POLICY_ID = 'monkeyed.Config_peach'
 LOG_FILE = 'logs/test_dcaepolicyplugin.log'
@@ -88,7 +87,7 @@ class MonkeyedPolicyBody(object):
             POLICY_CONFIG: config,
             "matchingConditions": {
                 "ONAPName": "DCAE",
-                "ConfigName": "alex_config_name"
+                CONFIG_NAME: "alex_config_name"
             },
             "responseAttributes": {},
             "property": None
@@ -235,7 +234,7 @@ def monkeyed_policy_handler_find(full_path, json, headers):
         {LATEST_POLICIES: {
             MONKEYED_POLICY_ID: MonkeyedPolicyBody.create_policy(MONKEYED_POLICY_ID)}})
 
-def test_policy_find(monkeypatch):
+def test_policies_find(monkeypatch):
     """test policy_get operation on dcae.nodes.policies node"""
     monkeypatch.setattr('requests.post', monkeyed_policy_handler_find)
 
@@ -243,7 +242,14 @@ def test_policy_find(monkeypatch):
         'test_dcae_policies_node_id',
         'test_dcae_policies_node_name',
         tasks.DCAE_POLICIES_TYPE,
-        {tasks.POLICY_FILTER: {POLICY_NAME: MONKEYED_POLICY_ID}}
+        {
+            tasks.POLICY_FILTER: {
+                POLICY_NAME: MONKEYED_POLICY_ID,
+                tasks.CONFIG_ATTRIBUTES: json.dumps({
+                    CONFIG_NAME: "alex_config_name"
+                })
+            }
+        }
     )
 
     try:
