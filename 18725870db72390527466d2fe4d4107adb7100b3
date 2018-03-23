@@ -73,6 +73,24 @@
     },
     {
       "key": {
+        "uuid": "5a93c517_cae79bab",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1071
+      },
+      "writtenOn": "2018-03-23T15:11:44Z",
+      "side": 1,
+      "message": "Ok thanks for the detailed explanation!  Given how involved this is, we should take the \"wait-and-see\" approach and talk about this some more.  My thought is that ideally we should have a common policy in error handling for the plugins to avoid confusion for the operators.  Maybe the implicit policy we had before doesn\u0027t fit well for k8s as you\u0027ve laid out.",
+      "parentUuid": "5a93c517_0a04a37c",
+      "revId": "18725870db72390527466d2fe4d4107adb7100b3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a93c517_28f89048",
         "filename": "k8s/k8splugin/tasks.py",
         "patchSetId": 2
