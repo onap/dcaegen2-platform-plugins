@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "5a93c517_0a04a37c",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2018-03-23T14:55:47Z",
+      "side": 1,
+      "message": "I don\u0027t think having successfully deployed entities left around will help much with debugging.  Yes, in theory it\u0027s possible, but in practice, with Kubernetes, I doubt it.  There is a huge downside, though, to leaving orphaned components around in a production setting.\n\nk8sclient does not maintain state about what it has deployed after the deploy() function finishes.  After a successful deployment, it passes back a handle that the caller can store into runtime_properties.  This can be used for an undeploy() operation during a later uninstall workflow.   If deployment fails, k8sclient throws an exception, and it can\u0027t pass back the handle. \n\nSo to do what you\u0027re suggesting is more than just ripping out the code that does the cleanup--it requires maintaining some state in k8sclient after deploy() exits, whether through an exception or a normal return.   \n\nOn a normal exit, deploy() will still have to return the handle, so that it can stored in runtime_properties for the normal case: when undeploy() is invoked as a separate Cloudify lifecycle operation.  \n\nUndeploy() will need two separate modes of operation--one during the install workflow, when the caller will not have a handle, and one during the uninstall workflow, when k8sclient cannot possibly have any state and will need to get the handle from the caller.  Or maybe there\u0027s a separate cleanup() function that\u0027s used only for the install workflow case.\n\nI do not think there is a compelling case for the change you want.  If you insist, I can do it.  It will take a couple of days--mostly to do all the necessary testing.  Given that, it would be better to do this as bug post-M4. (The bug is that the requirement to handle errors in the way you suggest was not explicitly stated post-M4.)",
+      "parentUuid": "5a93c517_0a0583c1",
+      "revId": "18725870db72390527466d2fe4d4107adb7100b3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a93c517_28f89048",
         "filename": "k8s/k8splugin/tasks.py",
         "patchSetId": 2
