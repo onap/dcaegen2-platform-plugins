@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "5a93c517_0a0583c1",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1071
+      },
+      "writtenOn": "2018-03-23T14:15:09Z",
+      "side": 1,
+      "message": "The caller wouldn\u0027t have to know about the intricacies of the clean up right?  The caller would simply be expected to call the \"undeploy\" function below which seems to call the same functions here.\n\nGiven that I want to make sure that for debugging deployment issues, will having these particular k8 entities not be useful to have lying around for investigation purposes until a manual undeploy?",
+      "parentUuid": "5a93c517_47ace68c",
+      "revId": "18725870db72390527466d2fe4d4107adb7100b3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a93c517_28f89048",
         "filename": "k8s/k8splugin/tasks.py",
         "patchSetId": 2
