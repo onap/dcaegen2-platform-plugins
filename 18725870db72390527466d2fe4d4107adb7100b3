@@ -54,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "5a93c517_07b6dedc",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2018-03-23T12:28:16Z",
+      "side": 1,
+      "message": "2017-2018",
+      "parentUuid": "5a93c517_28f89048",
+      "revId": "18725870db72390527466d2fe4d4107adb7100b3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a93c517_5e64b6e4",
         "filename": "k8s/k8splugin/tasks.py",
         "patchSetId": 2
@@ -65,6 +83,24 @@
       "writtenOn": "2018-03-22T22:11:35Z",
       "side": 1,
       "message": "Just want to point out that evaluating \"configure()\" here makes unit testing a bit trickier and impacts all unit tests that fall under tasks.  An alt approach is to do a lazy evaluation by invoking getter type functions when configuration parameters are needed.  Not a blocker because I see that you have the \"mockconfig\" fixture.",
+      "revId": "18725870db72390527466d2fe4d4107adb7100b3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_e7b412d3",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2018-03-23T12:28:16Z",
+      "side": 1,
+      "message": "Yep, unit test is a hassle with this.   Will look at the lazy evaluation approach in a later release.",
+      "parentUuid": "5a93c517_5e64b6e4",
       "revId": "18725870db72390527466d2fe4d4107adb7100b3",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -105,6 +141,24 @@
     },
     {
       "key": {
+        "uuid": "5a93c517_47c38638",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2018-03-23T12:28:16Z",
+      "side": 1,
+      "message": "Agree.  We don\u0027t have a full DMaaP with DR in the R2 use cases.",
+      "parentUuid": "5a93c517_1e470e4d",
+      "revId": "18725870db72390527466d2fe4d4107adb7100b3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a93c517_fe6022d1",
         "filename": "k8s/k8splugin/tasks.py",
         "patchSetId": 2
@@ -116,6 +170,24 @@
       "writtenOn": "2018-03-22T22:11:35Z",
       "side": 1,
       "message": "With the removal of the \"SelectedDockerHost\" node types, we have taken a step back in terms of multi-site support and will need to come up with an answer for this.  Not sure if the plan will be to deploy a cluster per site and thus we will need a cluster selector.",
+      "revId": "18725870db72390527466d2fe4d4107adb7100b3",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_67d7a2ee",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 615,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2018-03-23T12:28:16Z",
+      "side": 1,
+      "message": "SelectedDockerHost is not something that would work in the Kubernetes world.  (If you really want to, you can force a pod to be scheduled on a particular node.  The normal case is to let Kubernetes do its job as a scheduler.   Even if we implemented this capability, it wouldn\u0027t help with multi-site, because it\u0027s not possible to schedule across clusters.)  \n\nI thought about something analogous like \"KubernetesCluster\" node and a \"hosted_on\" type of relationship, but until we have a clearer understanding of how we\u0027re going to do multiple sites (and how we model and manage locations generally), doing so would just be speculative.  (If we just have a bunch of separate clusters, we\u0027d take one approach.  If we use the Kubernetes federation work, we\u0027d need a different approach.)",
+      "parentUuid": "5a93c517_fe6022d1",
       "revId": "18725870db72390527466d2fe4d4107adb7100b3",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
