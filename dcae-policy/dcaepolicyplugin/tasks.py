@@ -1,5 +1,3 @@
-# ============LICENSE_START=======================================================
-# org.onap.dcae
 # ================================================================================
 # Copyright (c) 2017-2018 AT&T Intellectual Property. All rights reserved.
 # ================================================================================
@@ -45,6 +43,7 @@ REQUEST_ID = "requestID"
 DCAE_POLICY_TYPE = 'dcae.nodes.policy'
 DCAE_POLICIES_TYPE = 'dcae.nodes.policies'
 DCAE_POLICY_TYPES = [DCAE_POLICY_TYPE, DCAE_POLICIES_TYPE]
+CONFIG_ATTRIBUTES = "configAttributes"
 
 class PolicyHandler(object):
     """talk to policy-handler"""
@@ -141,6 +140,22 @@ def _policy_get():
         ctx.instance.runtime_properties[POLICY_BODY] = policy[POLICY_BODY]
     return True
 
+def _fix_policy_filter(policy_filter):
+    if CONFIG_ATTRIBUTES in policy_filter:
+        config_attributes = policy_filter.get(CONFIG_ATTRIBUTES)
+        if isinstance(config_attributes, dict):
+            return
+        try:
+            config_attributes = json.loads(config_attributes)
+            if config_attributes and isinstance(config_attributes, dict):
+                policy_filter[CONFIG_ATTRIBUTES] = config_attributes
+                return
+        except (ValueError, TypeError):
+            pass
+        if config_attributes:
+            ctx.logger.warn("unexpected %s: %s", CONFIG_ATTRIBUTES, config_attributes)
+        del policy_filter[CONFIG_ATTRIBUTES]
+
 def _policies_find():
     """
     dcae.nodes.policies -
@@ -155,6 +170,8 @@ def _policies_find():
             (k, v) for (k, v) in dict(ctx.node.properties.get(POLICY_FILTER, {})).iteritems()
             if v or isinstance(v, (int, float))
         ))
+        _fix_policy_filter(policy_filter)
+
         if REQUEST_ID not in policy_filter:
             policy_filter[REQUEST_ID] = str(uuid.uuid4())
 

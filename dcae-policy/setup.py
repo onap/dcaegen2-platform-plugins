@@ -1,5 +1,3 @@
-# ============LICENSE_START=======================================================
-# org.onap.dcae
 # ================================================================================
 # Copyright (c) 2017-2018 AT&T Intellectual Property. All rights reserved.
 # ================================================================================
@@ -25,7 +23,7 @@ from setuptools import setup
 setup(
     name='dcaepolicyplugin',
     description='Cloudify plugin for dcae.nodes.policy node to retrieve the policy config',
-    version="2.0.0",
+    version="2.1.0",
     author='Alex Shatov',
     packages=['dcaepolicyplugin'],
     install_requires=[
