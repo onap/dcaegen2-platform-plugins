@@ -24,7 +24,7 @@ plugins:
   docker:
     executor: 'central_deployment_agent'
     package_name: dockerplugin
-    package_version: 3.0.0
+    package_version: 3.1.0
 
 node_types:
     # The DockerContainerForComponents node type is to be used for DCAE service components that 
