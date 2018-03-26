@@ -166,9 +166,22 @@ def monkeyed_discovery_get_failure(full_path):
 def test_discovery_failure(monkeypatch):
     """test finding policy-handler in consul"""
     monkeypatch.setattr('requests.get', monkeyed_discovery_get_failure)
-    expected = None
-    tasks.PolicyHandler._lazy_init()
-    assert expected == tasks.PolicyHandler._url
+
+    node_policy = MonkeyedNode(
+        'test_dcae_policy_node_id',
+        'test_dcae_policy_node_name',
+        tasks.DCAE_POLICY_TYPE,
+        {POLICY_ID: MONKEYED_POLICY_ID}
+    )
+    try:
+        current_ctx.set(node_policy.ctx)
+        tasks.PolicyHandler._lazy_init()
+        assert tasks.PolicyHandler.DEFAULT_URL == tasks.PolicyHandler._url
+
+    finally:
+        tasks.PolicyHandler._url = None
+        MockCloudifyContextFull.clear()
+        current_ctx.clear()
 
 def monkeyed_discovery_get(full_path):
     """monkeypatch for the GET to consul"""
@@ -178,17 +191,36 @@ def monkeyed_discovery_get(full_path):
 def test_discovery(monkeypatch):
     """test finding policy-handler in consul"""
     monkeypatch.setattr('requests.get', monkeyed_discovery_get)
-    expected = "http://monkey-policy-handler-address:9999"
-    tasks.PolicyHandler._lazy_init()
-    assert expected == tasks.PolicyHandler._url
 
-def monkeyed_policy_handler_get(full_path, headers):
+    node_policy = MonkeyedNode(
+        'test_dcae_policy_node_id',
+        'test_dcae_policy_node_name',
+        tasks.DCAE_POLICY_TYPE,
+        {POLICY_ID: MONKEYED_POLICY_ID}
+    )
+
+    try:
+        current_ctx.set(node_policy.ctx)
+        expected = "http://monkey-policy-handler-address:9999"
+        CtxLogger.log_ctx_info("before PolicyHandler._lazy_init")
+        tasks.PolicyHandler._lazy_init()
+        CtxLogger.log_ctx_info("after PolicyHandler._lazy_init")
+        assert expected == tasks.PolicyHandler._url
+
+    finally:
+        tasks.PolicyHandler._url = None
+        MockCloudifyContextFull.clear()
+        current_ctx.clear()
+
+
+def monkeyed_policy_handler_get(full_path, headers=None):
     """monkeypatch for the GET to policy-engine"""
     return MonkeyedResponse(full_path, headers, \
         MonkeyedPolicyBody.create_policy(MONKEYED_POLICY_ID))
 
 def test_policy_get(monkeypatch):
     """test policy_get operation on dcae.nodes.policy node"""
+    tasks.PolicyHandler._url = tasks.PolicyHandler.DEFAULT_URL
     monkeypatch.setattr('requests.get', monkeyed_policy_handler_get)
 
     node_policy = MonkeyedNode(
@@ -236,6 +268,7 @@ def monkeyed_policy_handler_find(full_path, json, headers):
 
 def test_policies_find(monkeypatch):
     """test policy_get operation on dcae.nodes.policies node"""
+    tasks.PolicyHandler._url = tasks.PolicyHandler.DEFAULT_URL
     monkeypatch.setattr('requests.post', monkeyed_policy_handler_find)
 
     node_policies = MonkeyedNode(
