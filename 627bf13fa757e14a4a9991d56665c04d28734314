@@ -16,6 +16,24 @@
       "revId": "627bf13fa757e14a4a9991d56665c04d28734314",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a93c517_6fcd2c86",
+        "filename": "docker/setup.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1071
+      },
+      "writtenOn": "2018-03-26T15:53:01Z",
+      "side": 1,
+      "message": "I don\u0027t agree.  I think this should be a minor bump.  In the semver document:\n\n\u003e Patch version Z (x.y.Z | x \u003e 0) MUST be incremented if only backwards compatible bug fixes are introduced. A bug fix is defined as an internal change that fixes incorrect behavior.\n\nThis change is not to fix an incorrect behavior rather to adopt new functionality in a dependent library.",
+      "parentUuid": "5a93c517_2ff084c8",
+      "revId": "627bf13fa757e14a4a9991d56665c04d28734314",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
