@@ -50,6 +50,7 @@ class PolicyHandler(object):
     SERVICE_NAME_POLICY_HANDLER = "policy_handler"
     X_ECOMP_REQUESTID = 'X-ECOMP-RequestID'
     STATUS_CODE_POLICIES_NOT_FOUND = 404
+    DEFAULT_URL = "http://policy-handler"
     _url = None
 
     @staticmethod
@@ -59,6 +60,8 @@ class PolicyHandler(object):
             return
 
         PolicyHandler._url = discover_service_url(PolicyHandler.SERVICE_NAME_POLICY_HANDLER)
+        if not PolicyHandler._url:
+            PolicyHandler._url = PolicyHandler.DEFAULT_URL
 
     @staticmethod
     def get_latest_policy(policy_id):
@@ -68,7 +71,7 @@ class PolicyHandler(object):
         ph_path = "{0}/policy_latest/{1}".format(PolicyHandler._url, policy_id)
         headers = {PolicyHandler.X_ECOMP_REQUESTID: str(uuid.uuid4())}
 
-        ctx.logger.info("getting latest policy from {0} headers={1}".format( \
+        ctx.logger.info("getting latest policy from {0} headers={1}".format(
             ph_path, json.dumps(headers)))
         res = requests.get(ph_path, headers=headers)
         ctx.logger.info("latest policy for policy_id({0}) status({1}) response: {2}"
