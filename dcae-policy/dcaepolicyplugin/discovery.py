@@ -20,14 +20,23 @@
 
 import requests
 
+from cloudify import ctx
+
 # it is safe to assume that consul agent is at localhost:8500 along with cloudify manager
 CONSUL_SERVICE_URL = "http://localhost:8500/v1/catalog/service/{0}"
 
 def discover_service_url(service_name):
     """find the service record in consul"""
-    response = requests.get(CONSUL_SERVICE_URL.format(service_name))
-    response.raise_for_status()
-    resp_json = response.json()
-    if resp_json:
-        service = resp_json[0]
-        return "http://{0}:{1}".format(service["ServiceAddress"], service["ServicePort"])
+    service_url_url = CONSUL_SERVICE_URL.format(service_name)
+    ctx.logger.info("getting service_url at {0}".format(service_url_url))
+
+    response = requests.get(service_url_url)
+
+    ctx.logger.info("got service_url at {0} status({1}) response: {2}"
+                    .format(service_url_url, response.status_code, response.text))
+
+    if response.status_code == requests.codes.ok:
+        resp_json = response.json()
+        if resp_json:
+            service = resp_json[0]
+            return "http://{0}:{1}".format(service["ServiceAddress"], service["ServicePort"])
