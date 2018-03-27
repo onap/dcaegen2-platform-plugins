@@ -25,6 +25,7 @@ from functools import wraps
 from cloudify import ctx
 from cloudify.context import NODE_INSTANCE, RELATIONSHIP_INSTANCE
 
+
 class CtxLogger(object):
     """static class for logging cloudify context ctx"""
     @staticmethod

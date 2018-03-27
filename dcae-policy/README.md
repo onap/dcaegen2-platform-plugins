@@ -8,6 +8,25 @@
 
 - node type for dcae.nodes.policy
 
+- node type for dcae.nodes.policies
+
+---
+
+## discovery of policy-handler
+
+- dcaepolicyplugin will first try finding the record of ```policy_handler``` in consul services.
+
+- if failed, it will try finding config for "dcaepolicyplugin" in consul-kv
+
+  -- the config structure is expected to contain url to policy_handler
+  -- example of config value for key=```dcaepolicyplugin```:
+
+```json
+{ "dcaepolicyplugin" : { "policy_handler" : { "url" : "http://policy-handler:25577" } } }
+```
+
+- if still not found, it will default to hardcoded url of ```http://policy-handler```
+
 ---
 
 ## Usage
@@ -16,7 +35,7 @@ import the dcaepolicy-node-type.yaml into your blueprint to use the dcae.nodes.t
 
 ```yaml
 imports:
-    - https://YOUR_NEXUS_RAW_SERVER/type_files/dcaepolicy/2.1.0/node-type.yaml
+    - https://YOUR_NEXUS_RAW_SERVER/type_files/dcaepolicy/2.2.1/node-type.yaml
 ```
 
 provide the value for policy_id property

@@ -18,19 +18,20 @@
 
 """tasks are the cloudify operations invoked on interfaces defined in the blueprint"""
 
-import json
-import uuid
 import copy
+import json
 import traceback
-import requests
+import uuid
 
+import requests
 from cloudify import ctx
-from cloudify.decorators import operation
 from cloudify.context import NODE_INSTANCE
+from cloudify.decorators import operation
 from cloudify.exceptions import NonRecoverableError
 
-from .discovery import discover_service_url
+from .discovery import discover_service_url, discover_value
 
+DCAE_POLICY_PLUGIN = "dcaepolicyplugin"
 POLICY_ID = 'policy_id'
 POLICY_REQUIRED = 'policy_required'
 POLICY_BODY = 'policy_body'
@@ -44,6 +45,7 @@ DCAE_POLICY_TYPE = 'dcae.nodes.policy'
 DCAE_POLICIES_TYPE = 'dcae.nodes.policies'
 DCAE_POLICY_TYPES = [DCAE_POLICY_TYPE, DCAE_POLICIES_TYPE]
 CONFIG_ATTRIBUTES = "configAttributes"
+
 
 class PolicyHandler(object):
     """talk to policy-handler"""
@@ -60,8 +62,27 @@ class PolicyHandler(object):
             return
 
         PolicyHandler._url = discover_service_url(PolicyHandler.SERVICE_NAME_POLICY_HANDLER)
-        if not PolicyHandler._url:
-            PolicyHandler._url = PolicyHandler.DEFAULT_URL
+        if PolicyHandler._url:
+            return
+
+        config = discover_value(DCAE_POLICY_PLUGIN)
+        if config and isinstance(config, dict):
+            # expected structure for the config value for dcaepolicyplugin key
+            # {
+            #     "dcaepolicyplugin" : {
+            #         "policy_handler" : {
+            #             "target_entity" : "policy_handler",
+            #             "url" : "http://policy-handler:25577"
+            #         }
+            #     }
+            # }
+            PolicyHandler._url = config.get(DCAE_POLICY_PLUGIN, {}) \
+                .get(PolicyHandler.SERVICE_NAME_POLICY_HANDLER, {}).get("url")
+
+        if PolicyHandler._url:
+            return
+
+        PolicyHandler._url = PolicyHandler.DEFAULT_URL
 
     @staticmethod
     def get_latest_policy(policy_id):
@@ -93,7 +114,7 @@ class PolicyHandler(object):
             PolicyHandler.X_ECOMP_REQUESTID: policy_filter.get(REQUEST_ID, str(uuid.uuid4()))
         }
 
-        ctx.logger.info("finding the latest polices from {0} by {1} headers={2}".format( \
+        ctx.logger.info("finding the latest polices from {0} by {1} headers={2}".format(
             ph_path, json.dumps(policy_filter), json.dumps(headers)))
 
         res = requests.post(ph_path, json=policy_filter, headers=headers)
@@ -105,6 +126,7 @@ class PolicyHandler(object):
 
         res.raise_for_status()
         return res.json().get(LATEST_POLICIES)
+
 
 def _policy_get():
     """
@@ -143,6 +165,7 @@ def _policy_get():
         ctx.instance.runtime_properties[POLICY_BODY] = policy[POLICY_BODY]
     return True
 
+
 def _fix_policy_filter(policy_filter):
     if CONFIG_ATTRIBUTES in policy_filter:
         config_attributes = policy_filter.get(CONFIG_ATTRIBUTES)
@@ -158,6 +181,7 @@ def _fix_policy_filter(policy_filter):
         if config_attributes:
             ctx.logger.warn("unexpected %s: %s", CONFIG_ATTRIBUTES, config_attributes)
         del policy_filter[CONFIG_ATTRIBUTES]
+
 
 def _policies_find():
     """
@@ -194,6 +218,7 @@ def _policies_find():
         ctx.logger.error("{0}: {1}".format(error, traceback.format_exc()))
 
     return True
+
 
 #########################################################
 @operation

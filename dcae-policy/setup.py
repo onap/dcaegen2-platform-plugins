@@ -23,7 +23,7 @@ from setuptools import setup
 setup(
     name='dcaepolicyplugin',
     description='Cloudify plugin for dcae.nodes.policy node to retrieve the policy config',
-    version="2.2.0",
+    version="2.2.1",
     author='Alex Shatov',
     packages=['dcaepolicyplugin'],
     install_requires=[
