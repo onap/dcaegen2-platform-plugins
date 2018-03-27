@@ -18,7 +18,8 @@
 
 """mock cloudify context with relationships and type_hierarchy"""
 
-from cloudify.mocks import MockCloudifyContext, MockNodeInstanceContext, MockNodeContext
+from cloudify.mocks import (MockCloudifyContext, MockNodeContext,
+                            MockNodeInstanceContext)
 
 TARGET_NODE_ID = "target_node_id"
 TARGET_NODE_NAME = "target_node_name"
