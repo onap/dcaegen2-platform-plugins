@@ -272,7 +272,7 @@ def _create_and_start_container(container_name, image, **kwargs):
         - volumes:  array of volume objects, where a volume object is:
             {"host":{"path": "/path/on/host"}, "container":{"bind":"/path/on/container","mode":"rw_or_ro"}
         - ports: array of strings in the form "container_port:host_port"
-        - env: map of name-value pairs ( {name0: value0, name1: value1...} )
+        - envs: map of name-value pairs ( {name0: value0, name1: value1...} )
         - always_pull: boolean.  If true, sets image pull policy to "Always"
           so that a fresh copy of the image is always pull.  Otherwise, sets
           image pull policy to "IfNotPresent"
@@ -283,7 +283,7 @@ def _create_and_start_container(container_name, image, **kwargs):
     '''
     env = { "CONSUL_HOST": CONSUL_INTERNAL_NAME,
             "CONFIG_BINDING_SERVICE": "config-binding-service" }
-    env.update(kwargs.get("env", {}))
+    env.update(kwargs.get("envs", {}))
     ctx.logger.info("Deploying {}, image: {}, env: {}, kwargs: {}".format(container_name, image, env, kwargs))
     ctx.logger.info("Passing k8sconfig: {}".format(plugin_conf))
     replicas = kwargs.get("replicas", 1)
