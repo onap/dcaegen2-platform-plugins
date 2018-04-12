@@ -22,6 +22,7 @@ import base64
 import json
 
 import pytest
+import requests
 from cloudify.state import current_ctx
 
 from dcaepolicyplugin import discovery, tasks
@@ -30,12 +31,12 @@ from tests.mock_cloudify_ctx import MockCloudifyContextFull
 from tests.mock_setup import (MONKEYED_POLICY_ID, POLICY_ID, MonkeyedNode,
                               MonkeyedResponse)
 
-POLICY_HANDLER_FROM_KV = "http:policy_handler_from_kv:25577"
-
+POLICY_HANDLER_FROM_KV = "http://policy_handler_from_kv:25577"
+CONFIG_PATH = discovery.DiscoveryClient.CONFIG_PATH
 
 def monkeyed_discovery_get_failure(full_path):
     """monkeypatch for the GET to consul"""
-    return MonkeyedResponse(full_path)
+    raise requests.ConnectionError("monkey-boom")
 
 
 def test_discovery_failure(monkeypatch):
@@ -55,16 +56,40 @@ def test_discovery_failure(monkeypatch):
 
     finally:
         tasks.PolicyHandler._url = None
+        discovery.DiscoveryClient._lazy_inited = False
+        discovery.DiscoveryClient.CONFIG_PATH = CONFIG_PATH
+        MockCloudifyContextFull.clear()
+        current_ctx.clear()
+
+
+def test_discovery_at_file_fail(monkeypatch):
+    """test finding policy-handler in consul - get consul url from config file"""
+    discovery.DiscoveryClient.CONFIG_PATH = "tests/mock_config.ini"
+    monkeypatch.setattr('requests.get', monkeyed_discovery_get_failure)
+
+    node_policy = MonkeyedNode(
+        'test_dcae_policy_node_id',
+        'test_dcae_policy_node_name',
+        tasks.DCAE_POLICY_TYPE,
+        {POLICY_ID: MONKEYED_POLICY_ID}
+    )
+    try:
+        current_ctx.set(node_policy.ctx)
+        tasks.PolicyHandler._lazy_init()
+        assert tasks.PolicyHandler.DEFAULT_URL == tasks.PolicyHandler._url
+
+    finally:
+        tasks.PolicyHandler._url = None
+        discovery.DiscoveryClient._lazy_inited = False
+        discovery.DiscoveryClient.CONFIG_PATH = CONFIG_PATH
         MockCloudifyContextFull.clear()
         current_ctx.clear()
 
 
 def monkeyed_discovery_get_kv(full_path):
     """monkeypatch for the GET to consul"""
-    if full_path.startswith(discovery.CONSUL_SERVICE_URL.format("")):
-        return MonkeyedResponse(full_path)
-
-    if full_path.startswith(discovery.CONSUL_KV_MASK.format("")):
+    if full_path.startswith(discovery.DiscoveryClient.KV_MASK.format(
+            consul_host=discovery.DiscoveryClient._consul_hosts[0], key="")):
         value = base64.b64encode(json.dumps(
             {tasks.DCAE_POLICY_PLUGIN: {
                 tasks.PolicyHandler.SERVICE_NAME_POLICY_HANDLER: {
@@ -92,6 +117,8 @@ def test_discovery_kv(monkeypatch):
 
     finally:
         tasks.PolicyHandler._url = None
+        discovery.DiscoveryClient._lazy_inited = False
+        discovery.DiscoveryClient.CONFIG_PATH = CONFIG_PATH
         MockCloudifyContextFull.clear()
         current_ctx.clear()
 
@@ -123,5 +150,7 @@ def test_discovery(monkeypatch):
 
     finally:
         tasks.PolicyHandler._url = None
+        discovery.DiscoveryClient._lazy_inited = False
+        discovery.DiscoveryClient.CONFIG_PATH = CONFIG_PATH
         MockCloudifyContextFull.clear()
         current_ctx.clear()

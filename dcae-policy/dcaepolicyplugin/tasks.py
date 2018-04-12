@@ -29,7 +29,7 @@ from cloudify.context import NODE_INSTANCE
 from cloudify.decorators import operation
 from cloudify.exceptions import NonRecoverableError
 
-from .discovery import discover_service_url, discover_value
+from .discovery import DiscoveryClient
 
 DCAE_POLICY_PLUGIN = "dcaepolicyplugin"
 POLICY_ID = 'policy_id'
@@ -52,7 +52,7 @@ class PolicyHandler(object):
     SERVICE_NAME_POLICY_HANDLER = "policy_handler"
     X_ECOMP_REQUESTID = 'X-ECOMP-RequestID'
     STATUS_CODE_POLICIES_NOT_FOUND = 404
-    DEFAULT_URL = "http://policy-handler"
+    DEFAULT_URL = "http://policy-handler:25577"
     _url = None
 
     @staticmethod
@@ -61,11 +61,13 @@ class PolicyHandler(object):
         if PolicyHandler._url:
             return
 
-        PolicyHandler._url = discover_service_url(PolicyHandler.SERVICE_NAME_POLICY_HANDLER)
+        PolicyHandler._url = DiscoveryClient.get_service_url(
+            PolicyHandler.SERVICE_NAME_POLICY_HANDLER
+        )
         if PolicyHandler._url:
             return
 
-        config = discover_value(DCAE_POLICY_PLUGIN)
+        config = DiscoveryClient.get_value(DCAE_POLICY_PLUGIN)
         if config and isinstance(config, dict):
             # expected structure for the config value for dcaepolicyplugin key
             # {
@@ -99,7 +101,7 @@ class PolicyHandler(object):
                         .format(policy_id, res.status_code, res.text))
 
         if res.status_code == PolicyHandler.STATUS_CODE_POLICIES_NOT_FOUND:
-            return
+            return None
 
         res.raise_for_status()
         return res.json()
@@ -122,7 +124,7 @@ class PolicyHandler(object):
                         .format(res.status_code, res.text))
 
         if res.status_code == PolicyHandler.STATUS_CODE_POLICIES_NOT_FOUND:
-            return
+            return None
 
         res.raise_for_status()
         return res.json().get(LATEST_POLICIES)

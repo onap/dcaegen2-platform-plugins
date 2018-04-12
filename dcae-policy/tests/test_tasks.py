@@ -70,9 +70,29 @@ def test_policy_get(monkeypatch):
         assert MonkeyedPolicyBody.is_the_same_dict(result, expected)
         assert MonkeyedPolicyBody.is_the_same_dict(expected, result)
 
-        node_ms = MonkeyedNode('test_ms_id', 'test_ms_name', "ms.nodes.type", None,
-            [{TARGET_NODE_ID: node_policy.node_id,
-              TARGET_NODE_NAME: node_policy.node_name}])
+    finally:
+        MockCloudifyContextFull.clear()
+        current_ctx.clear()
+
+
+def test_policy_get_fail(monkeypatch):
+    """test policy_get operation on non dcae.nodes.policy node"""
+    tasks.PolicyHandler._url = tasks.PolicyHandler.DEFAULT_URL
+    monkeypatch.setattr('requests.get', monkeyed_policy_handler_get)
+
+    node_policy = MonkeyedNode(
+        'test_dcae_policy_node_id',
+        'test_dcae_policy_node_name',
+        tasks.DCAE_POLICY_TYPE,
+        {POLICY_ID: MONKEYED_POLICY_ID}
+    )
+
+    node_ms = MonkeyedNode(
+        'test_ms_id', 'test_ms_name', "ms.nodes.type", None,
+        [{TARGET_NODE_ID: node_policy.node_id, TARGET_NODE_NAME: node_policy.node_name}]
+    )
+
+    try:
         current_ctx.set(node_ms.ctx)
         CtxLogger.log_ctx_info("ctx of node_ms not policy type")
         with pytest.raises(NonRecoverableError) as excinfo:
@@ -87,9 +107,11 @@ def test_policy_get(monkeypatch):
 
 def monkeyed_policy_handler_find(full_path, json, headers):
     """monkeypatch for the GET to policy-engine"""
-    return MonkeyedResponse(full_path, headers,
+    return MonkeyedResponse(
+        full_path, headers,
         {LATEST_POLICIES: {
-            MONKEYED_POLICY_ID: MonkeyedPolicyBody.create_policy(MONKEYED_POLICY_ID)}})
+            MONKEYED_POLICY_ID: MonkeyedPolicyBody.create_policy(MONKEYED_POLICY_ID)}}
+    )
 
 
 def test_policies_find(monkeypatch):
@@ -128,10 +150,36 @@ def test_policies_find(monkeypatch):
         assert MonkeyedPolicyBody.is_the_same_dict(result, expected)
         assert MonkeyedPolicyBody.is_the_same_dict(expected, result)
 
-        node_ms_multi = MonkeyedNode('test_ms_multi_id', 'test_ms_multi_name', "ms.nodes.type",
-                                     None,
-                                     [{TARGET_NODE_ID: node_policies.node_id,
-                                       TARGET_NODE_NAME: node_policies.node_name}])
+    finally:
+        MockCloudifyContextFull.clear()
+        current_ctx.clear()
+
+
+def test_policies_find_fail(monkeypatch):
+    """test policy_get operation on non dcae.nodes.policies node"""
+    tasks.PolicyHandler._url = tasks.PolicyHandler.DEFAULT_URL
+    monkeypatch.setattr('requests.post', monkeyed_policy_handler_find)
+
+    node_policies = MonkeyedNode(
+        'test_dcae_policies_node_id',
+        'test_dcae_policies_node_name',
+        tasks.DCAE_POLICIES_TYPE,
+        {
+            tasks.POLICY_FILTER: {
+                POLICY_NAME: MONKEYED_POLICY_ID,
+                tasks.CONFIG_ATTRIBUTES: json.dumps({
+                    CONFIG_NAME: "alex_config_name"
+                })
+            }
+        }
+    )
+    node_ms_multi = MonkeyedNode(
+        'test_ms_multi_id', 'test_ms_multi_name', "ms.nodes.type",
+        None,
+        [{TARGET_NODE_ID: node_policies.node_id, TARGET_NODE_NAME: node_policies.node_name}]
+    )
+
+    try:
         current_ctx.set(node_ms_multi.ctx)
         CtxLogger.log_ctx_info("ctx of node_ms_multi not policy type")
         with pytest.raises(NonRecoverableError) as excinfo:
