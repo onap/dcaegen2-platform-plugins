@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.2.0]
+
+* Change requirements.txt to use a version range for dcaepolicylib
+* DCAEGEN2-442
+
 ## [3.1.0]
 
 * DCAEGEN2-415 - Change requirements.txt to use dcaepolicy 2.3.0. *Apparently* this constitutes a version bump.
