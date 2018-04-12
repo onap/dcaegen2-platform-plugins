@@ -153,4 +153,3 @@ class MonkeyedNode(object):
             relationships=relationships
         )
         MonkeyedLogHandler.add_handler_to(self.ctx.logger)
-

@@ -22,6 +22,8 @@ import base64
 import json
 
 import pytest
+import requests
+from cloudify.exceptions import NonRecoverableError
 from cloudify.state import current_ctx
 
 from dcaepolicyplugin import discovery, tasks
@@ -30,12 +32,12 @@ from tests.mock_cloudify_ctx import MockCloudifyContextFull
 from tests.mock_setup import (MONKEYED_POLICY_ID, POLICY_ID, MonkeyedNode,
                               MonkeyedResponse)
 
-POLICY_HANDLER_FROM_KV = "http:policy_handler_from_kv:25577"
+POLICY_HANDLER_FROM_KV = "http://policy_handler_from_kv:25577"
 
 
 def monkeyed_discovery_get_failure(full_path):
     """monkeypatch for the GET to consul"""
-    return MonkeyedResponse(full_path)
+    raise requests.ConnectionError("monkey-boom")
 
 
 def test_discovery_failure(monkeypatch):
@@ -50,8 +52,12 @@ def test_discovery_failure(monkeypatch):
     )
     try:
         current_ctx.set(node_policy.ctx)
-        tasks.PolicyHandler._lazy_init()
-        assert tasks.PolicyHandler.DEFAULT_URL == tasks.PolicyHandler._url
+        with pytest.raises(NonRecoverableError) as excinfo:
+            tasks.PolicyHandler._lazy_init()
+
+        CtxLogger.log_ctx_info("test_discovery_failure: {0}".format(str(excinfo.value)))
+        assert str(excinfo.value).startswith("ConnectionError")
+
 
     finally:
         tasks.PolicyHandler._url = None

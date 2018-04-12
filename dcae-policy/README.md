@@ -35,7 +35,7 @@ import the dcaepolicy-node-type.yaml into your blueprint to use the dcae.nodes.t
 
 ```yaml
 imports:
-    - https://YOUR_NEXUS_RAW_SERVER/type_files/dcaepolicy/2.2.1/node-type.yaml
+    - https://YOUR_NEXUS_RAW_SERVER/type_files/dcaepolicy/2.3.0/node-type.yaml
 ```
 
 provide the value for policy_id property

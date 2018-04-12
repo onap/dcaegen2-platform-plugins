@@ -23,10 +23,15 @@ import json
 
 import requests
 from cloudify import ctx
+from cloudify.exceptions import NonRecoverableError
 
-# it is safe to assume that consul agent is at localhost:8500 along with cloudify manager
-CONSUL_SERVICE_URL = "http://localhost:8500/v1/catalog/service/{0}"
-CONSUL_KV_MASK = "http://localhost:8500/v1/kv/{0}"
+# it is safe to assume that consul agent is at consul:8500
+# define consul alis in /etc/hosts on cloudify manager vm
+# $ cat /etc/hosts
+# 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4 consul
+
+CONSUL_SERVICE_URL = "http://consul:8500/v1/catalog/service/{0}"
+CONSUL_KV_MASK = "http://consul:8500/v1/kv/{0}"
 
 
 def discover_service_url(service_name):
@@ -34,7 +39,11 @@ def discover_service_url(service_name):
     service_url = CONSUL_SERVICE_URL.format(service_name)
     ctx.logger.info("getting service_url at {0}".format(service_url))
 
-    response = requests.get(service_url)
+    try:
+        response = requests.get(service_url)
+    except requests.ConnectionError as ex:
+        raise NonRecoverableError(
+            "ConnectionError - failed to get {0}: {1}".format(service_url, str(ex)))
 
     ctx.logger.info("got {0} for service_url at {1} response: {2}"
                     .format(response.status_code, service_url, response.text))
@@ -53,7 +62,11 @@ def discover_value(key):
     kv_url = CONSUL_KV_MASK.format(key)
     ctx.logger.info("getting kv at {0}".format(kv_url))
 
-    response = requests.get(kv_url)
+    try:
+        response = requests.get(kv_url)
+    except requests.ConnectionError as ex:
+        raise NonRecoverableError(
+            "ConnectionError - failed to get {0}: {1}".format(kv_url, str(ex)))
 
     ctx.logger.info("got {0} for kv at {1} response: {2}"
                     .format(response.status_code, kv_url, response.text))
