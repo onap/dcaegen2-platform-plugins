@@ -35,9 +35,9 @@ from dockerplugin import utils
 
 # TODO: Remove this Docker port hardcoding and query for this port instead
 DOCKER_PORT = 2376
-# Always use the local Consul agent for interfacing with Consul from the plugin.
-# Safe to assume that its always there.
-CONSUL_HOST = "localhost"
+# Rely on the setup of the cloudify manager host to resolve "consul" for the
+# plugin. NOTE: This variable is not passed to components.
+CONSUL_HOST = "consul"
 
 # Used to construct delivery urls for data router subscribers. Data router in FTL
 # requires https but this author believes that ONAP is to be defaulted to http.
