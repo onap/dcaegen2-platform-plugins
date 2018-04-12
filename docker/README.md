@@ -19,6 +19,10 @@ The Docker plugin requires a key-value entry in Consul that holds all the Docker
 
 If there are no required Docker logins then set the value to empty list `[]`.
 
+### "consul" DNS query
+
+The Docker plugin assumes that the DNS query for "consul" will resolve.  Make sure the Cloudify installation includes any steps (e.g. adding a line to `/etc/hosts`) to ensure this.
+
 ## Input parameters
 
 ### start
