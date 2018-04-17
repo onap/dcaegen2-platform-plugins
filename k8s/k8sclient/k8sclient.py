@@ -32,8 +32,27 @@ def _create_exposed_service_name(component_name):
     return ("x{0}".format(component_name))[:63]
 
 def _configure_api():
-    #TODO: real configuration
-    config.load_kube_config(os.path.join(os.environ["HOME"], '.kube/config'))
+    # Look for a kubernetes config file in ~/.kube/config
+    kubepath = os.path.join(os.environ["HOME"], '.kube/config')
+    if os.path.exists(kubepath):
+        config.load_kube_config(kubepath)
+    else:
+        # Maybe we're running in a k8s container and we can use info provided by k8s
+        # We would like to use:
+        # config.load_incluster_config()
+        # but this looks into os.environ for kubernetes host and port, and from
+        # the plugin those aren't visible.   So we use the InClusterConfigLoader class,
+        # where we can set the environment to what we like.
+        # This is probably brittle!  Maybe there's a better alternative.
+        localenv = {
+            config.incluster_config.SERVICE_HOST_ENV_NAME : "kubernetes.default.svc.cluster.local",
+            config.incluster_config.SERVICE_PORT_ENV_NAME : "443"
+        }
+        config.incluster_config.InClusterConfigLoader(
+            token_filename=config.incluster_config.SERVICE_TOKEN_FILENAME,
+            cert_filename=config.incluster_config.SERVICE_CERT_FILENAME,
+            environ=localenv
+        ).load_and_set()
 
 def _create_container_object(name, image, always_pull, env={}, container_ports=[], volume_mounts = []):
     # Set up environment variables
