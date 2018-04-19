@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a93c517_8089f427",
+        "filename": "relationships/requirements.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2018-04-19T18:36:46Z",
+      "side": 1,
+      "message": "Are we sure we don\u0027t need any of the other explicit dependencies?   We\u0027ll find out for sure when we actually try to use the plugin!",
+      "revId": "468ee3516c7b5aec130079de227c976ec0794719",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
