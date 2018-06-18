@@ -22,6 +22,10 @@ import uuid
 from msb import msb
 from kubernetes import config, client
 
+# Default values for readiness probe
+PROBE_DEFAULT_PERIOD = 15
+PROBE_DEFAULT_TIMEOUT = 1
+
 def _create_deployment_name(component_name):
     return "dep-{0}".format(component_name)
 
@@ -54,13 +58,53 @@ def _configure_api():
             environ=localenv
         ).load_and_set()
 
-def _create_container_object(name, image, always_pull, env={}, container_ports=[], volume_mounts = []):
+def _create_probe(hc, port):
+    ''' Create a Kubernetes probe based on info in the health check dictionary hc '''
+    probe_type = hc['type']
+    probe = None
+    period = hc.get('interval', PROBE_DEFAULT_PERIOD)
+    timeout = hc.get('timeout', PROBE_DEFAULT_TIMEOUT)
+    if probe_type == 'http' or probe_type == 'https':
+        probe = client.V1Probe(
+          failure_threshold = 1,
+          initial_delay_seconds = 5,
+          period_seconds = period,
+          timeout_seconds = timeout,
+          http_get = client.V1HTTPGetAction(
+              path = hc['endpoint'],
+              port = port,
+              scheme = probe_type.upper()
+          )  
+        )
+    elif probe_type == 'script' or probe_type == 'docker':
+        probe = client.V1Probe(
+          failure_threshold = 1,
+          initial_delay_seconds = 5,
+          period_seconds = period,
+          timeout_seconds = timeout,
+          _exec = client.V1ExecAction(
+              command = [hc['script']]
+          )  
+        )
+    return probe        
+
+def _create_container_object(name, image, always_pull, env={}, container_ports=[], volume_mounts = [], readiness = None):
     # Set up environment variables
     # Copy any passed in environment variables
     env_vars = [client.V1EnvVar(name=k, value=env[k]) for k in env.keys()]
     # Add POD_IP with the IP address of the pod running the container
     pod_ip = client.V1EnvVarSource(field_ref = client.V1ObjectFieldSelector(field_path="status.podIP"))
     env_vars.append(client.V1EnvVar(name="POD_IP",value_from=pod_ip))
+
+    # If a health check is specified, create a readiness probe
+    # (For an HTTP-based check, we assume it's at the first container port)
+    probe = None
+   
+    if (readiness):    
+        hc_port = None
+        if len(container_ports) > 0:
+            hc_port = container_ports[0]
+        probe = _create_probe(readiness, hc_port)
 
     # Define container for pod
     return client.V1Container(
@@ -69,7 +113,8 @@ def _create_container_object(name, image, always_pull, env={}, container_ports=[
         image_pull_policy='Always' if always_pull else 'IfNotPresent',
         env=env_vars,
         ports=[client.V1ContainerPort(container_port=p) for p in container_ports],
-        volume_mounts = volume_mounts
+        volume_mounts = volume_mounts,
+        readiness_probe = probe
     )
 
 def _create_deployment_object(component_name,
@@ -201,6 +246,12 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
             {"log_directory": "/path/to/container/log/directory", "alternate_fb_path" : "/alternate/sidecar/log/path"}
         - labels: dict with label-name/label-value pairs, e.g. {"cfydeployment" : "lsdfkladflksdfsjkl", "cfynode":"mycomponent"}
             These label will be set on all the pods deployed as a result of this deploy() invocation.
+        - readiness: dict with health check info; if present, used to create a readiness probe for the main container.  Includes:
+            - type: check is done by making http(s) request to an endpoint ("http", "https") or by exec'ing a script in the container ("script", "docker")
+            - interval: period (in seconds) between probes
+            - timeout:  time (in seconds) to allow a probe to complete
+            - endpoint: the path portion of the URL that points to the readiness endpoint for "http" and "https" types
+            - path: the full path to the script to be executed in the container for "script" and "docker" types
 
     '''
 
@@ -258,7 +309,7 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
 
         # Create the container for the component
         # Make it the first container in the pod
-        containers.insert(0, _create_container_object(component_name, image, always_pull, kwargs.get("env", {}), container_ports, volume_mounts))
+        containers.insert(0, _create_container_object(component_name, image, always_pull, kwargs.get("env", {}), container_ports, volume_mounts, kwargs["readiness"]))
 
         # Build the k8s Deployment object
         labels = kwargs.get("labels", {})

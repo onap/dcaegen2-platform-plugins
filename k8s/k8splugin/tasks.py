@@ -27,7 +27,6 @@ import time, copy
 from cloudify import ctx
 from cloudify.decorators import operation
 from cloudify.exceptions import NonRecoverableError, RecoverableError
-import dockering as doc
 from onap_dcae_dcaepolicy_lib import Policies
 from k8splugin import discovery as dis
 from k8splugin.decorators import monkeypatch_loggers, wrap_error_handling_start, \
@@ -280,6 +279,7 @@ def _create_and_start_container(container_name, image, **kwargs):
         - log_info: an object with info for setting up ELK logging, with the form:
             {"log_directory": "/path/to/container/log/directory", "alternate_fb_path" : "/alternate/sidecar/log/path"}"
         - replicas: number of replicas to be launched initially
+        - readiness: object with information needed to create a readiness check
     '''
     env = { "CONSUL_HOST": CONSUL_INTERNAL_NAME,
             "CONFIG_BINDING_SERVICE": "config-binding-service" }
@@ -298,7 +298,8 @@ def _create_and_start_container(container_name, image, **kwargs):
                      msb_list=kwargs.get("msb_list"), 
                      env = env,
                      labels = kwargs.get("labels", {}),
-                     log_info=kwargs.get("log_info"))
+                     log_info=kwargs.get("log_info"),
+                     readiness=kwargs.get("readiness"))
 
     # Capture the result of deployment for future use 
     ctx.instance.runtime_properties["k8s_deployment"] = dep
@@ -332,15 +333,17 @@ def _parse_cloudify_context(**kwargs):
     return kwargs
 
 def _enhance_docker_params(**kwargs):
-    """Setup Docker envs"""
+    '''
+    Set up Docker environment variables and readiness check info
+    and inject into kwargs.
+    '''
+    
+    # Get info for setting up readiness probe, if present
     docker_config = kwargs.get("docker_config", {})
+    if "healthcheck" in docker_config:
+        kwargs["readiness"] = docker_config["healthcheck"] 
 
     envs = kwargs.get("envs", {})
-    # NOTE: Healthchecks are optional until prepared to handle use cases that
-    # don't necessarily use http
-    envs_healthcheck = doc.create_envs_healthcheck(docker_config) \
-            if "healthcheck" in docker_config else {}
-    envs.update(envs_healthcheck)
 
     # Set tags on this component for its Consul registration as a service
     tags = [kwargs.get("deployment_id", None), kwargs["service_id"]]
@@ -377,7 +380,8 @@ def _create_and_start_component(**kwargs):
         "ports": kwargs.get("ports", None),
         "envs": kwargs.get("envs", {}), 
         "log_info": kwargs.get("log_info", {}),
-        "labels": kwargs.get("labels", {})}
+        "labels": kwargs.get("labels", {}),
+        "readiness": kwargs.get("readiness",{})}
     _create_and_start_container(service_component_name, image, **sub_kwargs)
    
     # TODO: Use regular logging here
@@ -494,19 +498,12 @@ def create_and_start_container_for_platforms(**kwargs):
     # Capture node properties
     image = ctx.node.properties["image"]
     docker_config = ctx.node.properties.get("docker_config", {})
+    if "healthcheck" in docker_config:
+        kwargs["readiness"] = docker_config["healthcheck"] 
     if "dns_name" in ctx.node.properties:
         service_component_name = ctx.node.properties["dns_name"]
     else:
         service_component_name = ctx.node.properties["name"]
-
-
-    envs = kwargs.get("envs", {})
-    # NOTE: Healthchecks are optional until prepared to handle use cases that
-    # don't necessarily use http
-    envs_healthcheck = doc.create_envs_healthcheck(docker_config) \
-            if "healthcheck" in docker_config else {}
-    envs.update(envs_healthcheck)
-    kwargs["envs"] = envs
 
     # Set some labels for the Kubernetes pods
     kwargs["labels"] = {
