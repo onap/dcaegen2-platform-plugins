@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "5a93c517_cc51c931",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1949
+      },
+      "writtenOn": "2018-06-18T19:19:04Z",
+      "side": 1,
+      "message": "more pythonic would be \nprobe_type in [\u0027http\u0027, \u0027https\u0027]",
+      "range": {
+        "startLine": 67,
+        "startChar": 7,
+        "endLine": 67,
+        "endChar": 52
+      },
+      "revId": "8db18d78975af115f44c84c170f678fc34001789",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5a93c517_0c2011f7",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 1
