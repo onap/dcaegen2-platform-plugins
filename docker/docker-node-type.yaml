@@ -26,6 +26,62 @@ plugins:
     package_name: dockerplugin
     package_version: 3.2.0
 
+
+data_types:
+  # NOTE: These data types were copied from the k8s node type in order to have 
+  # consistent node properties between docker and k8s. Perhaps we should make
+  # these data_types common somehow?
+  dcae.types.MSBRegistration:
+    description: >
+      Information for registering an HTTP service into MSB.  It's optional to do so,
+      but if MSB registration is desired at least the port property must be provided.
+      If 'port' property is not provided, the plugin will not do the registration.
+      (The properties all have to be declared as not required, otherwise the
+      'msb_registration' property on the node would also be required.)
+    properties:
+      port:
+        description: The container port at which the service is exposed
+        type: string
+        required: false
+      version:
+        description: The version identifier for the service
+        type: string
+        required: false
+      url_path:
+        description: The URL path (e.g., "/api", not the full URL) to the service endpoint
+        type: string
+        required: false
+      uses_ssl:
+        description: Set to true if service endpoint uses SSL (TLS)
+        type: boolean
+        required: false
+
+  dcae.types.LoggingInfo:
+    description: >
+      Information for setting up centralized logging via ELK using a "sidecar" container.
+      If 'log_directory' is not provided, the plugin will not set up ELK logging.
+      (The properties all have to be declared as not required, otherwise the
+      'log_info' property on the node would also be required.)
+    properties:
+      log_directory:
+        description: >
+          The path in the container where the component writes its logs.
+          If the component is following the EELF requirements, this would be
+          the directory where the four EELF files are being written.
+          (Other logs can be placed in the directory--if their names in '.log',
+          they'll also be sent into ELK.)
+        type: string
+        required: false
+      alternate_fb_path:
+        description: >
+          Hope not to use this.  By default, the plugin will mount the log volume
+          at /var/log/onap/<component_type> in the sidecar container's file system.
+          'alternate_fb_path' allows overriding the default.  Will affect how the log
+          data can be found in the ELK system.
+        type: string
+        required: false
+
+
 node_types:
     # The DockerContainerForComponents node type is to be used for DCAE service components that 
     # are to be run in a Docker container.  This node type goes beyond that of a ordinary Docker
@@ -85,6 +141,29 @@ node_types:
             image:
                 type: string
                 description: Full uri of the Docker image
+
+            # The following properties are copied from k8s node type to be consistent.
+            # However, these properties are not currently being used within the docker
+            # plugin.
+            log_info:
+              type: dcae.types.LoggingInfo
+              description: >
+                Information for setting up centralized logging via ELK.
+              required: false
+
+            replicas:
+              type: integer
+              description: >
+                The number of instances of the component that should be launched initially
+              default: 1
+
+            always_pull_image:
+              type: boolean
+              description: >
+                Set to true if the orchestrator should always pull a new copy of the image 
+                before deploying.  By default the orchestrator pulls only if the image is
+                not already present on the Docker host where the container is being launched.
+              default: false
 
         interfaces:
             cloudify.interfaces.lifecycle:
@@ -203,6 +282,35 @@ node_types:
                 description: >
                   Network port that the platform service exposes in the container
                 default: 0
+
+            # The following properties are copied from k8s node type to be consistent.
+            # However, these properties are not currently being used within the docker
+            # plugin.
+            msb_registration:
+              type: dcae.types.MSBRegistration
+              description: >
+                Information for registering with MSB
+              required: false
+
+            log_info:
+              type: dcae.types.LoggingInfo
+              description: >
+                Information for setting up centralized logging via ELK.
+              required: false
+
+            replicas:
+              type: integer
+              description: >
+                The number of instances of the component that should be launched initially
+              default: 1
+
+            always_pull_image:
+              type: boolean
+              description: >
+                Set to true if the orchestrator should always pull a new copy of the image 
+                before deploying.  By default the orchestrator pulls only if the image is
+                not already present on the Docker host where the container is being launched.
+              default: false
 
         interfaces:
             cloudify.interfaces.lifecycle:
