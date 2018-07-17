@@ -27,9 +27,16 @@ MVN_PHASE="$2"
 PROJECT_ROOT=$(dirname $0)
 
 set -e
+RELEASE_TAG=${MVN_RELEASE_TAG:-R3}
+if [ "$RELEASE_TAG" != "R1" ]; then
+  RELEASE_TAGGED_DIR="${RELEASE_TAG}/"
+else
+  RELEASE_TAGGED_DIR="releases"
+fi
 if ! wget -O ${PROJECT_ROOT}/mvn-phase-lib.sh \
-  "$MVN_RAWREPO_BASEURL_DOWNLOAD"/org.onap.dcaegen2.utils/R2/scripts/mvn-phase-lib.sh; then
-  cp "${PROJECT_ROOT}"/scripts/mvn-phase-lib.sh "${PROJECT_ROOT}/mvn-phase-lib.sh"
+  "$MVN_RAWREPO_BASEURL_DOWNLOAD"/org.onap.dcaegen2.utils/${RELEASE_TAGGED_DIR}scripts/mvn-phase-lib.sh; then
+  echo "Fail to download mvn-phase-lib.sh"
+  exit 1
 fi
 source "${PROJECT_ROOT}"/mvn-phase-lib.sh
 
