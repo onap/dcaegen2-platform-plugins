@@ -1,10 +1,10 @@
 # ONAP DCAE Kubernetes Plugin for Cloudify
 
-This directory contains a Cloudify plugin  used to orchestrate the deployment of containerized DCAE platform and service components  into a Kubernetes ("k8s") 
+This directory contains a Cloudify plugin  used to orchestrate the deployment of containerized DCAE platform and service components  into a Kubernetes ("k8s")
 environment. This work is based on the [ONAP DCAE Docker plugin] (../docker).
 
 This plugin is *not* a generic Kubernetes plugin that exposes the full set of Kubernetes features.
-In fact, the plugin largely hides the fact that we're using Kubernetes from both component developers and blueprint authors,
+In fact, the plugin largely hides the fact that we're using Kubernetes from both component developers and blueprint authors.
 The Cloudify node type definitions are very similar to the Cloudify type definitions used in the ONAP DCAE Docker plugin.
 
 For the node types `ContainerizedPlatformComponent`, `ContainerizedServiceComponent`, and `ContainerizedServiceComponentUsingDmaap`, this plugin
@@ -17,14 +17,14 @@ creates the following Kubernetes entities:
   running the `filebeat` logging sidecar that ships logging information to the ONAP ELK stack.  The `Deployment` will include
   some additional volumes needed by filebeat.
 - If the blueprint indicates that the component exposes any ports, the plugin will create a Kubernetes `Service` that allocates an address
-  in the Kubernetes network address space that will route traffic to a container that's running the component.  This `Service` provides a 
+  in the Kubernetes network address space that will route traffic to a container that's running the component.  This `Service` provides a
   fixed "virtual IP" for the component.
 - If the blueprint indicates that the component exposes a port externally, the plugin will create an additional Kubernetes `Service` that opens up a
   port on the external interface of each node in the Kubernetes cluster.
 
 Through the `replicas` property, a blueprint can request deployment of multiple instances of the component.  The plugin will still create a single `Deployment` (and,
 if needed one or two `Services`), but the `Deployment` will cause multiple instances of the container to run.   (Specifically, the `Deployment` will create
-a Kubernetes `Pod` for each requested instance.)  Other entities connect to a component via the IP address of a `Service`, and Kubernetes takes care of routing 
+a Kubernetes `Pod` for each requested instance.)  Other entities connect to a component via the IP address of a `Service`, and Kubernetes takes care of routing
 traffic to an appropriate container instance.
 
 ## Pre-requisites
@@ -52,19 +52,18 @@ The configuration is provided as JSON object with the following properties:
             - image: Docker image to use for filebeat
 
 #### Kubernetes access information
-The plugin accesses a Kubernetes cluster.  The information and credentials for accessing a cluster are stored in a "kubeconfig" 
+The plugin accesses a Kubernetes cluster.  The information and credentials for accessing a cluster are stored in a "kubeconfig"
 file.  The plugin expects to find such a file at `/etc/cloudify/.kube/config`.
 
 #### Additional Kubernetes configuration elements
 The plugin expects certain elements to be provided in the DCAE/ONAP environment, namely:
    - Kubernetes secret(s) containing the credentials needed to pull images from Docker registries, if needed
    - A Kubernetes ConfigMap containing the filebeat.yml file used by the filebeat logging container
-   - An ExternalName service 
-
+   - An ExternalName service
 
 ## Input parameters
 
-### start
+### `start` operation parameters
 
 These input parameters are for the `start` `cloudify.interfaces.lifecycle` and are inputs into the variant task operations `create_and_start_container*`.
 
@@ -120,7 +119,7 @@ of every Kubernetes host in the cluster.  (This uses the Kubernetes `NodePort` s
 
 #### `max_wait`
 
-Integer - seconds to wait for Docker to come up healthy before throwing a `NonRecoverableError`.
+Integer - seconds to wait for component to become ready before throwing a `NonRecoverableError`. For example:
 
 ```yaml
 max_wait:
@@ -128,7 +127,6 @@ max_wait:
 ```
 
 Default is 300 seconds.
-
 
 ## Using DMaaP
 
@@ -242,3 +240,54 @@ To form the application configuration:
 ```
 
 This also applies to data router feeds.
+
+## Additional Operations Supported by the Plugin
+In addition to supporting the Cloudify `install` and `uninstall` workflows, the plugin provides two standalone operations that can be invoked using the Cloudify [`execute_operation` workflow](https://docs.cloudify.co/4.3.0/working_with/workflows/built-in-workflows/).  The `dcae.nodes.ContainerizedApplication`, `dcae.nodes.ContainerizedPlatformComponent`, `dcae.nodes.ContainerizedServiceComponent`, and `dcae.nodes.ContainerizedServiceComponentUsingDmaap` node types support these operations.
+
+Currently, there's no convenient high-level interface to trigger these operations, but they could potentially be exposed through some kind of dashboard.
+
+### Scaling Operation (`scale`)
+The `scale` operation provides a way to change the number of replicas running for a node instance.  The operation is implemented by modifying the number of replicas in the Kubernetes Deployment specification associated with a node instance and submitting the updated specification to the Kubernetes API.  The scale operation works for increasing the number of replicas as well as decreasing the number of replications.  The minimum number of replicas is 1.
+
+The `scale` operation takes two parameters:
+- `replicas`: Number of desired replicas. Integer, required.
+- `max_wait`: Number of seconds to wait for successful completion of the operation.  Integer, optional, defaults to 300 seconds.
+
+One way to trigger a `scale` operation is by using the Cloudify command line.  For example:
+```
+cfy executions start -d my_deployment -p scale_params.yaml execute_operation
+```
+where `my_deployment` is the name of an existing Cloudify deployment and
+`scale_params.yaml` is a a file containing the operation parameters:
+```
+operation: scale
+operation_kwargs:
+    replicas: 3
+node_ids:
+    - "web_server"
+```
+Note that the `node_ids` list is required by the `execute_operation` workflow.  The list contains all of the nodes that are being targeted by the workflow.  If a blueprint contains more than one node, it's possible to scale all of them--or some subset--with a single workflow execution.
+
+### Image Update Operation (`image_update`)
+The `update_image` operation provides a way to change the Docker image running for a node instance, using the Kubernetes _rolling update_ strategy.  (See this [tutorial](https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/) and this [discussion of the concept](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#updating-a-deployment) in the Kubernetes documentation.) The operation is implemented by modifying the image property in the Kubernetes Deployment specification associated with a node instance and submitting the updated specification to the Kubernetes API.
+
+The `update_image` operation takes two parameters:
+- `image`: Full name (including registry, if not the default Docker registry, and tag) of the new image to use for the component.  String, required.
+- `max_wait`: Number of seconds to wait for successful completion of the operation.  Integer, optional, defaults to 300 seconds.
+
+The `update_image` operation can be triggered using the Cloudify command line.  For example:
+```
+cfy executions start -d my_deployment -p update_params.yaml execute_operation
+```
+where `my_deployment` is the name of an existing Cloudify deployment and
+`update_params.yaml` is a a file containing the operation parameters:
+```
+operation: update_image
+operation_kwargs:
+    image: myrepository.example.com/server/web:1.15
+node_ids:
+    - "web_server"
+```
+Note that the `node_ids` list is required by the `execute_operation` workflow.  The list contains all of the nodes that are being targeted by the workflow.  For an `update_image` operation, the list typically has only one element.
+
+Note also that the `update_image` operation targets the container running the application code (i.e., the container running the image specified in the `image` node property).  This plugin may deploy "sidecar" containers running supporting code--for example, the "filebeat" container that relays logs to the central log server.  The `update_image` operation does not touch any "sidecar" containers.

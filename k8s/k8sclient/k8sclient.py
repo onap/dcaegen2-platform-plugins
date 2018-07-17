@@ -64,7 +64,7 @@ def _create_probe(hc, port):
     probe = None
     period = hc.get('interval', PROBE_DEFAULT_PERIOD)
     timeout = hc.get('timeout', PROBE_DEFAULT_TIMEOUT)
-    if probe_type == 'http' or probe_type == 'https':
+    if probe_type in ['http', 'https']:
         probe = client.V1Probe(
           failure_threshold = 1,
           initial_delay_seconds = 5,
@@ -74,9 +74,9 @@ def _create_probe(hc, port):
               path = hc['endpoint'],
               port = port,
               scheme = probe_type.upper()
-          )  
+          )
         )
-    elif probe_type == 'script' or probe_type == 'docker':
+    elif probe_type in ['script', 'docker']:
         probe = client.V1Probe(
           failure_threshold = 1,
           initial_delay_seconds = 5,
@@ -84,9 +84,9 @@ def _create_probe(hc, port):
           timeout_seconds = timeout,
           _exec = client.V1ExecAction(
               command = [hc['script']]
-          )  
+          )
         )
-    return probe        
+    return probe
 
 def _create_container_object(name, image, always_pull, env={}, container_ports=[], volume_mounts = [], readiness = None):
     # Set up environment variables
@@ -99,8 +99,8 @@ def _create_container_object(name, image, always_pull, env={}, container_ports=[
     # If a health check is specified, create a readiness probe
     # (For an HTTP-based check, we assume it's at the first container port)
     probe = None
-   
-    if (readiness):    
+
+    if readiness:
         hc_port = None
         if len(container_ports) > 0:
             hc_port = container_ports[0]
@@ -121,7 +121,7 @@ def _create_deployment_object(component_name,
                               containers,
                               replicas,
                               volumes,
-                              labels, 
+                              labels,
                               pull_secrets=[]):
 
     # pull_secrets is a list of the names of the k8s secrets containing docker registry credentials
@@ -144,14 +144,14 @@ def _create_deployment_object(component_name,
         replicas=replicas,
         template=template
     )
-    
+
     # Create deployment object
     deployment = client.ExtensionsV1beta1Deployment(
         kind="Deployment",
         metadata=client.V1ObjectMeta(name=_create_deployment_name(component_name)),
         spec=spec
     )
-    
+
     return deployment
 
 def _create_service_object(service_name, component_name, service_ports, annotations, labels, service_type):
@@ -185,7 +185,7 @@ def _parse_ports(port_list):
             port_map[container] = hport
         except:
             pass    # if something doesn't parse, we just ignore it
-        
+
     return container_ports, port_map
 
 def _parse_volumes(volume_list):
@@ -198,7 +198,7 @@ def _parse_volumes(volume_list):
         vro = (v['container']['mode'] == 'ro')
         volumes.append(client.V1Volume(name=vname, host_path=client.V1HostPathVolumeSource(path=vhost)))
         volume_mounts.append(client.V1VolumeMount(name=vname, mount_path=vcontainer, read_only=vro))
-            
+
     return volumes, volume_mounts
 
 def _service_exists(namespace, component_name):
@@ -209,8 +209,25 @@ def _service_exists(namespace, component_name):
         exists = True
     except client.rest.ApiException:
         pass
-    
+
     return exists
+
+def _patch_deployment(namespace, deployment, modify):
+    '''
+    Gets the current spec for 'deployment' in 'namespace',
+    uses the 'modify' function to change the spec,
+    then sends the updated spec to k8s.
+    '''
+    _configure_api()
+
+    # Get deployment spec
+    spec = client.ExtensionsV1beta1Api().read_namespaced_deployment(deployment, namespace)
+
+    # Apply changes to spec
+    spec = modify(spec)
+
+    # Patch the deploy with updated spec
+    client.ExtensionsV1beta1Api().patch_namespaced_deployment(deployment, namespace, spec)
 
 def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, **kwargs):
     '''
@@ -219,7 +236,7 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
     We're not exposing k8s to the component developer and the blueprint author.
     This is a conscious choice.  We want to use k8s in a controlled, consistent way, and we want to hide
     the details from the component developer and the blueprint author.)
-    
+
     namespace:  the Kubernetes namespace into which the component is deployed
     component_name:  the component name, used to derive names of Kubernetes entities
     image: the docker image for the component being deployed
@@ -359,11 +376,10 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
     return dep, deployment_description
 
 def undeploy(deployment_description):
-    # TODO: do real configuration
     _configure_api()
 
     namespace = deployment_description["namespace"]
-    
+
     # remove any services associated with the component
     for service in deployment_description["services"]:
         client.CoreV1Api().delete_namespaced_service(service, namespace)
@@ -375,20 +391,54 @@ def undeploy(deployment_description):
 def is_available(namespace, component_name):
     _configure_api()
     dep_status = client.AppsV1beta1Api().read_namespaced_deployment_status(_create_deployment_name(component_name), namespace)
-    # Check if the number of available replicas is equal to the number requested
-    return dep_status.status.available_replicas >= dep_status.spec.replicas
+    # Check if the number of available replicas is equal to the number requested and that the replicas match the current spec
+    # This check can be used to verify completion of an initial deployment, a scale operation, or an update operation
+    return dep_status.status.available_replicas == dep_status.spec.replicas and dep_status.status.updated_replicas == dep_status.spec.replicas
 
 def scale(deployment_description, replicas):
-    # TODO: do real configuration
+    ''' Trigger a scaling operation by updating the replica count for the Deployment '''
+
+    def update_replica_count(spec):
+        spec.spec.replicas = replicas
+        return spec
+
+    _patch_deployment(deployment_description["namespace"], deployment_description["deployment"], update_replica_count)
+
+def upgrade(deployment_description, image, container_index = 0):
+    ''' Trigger a rolling upgrade by sending a new image name/tag to k8s '''
+
+    def update_image(spec):
+        spec.spec.template.spec.containers[container_index].image = image
+        return spec
+
+    _patch_deployment(deployment_description["namespace"], deployment_description["deployment"], update_image)
+
+def rollback(deployment_description, rollback_to=0):
+    '''
+    Undo upgrade by rolling back to a previous revision of the deployment.
+    By default, go back one revision.
+    rollback_to can be used to supply a specific revision number.
+    Returns the image for the app container and the replica count from the rolled-back deployment
+    '''
+    '''
+    2018-07-13
+    Currently this does not work due to a bug in the create_namespaced_deployment_rollback() method.
+    The k8s python client code throws an exception while processing the response from the API.
+    See:
+       - https://github.com/kubernetes-client/python/issues/491
+       - https://github.com/kubernetes/kubernetes/pull/63837
+    The fix has been merged into the master branch but is not in the latest release.
+    '''
     _configure_api()
-
+    deployment = deployment_description["deployment"]
     namespace = deployment_description["namespace"]
-    name = deployment_description["deployment"]
 
-    # Get deployment spec
-    spec = client.ExtensionsV1beta1Api().read_namespaced_deployment(name, namespace)
+    # Initiate the rollback
+    client.ExtensionsV1beta1Api().create_namespaced_deployment_rollback(
+        deployment,
+        namespace,
+        client.AppsV1beta1DeploymentRollback(name=deployment, rollback_to=client.AppsV1beta1RollbackConfig(revision=rollback_to)))
 
-    # Update the replica count in the spec
-    spec.spec.replicas = replicas
-    client.ExtensionsV1beta1Api().patch_namespaced_deployment(name, namespace, spec)
-
+    # Read back the spec for the rolled-back deployment
+    spec = client.ExtensionsV1beta1Api().read_namespaced_deployment(deployment, namespace)
+    return spec.spec.template.spec.containers[0].image, spec.spec.replicas
