@@ -1,5 +1,5 @@
 python-consul>=0.6.0,<1.0.0
 uuid==1.30
-onap-dcae-dcaepolicy-lib==2.1.0
+onap-dcae-dcaepolicy-lib==2.4.0
 kubernetes==4.0.0
 cloudify-plugins-common==3.4

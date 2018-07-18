@@ -190,10 +190,10 @@ def test_lookup_service(monkeypatch, mockconfig):
 
 
 def test_verify_container(monkeypatch, mockconfig):
-    from k8sclient import k8sclient
+    import k8sclient
     from k8splugin import tasks
     from k8splugin.exceptions import DockerPluginDeploymentError
-    
+
     def fake_is_available_success(ch, scn):
         return True
 
@@ -273,7 +273,7 @@ def test_enhance_docker_params(mockconfig):
 
     assert actual == {'envs': {"SERVICE_TAGS": ""}, 'docker_config': {'ports': ['1:1', '2:2'],
         'volumes': [{'host': 'somewhere else', 'container': 'somewhere'}]},
-        'ports': ['1:1', '2:2', '3:3', '4:4'], 'volumes': [{'host': 'somewhere else', 
+        'ports': ['1:1', '2:2', '3:3', '4:4'], 'volumes': [{'host': 'somewhere else',
             'container': 'somewhere'}, {'host': 'nowhere else', 'container':
             'nowhere'}], "service_id": None}
 

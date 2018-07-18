@@ -98,3 +98,17 @@ def merge_inputs_for_start(task_start_func):
                 ctx.instance.runtime_properties, **kwargs)
 
     return wrapper
+
+def wrap_error_handling_update(update_func):
+    """ Wrap error handling for update operations (scale and upgrade) """
+
+    def wrapper(**kwargs):
+        try:
+            return update_func(**kwargs)
+        except DockerPluginDeploymentError:
+            raise NonRecoverableError ("Update operation did not complete successfully in the alloted time")
+        except Exception as e:
+            ctx.logger.error ("Unexpected error during update operation: {0}".format(str(e)))
+            raise NonRecoverableError(e)
+
+    return wrapper

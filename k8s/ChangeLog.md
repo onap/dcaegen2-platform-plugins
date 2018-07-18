@@ -2,13 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/) 
+The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [1.3.0]
+* Enhancement: Add support for changing the image running in the application container.  ("Rolling upgrade")
 
 ## [1.2.0]
-* Enhancement: Use the "healthcheck" parameters from node_properties to set up a 
+* Enhancement: Use the "healthcheck" parameters from node_properties to set up a
 Kubernetes readiness probe for the container.
 
 ## [1.1.0]
