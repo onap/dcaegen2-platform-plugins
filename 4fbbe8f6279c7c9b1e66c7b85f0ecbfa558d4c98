@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a9dcd25_f88cc881",
+        "filename": "k8s/k8s-node-type.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1071
+      },
+      "writtenOn": "2018-07-18T14:14:19Z",
+      "side": 1,
+      "message": "\"Base\"? Also do envision that docker node types should derive from this as well?",
+      "revId": "4fbbe8f6279c7c9b1e66c7b85f0ecbfa558d4c98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_587cdc72",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1071
+      },
+      "writtenOn": "2018-07-18T14:14:19Z",
+      "side": 1,
+      "message": "Slick! Good change",
+      "revId": "4fbbe8f6279c7c9b1e66c7b85f0ecbfa558d4c98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_18ddf470",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1071
+      },
+      "writtenOn": "2018-07-18T14:14:19Z",
+      "side": 1,
+      "message": "There seems to be a notable decision to only process the first container or perhaps you are assuming the list is always length of one?",
+      "revId": "4fbbe8f6279c7c9b1e66c7b85f0ecbfa558d4c98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_f85128d9",
+        "filename": "k8s/k8splugin/__init__.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1071
+      },
+      "writtenOn": "2018-07-18T14:14:19Z",
+      "side": 1,
+      "message": "Just sharing, doing \"from .tasks import *\" instead would I believe auto import everything except names that begin with underbar. (I haven\u0027t used this myself in past code, just sharing)",
+      "revId": "4fbbe8f6279c7c9b1e66c7b85f0ecbfa558d4c98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_b863a0b0",
+        "filename": "k8s/k8splugin/decorators.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1071
+      },
+      "writtenOn": "2018-07-18T14:14:19Z",
+      "side": 1,
+      "message": "Want to double check, are you also using this exception type or are you expecting a different one?",
+      "revId": "4fbbe8f6279c7c9b1e66c7b85f0ecbfa558d4c98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
