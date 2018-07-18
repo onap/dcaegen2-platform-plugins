@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_d8ac6c8f",
+        "filename": "k8s/k8s-node-type.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2018-07-18T15:10:45Z",
+      "side": 1,
+      "message": "No. I\u0027m not looking to change the Docker implementation at all.",
+      "parentUuid": "1a9dcd25_f88cc881",
+      "revId": "4fbbe8f6279c7c9b1e66c7b85f0ecbfa558d4c98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_587cdc72",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 1
@@ -106,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_f8a9287c",
+        "filename": "k8s/k8splugin/__init__.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2018-07-18T15:10:45Z",
+      "side": 1,
+      "message": "I\u0027m just extending code that I stole from the Docker plugin!",
+      "parentUuid": "1a9dcd25_f85128d9",
+      "revId": "4fbbe8f6279c7c9b1e66c7b85f0ecbfa558d4c98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_b863a0b0",
         "filename": "k8s/k8splugin/decorators.py",
         "patchSetId": 1
@@ -117,6 +153,24 @@
       "writtenOn": "2018-07-18T14:14:19Z",
       "side": 1,
       "message": "Want to double check, are you also using this exception type or are you expecting a different one?",
+      "revId": "4fbbe8f6279c7c9b1e66c7b85f0ecbfa558d4c98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a9dcd25_b8bba0c3",
+        "filename": "k8s/k8splugin/decorators.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2018-07-18T15:10:45Z",
+      "side": 1,
+      "message": "Yes I am using this type.  (Probably should rename the DockerPlugin* exceptions.  I\u0027ve been removing \"Dockerisms\" gradually as I find more of them.)",
+      "parentUuid": "1a9dcd25_b863a0b0",
       "revId": "4fbbe8f6279c7c9b1e66c7b85f0ecbfa558d4c98",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
