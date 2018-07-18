@@ -70,6 +70,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_18209448",
+        "filename": "k8s/k8splugin/__init__.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1949
+      },
+      "writtenOn": "2018-07-18T14:29:33Z",
+      "side": 1,
+      "message": "@Mike - linter will complain about importing all \"from .tasks import *\" - explicit import is considered a better practice",
+      "parentUuid": "1a9dcd25_f85128d9",
+      "revId": "4fbbe8f6279c7c9b1e66c7b85f0ecbfa558d4c98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_b863a0b0",
         "filename": "k8s/k8splugin/decorators.py",
         "patchSetId": 1
