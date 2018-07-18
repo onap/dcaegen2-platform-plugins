@@ -71,6 +71,24 @@
     },
     {
       "key": {
+        "uuid": "1a9dcd25_33ced35b",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2018-07-18T20:27:46Z",
+      "side": 1,
+      "message": "I construct the pod so that the application container is always the first container.   This is done around lines 327-329.  The update operation is targeted at the application.",
+      "parentUuid": "1a9dcd25_18ddf470",
+      "revId": "4fbbe8f6279c7c9b1e66c7b85f0ecbfa558d4c98",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1a9dcd25_f85128d9",
         "filename": "k8s/k8splugin/__init__.py",
         "patchSetId": 1
