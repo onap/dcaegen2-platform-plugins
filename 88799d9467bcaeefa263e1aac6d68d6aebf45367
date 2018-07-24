@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da7095c5_b163cbb0",
+        "filename": "docker/docker-node-type.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2018-07-24T15:16:07Z",
+      "side": 1,
+      "message": "We could put the data type definitions in a separate file and import them into the k8s and docker type files.  (The downside is that someone looking at the type file wouldn\u0027t be able to see the data type definitions without opening up the data type definition file.)  This would probably have an impact on the build process, which is expecting to push a single type file into Nexus.\n\nProbably with a bit of work, we could have a common type file for containerized applications that would serve as a base type for both docker and k8s.   Maybe the difference could be reduced to the plugin definition.",
+      "revId": "88799d9467bcaeefa263e1aac6d68d6aebf45367",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
