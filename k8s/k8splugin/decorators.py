@@ -19,12 +19,14 @@
 # ECOMP is a trademark and service mark of AT&T Intellectual Property.
 
 import copy
+
 from cloudify import ctx
 from cloudify.exceptions import NonRecoverableError, RecoverableError
+
 from k8splugin import discovery as dis
-from k8splugin.exceptions import DockerPluginDeploymentError, \
-    DockerPluginDependencyNotReadyError
 from k8splugin import utils
+from k8splugin.exceptions import (DockerPluginDependencyNotReadyError,
+                                  DockerPluginDeploymentError)
 
 
 def monkeypatch_loggers(task_func):

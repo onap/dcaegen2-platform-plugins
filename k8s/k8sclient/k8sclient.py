@@ -20,7 +20,7 @@
 import os
 import uuid
 from msb import msb
-from kubernetes import config, client
+from kubernetes import config, client, stream
 
 # Default values for readiness probe
 PROBE_DEFAULT_PERIOD = 15
@@ -121,8 +121,13 @@ def _create_deployment_object(component_name,
                               containers,
                               replicas,
                               volumes,
-                              labels,
+                              labels={},
                               pull_secrets=[]):
+
+    deployment_name = _create_deployment_name(component_name)
+
+    # Label the pod with the deployment name, so we can find it easily
+    labels.update({"k8sdeployment" : deployment_name})
 
     # pull_secrets is a list of the names of the k8s secrets containing docker registry credentials
     # See https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
@@ -148,7 +153,7 @@ def _create_deployment_object(component_name,
     # Create deployment object
     deployment = client.ExtensionsV1beta1Deployment(
         kind="Deployment",
-        metadata=client.V1ObjectMeta(name=_create_deployment_name(component_name)),
+        metadata=client.V1ObjectMeta(name=deployment_name),
         spec=spec
     )
 
@@ -228,6 +233,55 @@ def _patch_deployment(namespace, deployment, modify):
 
     # Patch the deploy with updated spec
     client.ExtensionsV1beta1Api().patch_namespaced_deployment(deployment, namespace, spec)
+
+def _execute_command_in_pod(namespace, pod_name, command):
+    '''
+    Execute the command (specified by an argv-style list in  the "command" parameter) in
+    the specified pod in the specified namespace.  For now at least, we use this only to
+    run a notification script in a pod after a configuration change.
+
+    The straightforward way to do this is with the V1 Core API function "connect_get_namespaced_pod_exec".
+    Unfortunately due to a bug/limitation in the Python client library, we can't call it directly.
+    We have to make the API call through a Websocket connection using the kubernetes.stream wrapper API.
+    I'm following the example code at https://github.com/kubernetes-client/python/blob/master/examples/exec.py.
+    There are several issues tracking this, in various states.  It isn't clear that there will ever
+    be a fix.
+        - https://github.com/kubernetes-client/python/issues/58
+        - https://github.com/kubernetes-client/python/issues/409
+        - https://github.com/kubernetes-client/python/issues/526
+
+    The main consequence of the workaround using "stream" is that the caller does not get an indication
+    of the exit code returned by the command when it completes execution.   It turns out that the
+    original implementation of notification in the Docker plugin did not use this result, so we can
+    still match the original notification functionality.
+
+    The "stream" approach returns a string containing any output sent by the command to stdout or stderr.
+    We'll return that so it can logged.
+    '''
+    _configure_api()
+    try:
+        output = stream.stream(client.CoreV1Api().connect_get_namespaced_pod_exec,
+                             name=pod_name,
+                             namespace=namespace,
+                             command=command,
+                             stdout=True,
+                             stderr=True,
+                            stdin=False,
+                            tty=False)
+    except client.rest.ApiException as e:
+        # If the exception indicates the pod wasn't found,  it's not a fatal error.
+        # It existed when we enumerated the pods for the deployment but no longer exists.
+        # Unfortunately, the only way to distinguish a pod not found from any other error
+        # is by looking at the reason text.
+        # (The ApiException's "status" field should contain the HTTP status code, which would
+        # be 404 if the pod isn't found, but empirical testing reveals that "status" is set
+        # to zero.)
+        if "404 not found" in e.reason.lower():
+            output = "Pod not found"
+        else:
+            raise e
+
+    return {"pod" : pod_name, "output" : output}
 
 def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, **kwargs):
     '''
@@ -442,3 +496,51 @@ def rollback(deployment_description, rollback_to=0):
     # Read back the spec for the rolled-back deployment
     spec = client.ExtensionsV1beta1Api().read_namespaced_deployment(deployment, namespace)
     return spec.spec.template.spec.containers[0].image, spec.spec.replicas
+
+def execute_command_in_deployment(deployment_description, command):
+    '''
+    Enumerates the pods in the k8s deployment identified by "deployment_description",
+    then executes the command (represented as an argv-style list) in "command" in
+    container 0 (the main application container) each of those pods.
+
+    Note that the sets of pods associated with a deployment can change over time.  The
+    enumeration is a snapshot at one point in time.  The command will not be executed in
+    pods that are created after the initial enumeration.   If a pod disappears after the
+    initial enumeration and before the command is executed, the attempt to execute the
+    command will fail.  This is not treated as a fatal error.
+
+    This approach is reasonable for the one current use case for "execute_command":  running a
+    script to notify a container that its configuration has changed as a result of a
+    policy change.  In this use case, the new configuration information is stored into
+    the configuration store (Consul), the pods are enumerated, and the command is executed.
+    If a pod disappears after the enumeration, the fact that the command cannot be run
+    doesn't matter--a nonexistent pod doesn't need to be reconfigured.  Similarly, a pod that
+    comes up after the enumeration will get its initial configuration from the updated version
+    in Consul.
+
+    The optimal solution here would be for k8s to provide an API call to execute a command in
+    all of the pods for a deployment.   Unfortunately, k8s does not provide such a call--the
+    only call provided by k8s operates at the pod level, not the deployment level.
+
+    Another interesting k8s factoid: there's no direct way to list the pods belong to a
+    particular k8s deployment.   The deployment code above sets a label ("k8sdeployment") on
+    the pod that has the k8s deployment name.  To list the pods, the code below queries for
+    pods with the label carrying the deployment name.
+    '''
+
+    _configure_api()
+    deployment = deployment_description["deployment"]
+    namespace = deployment_description["namespace"]
+
+    # Get names of all the running pods belonging to the deployment
+    pod_names = [pod.metadata.name for pod in client.CoreV1Api().list_namespaced_pod(
+        namespace = namespace,
+        label_selector = "k8sdeployment={0}".format(deployment),
+        field_selector = "status.phase=Running"
+    ).items]
+
+    def do_execute(pod_name):
+        return _execute_command_in_pod(namespace, pod_name, command)
+
+    # Execute command in the running pods
+    return map(do_execute, pod_names)

@@ -18,14 +18,14 @@
 #
 # ECOMP is a trademark and service mark of AT&T Intellectual Property.
 
-from functools import partial
 import json
 import logging
-import uuid
-import requests
-import consul
 import re
+import uuid
+from functools import partial
 
+import consul
+import requests
 
 logger = logging.getLogger("discovery")
 
@@ -54,16 +54,16 @@ def _wrap_consul_call(consul_func, *args, **kwargs):
 def generate_service_component_name(service_component_type):
     """Generate service component id used to pass into the service component
     instance and used as the key to the service component configuration.
-    
+
     Updated for use with Kubernetes.  Sometimes the service component name gets
     used in Kubernetes in contexts (such as naming a Kubernetes Service) that
-    requires the name to conform to the RFC1035 DNS "label" syntax: 
+    requires the name to conform to the RFC1035 DNS "label" syntax:
        -- starts with an alpha
        -- contains only of alphanumerics and "-"
        -- <= 63 characters long
 
     Format:
-    s<service component id>-<service component type>, 
+    s<service component id>-<service component type>,
         truncated to 63 characters, "_" replaced with "-" in service_component_type,
         other non-conforming characters removed from service_component_type
     """
@@ -197,7 +197,7 @@ def is_healthy(consul_host, instance):
 
 def add_to_entry(conn, key, add_name, add_value):
     """
-    Find 'key' in consul.  
+    Find 'key' in consul.
     Treat its value as a JSON string representing a dict.
     Extend the dict by adding an entry with key 'add_name' and value 'add_value'.
     Turn the resulting extended dict into a JSON string.

@@ -200,7 +200,7 @@ def test_verify_container(monkeypatch, mockconfig):
     monkeypatch.setattr(k8sclient, "is_available",
             fake_is_available_success)
 
-    assert tasks._verify_container("some-name", 3)
+    assert tasks._verify_k8s_deployment("some-name", 3)
 
     def fake_is_available_never_good(ch, scn):
         return False
@@ -209,7 +209,7 @@ def test_verify_container(monkeypatch, mockconfig):
             fake_is_available_never_good)
 
     with pytest.raises(DockerPluginDeploymentError):
-        tasks._verify_container("some-name", 2)
+        tasks._verify_k8s_deployment("some-name", 2)
 
 
 def test_update_delivery_url(monkeypatch, mockconfig):
@@ -289,5 +289,5 @@ def test_enhance_docker_params(mockconfig):
 def test_notify_container(mockconfig):
     from k8splugin import tasks
 
-    test_input = { "docker_config": { "trigger_type": "unknown" } }
-    assert test_input == tasks._notify_container(**test_input)
+    test_input = { "docker_config": { "policy": { "trigger_type": "unknown" } } }
+    assert [] == tasks._notify_container(**test_input)
