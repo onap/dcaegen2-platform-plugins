@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "da7095c5_b0b09bf5",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 1071
+      },
+      "writtenOn": "2018-07-26T13:56:11Z",
+      "side": 1,
+      "message": ":(",
+      "revId": "03ac66c04143f712378a92ef258253b8ce6b1e8b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "da7095c5_1c6de332",
         "filename": "k8s/k8splugin/tasks.py",
         "patchSetId": 1
@@ -43,6 +60,23 @@
         "endLine": 257,
         "endChar": 49
       },
+      "revId": "03ac66c04143f712378a92ef258253b8ce6b1e8b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da7095c5_109f0761",
+        "filename": "k8s/tests/test_tasks.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1071
+      },
+      "writtenOn": "2018-07-26T13:56:11Z",
+      "side": 1,
+      "message": "Does this test require a running k8s cluster?  I see the mockconfig but I don\u0027t see how you are mocking the k8sclient for example.",
       "revId": "03ac66c04143f712378a92ef258253b8ce6b1e8b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
