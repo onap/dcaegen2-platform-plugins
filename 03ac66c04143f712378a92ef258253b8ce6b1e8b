@@ -22,6 +22,30 @@
       "revId": "03ac66c04143f712378a92ef258253b8ce6b1e8b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da7095c5_3c51c762",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2018-07-26T12:19:25Z",
+      "side": 1,
+      "message": "The \"de-Dockerizing\" work isn\u0027t complete.  I will catch more of the Docker references in later releases.  I think I got most of them out of the logs and documentation this time.",
+      "parentUuid": "da7095c5_1c6de332",
+      "range": {
+        "startLine": 257,
+        "startChar": 22,
+        "endLine": 257,
+        "endChar": 49
+      },
+      "revId": "03ac66c04143f712378a92ef258253b8ce6b1e8b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
