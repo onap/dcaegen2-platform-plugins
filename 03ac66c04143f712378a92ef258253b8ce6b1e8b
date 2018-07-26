@@ -80,6 +80,24 @@
       "revId": "03ac66c04143f712378a92ef258253b8ce6b1e8b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da7095c5_b0b5fbce",
+        "filename": "k8s/tests/test_tasks.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2018-07-26T14:11:49Z",
+      "side": 1,
+      "message": "It doesn\u0027t, because the \"trigger_type\" being set to \"unknown\" means that no notification will be attempted.   This is the same trick used in the Docker plugin, where there is no mock for the docker exec calls--the condition for invoking the calls is never met.\n\nIf \"trigger_type\" were set to \"docker\", then we\u0027d need to mock the k8sclient.",
+      "parentUuid": "da7095c5_109f0761",
+      "revId": "03ac66c04143f712378a92ef258253b8ce6b1e8b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
