@@ -1,0 +1,7 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+2: Jack Lucas <jflucas@research.att.com>
+Submitted-by: Jack Lucas <jflucas@research.att.com>
+Submitted-at: Fri, 27 Jul 2018 19:42:21 +0000
+Reviewed-on: https://gerrit.onap.org/r/57341
+Project: dcaegen2/platform/plugins
+Branch: refs/heads/master
