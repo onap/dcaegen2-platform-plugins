@@ -18,6 +18,7 @@
 #
 # ECOMP is a trademark and service mark of AT&T Intellectual Property.
 import os
+import re
 import uuid
 from msb import msb
 from kubernetes import config, client, stream
@@ -25,6 +26,11 @@ from kubernetes import config, client, stream
 # Default values for readiness probe
 PROBE_DEFAULT_PERIOD = 15
 PROBE_DEFAULT_TIMEOUT = 1
+
+# Regular expression for interval/timeout specification
+INTERVAL_SPEC = re.compile("^([0-9]+)(s|m|h)?$")
+# Conversion factors to seconds
+FACTORS = {None: 1, "s": 1, "m": 60, "h": 3600}
 
 def _create_deployment_name(component_name):
     return "dep-{0}".format(component_name)
@@ -58,12 +64,32 @@ def _configure_api():
             environ=localenv
         ).load_and_set()
 
+def _parse_interval(t):
+    """
+    Parse an interval specification
+    t can be
+       - a simple integer quantity, interpreted as seconds
+       - a string representation of a decimal integer, interpreted as seconds
+       - a string consisting of a represention of an decimal integer followed by a unit,
+         with "s" representing seconds, "m" representing minutes,
+         and "h" representing hours
+    Used for compatibility with the Docker plugin, where time intervals
+    for health checks were specified as strings with a number and a unit.
+    See 'intervalspec' above for the regular expression that's accepted.
+    """
+    m = INTERVAL_SPEC.match(str(t))
+    if m:
+        time = int(m.group(1)) * FACTORS[m.group(2)]
+    else:
+        raise ValueError("Bad interval specification: {0}".format(t))
+    return time
+
 def _create_probe(hc, port):
     ''' Create a Kubernetes probe based on info in the health check dictionary hc '''
     probe_type = hc['type']
     probe = None
-    period = hc.get('interval', PROBE_DEFAULT_PERIOD)
-    timeout = hc.get('timeout', PROBE_DEFAULT_TIMEOUT)
+    period = _parse_interval(hc.get('interval', PROBE_DEFAULT_PERIOD))
+    timeout = _parse_interval(hc.get('timeout', PROBE_DEFAULT_TIMEOUT))
     if probe_type in ['http', 'https']:
         probe = client.V1Probe(
           failure_threshold = 1,
