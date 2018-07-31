@@ -25,7 +25,7 @@ plugins:
   k8s:
     executor: 'central_deployment_agent'
     package_name: k8splugin
-    package_version: 1.4.0
+    package_version: 1.4.1
 
 data_types:
 
