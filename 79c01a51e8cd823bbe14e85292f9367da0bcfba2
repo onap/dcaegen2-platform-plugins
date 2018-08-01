@@ -111,6 +111,24 @@
       "revId": "79c01a51e8cd823bbe14e85292f9367da0bcfba2",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_e2409837",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2018-08-01T21:43:28Z",
+      "side": 1,
+      "message": "\"Scariness\" is a subjective term.   I find it scary when people do parsing with ad hoc solutions.  REs--especially simple ones that can be mapped directly into a deterministic FSA--are easy to reason about and lend themselves to clean code. If I have a question about an RE that I see in a piece of code, I can grab it, drop it into a simple program (or just work from an interpreter command line) and execute it against various test strings to answer my question.  \n\nIn the case of REs, I\u0027m not convinced that unit tests help much in preventing bugs in production. Bugs show up when an RE executes against unexpected input.  Unit tests cover the set of inputs that the RE developer comes up with. Although I don\u0027t think they\u0027re especially useful, I\u0027ve added some unit tests.",
+      "parentUuid": "1a76adc5_f6ab7ed4",
+      "revId": "79c01a51e8cd823bbe14e85292f9367da0bcfba2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
