@@ -16,6 +16,47 @@
       "revId": "79c01a51e8cd823bbe14e85292f9367da0bcfba2",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_7ca0adf4",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1949
+      },
+      "writtenOn": "2018-08-01T13:07:47Z",
+      "side": 1,
+      "message": "linter will complain about lowcase naming of the constants \u003d\u003d they do not like variables on the global scope in the module",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 12
+      },
+      "revId": "79c01a51e8cd823bbe14e85292f9367da0bcfba2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_bc5e4511",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1949
+      },
+      "writtenOn": "2018-08-01T13:07:47Z",
+      "side": 1,
+      "message": "optional: \n1. would it make sense to relax handling of the white spaces - not requiring to have a single space like [ ]* ?\n\n2. Does it really need to be Python specific regex ?",
+      "parentUuid": "1a76adc5_f6ab7ed4",
+      "revId": "79c01a51e8cd823bbe14e85292f9367da0bcfba2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
