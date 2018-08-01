@@ -75,6 +75,24 @@
       "revId": "79c01a51e8cd823bbe14e85292f9367da0bcfba2",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_3c7235e6",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2018-08-01T15:44:58Z",
+      "side": 1,
+      "message": "There is no space in the RE.  The cursor movement here seems to indicate that there is, but it\u0027s not present in the code I pushed.  I just pulled down an archive of this change and verified that there is no space.  Using the archive, I did a quick test:\n\n\u003e\u003e\u003e from k8sclient.k8sclient import _parse_interval\n\u003e\u003e\u003e _parse_interval(\"30s\")\n30\n\u003e\u003e\u003e _parse_interval(\"30 s\")\nTraceback (most recent call last):\n  File \"\u003cstdin\u003e\", line 1, in \u003cmodule\u003e\n  File \"k8sclient/k8sclient.py\", line 84, in _parse_interval\n    raise ValueError(\"Bad interval specification: {0}\".format(t))\nValueError: Bad interval specification: 30 s\n\nThe intent is that there should be no space between the value and the unit.  The RE enforces that restriction.\n\nIn the original Docker plugin, the healthcheck timeout and interval values are copied (with no validation or other processing) from the blueprint into environment variables that are set into the Docker container environment.  In the Docker environment, registrator uses these to set up a Consul health check.  The syntax is \"30s\". (See http://gliderlabs.github.io/registrator/latest/user/backends/#consul.)\n\nI\u0027m just trying to provide backwards compatibility here, to keep the difference between a Docker blueprint and a k8s blueprint to a minimum.  I\u0027m not trying to define some ideal general syntax for specifying intervals of time.",
+      "parentUuid": "1a76adc5_bc9ba571",
+      "revId": "79c01a51e8cd823bbe14e85292f9367da0bcfba2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
