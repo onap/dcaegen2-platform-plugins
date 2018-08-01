@@ -93,6 +93,24 @@
       "revId": "79c01a51e8cd823bbe14e85292f9367da0bcfba2",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_475cfe25",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1949
+      },
+      "writtenOn": "2018-08-01T16:30:46Z",
+      "side": 1,
+      "message": "my mistake - apparently the font on the screen made me to believe that there is a space in-between parens )( - i did not try doing the cursor movement - good catch on your side :-)",
+      "parentUuid": "1a76adc5_3c7235e6",
+      "revId": "79c01a51e8cd823bbe14e85292f9367da0bcfba2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
