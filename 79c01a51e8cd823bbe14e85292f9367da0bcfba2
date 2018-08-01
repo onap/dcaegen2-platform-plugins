@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_f6ab7ed4",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 515
+      },
+      "writtenOn": "2018-08-01T01:34:37Z",
+      "side": 1,
+      "message": "I see some scary code -- notably a regex -- being added here, but I don\u0027t see the cooresponding unit tests. Scary things should be unit tested. Many a bug has been caused by bad regex..",
+      "revId": "79c01a51e8cd823bbe14e85292f9367da0bcfba2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
