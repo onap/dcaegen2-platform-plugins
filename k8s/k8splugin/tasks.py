@@ -51,8 +51,7 @@ DEFAULT_SCHEME = "http"
 SERVICE_COMPONENT_NAME = "service_component_name"
 CONTAINER_ID = "container_id"
 APPLICATION_CONFIG = "application_config"
-
-
+K8S_DEPLOYMENT = "k8s_deployment"
 
 # Utility methods
 
@@ -303,7 +302,7 @@ def _create_and_start_container(container_name, image, **kwargs):
                      readiness=kwargs.get("readiness"))
 
     # Capture the result of deployment for future use
-    ctx.instance.runtime_properties["k8s_deployment"] = dep
+    ctx.instance.runtime_properties[K8S_DEPLOYMENT] = dep
     ctx.instance.runtime_properties["replicas"] = replicas
     ctx.logger.info ("k8s deployment initiated successfully for {0}: {1}".format(container_name, dep))
 
@@ -557,13 +556,19 @@ def create_and_start_container(**kwargs):
 @operation
 def stop_and_remove_container(**kwargs):
     """Delete Kubernetes deployment"""
-    try:
-        deployment_description = ctx.instance.runtime_properties["k8s_deployment"]
-        k8sclient.undeploy(deployment_description)
+    if K8S_DEPLOYMENT in ctx.instance.runtime_properties:
+        try:
+            deployment_description = ctx.instance.runtime_properties[K8S_DEPLOYMENT]
+            k8sclient.undeploy(deployment_description)
 
-    except Exception as e:
-        ctx.logger.error("Unexpected error while deleting k8s deployment: {0}"
-                .format(str(e)))
+        except Exception as e:
+            ctx.logger.error("Unexpected error while deleting k8s deployment: {0}"
+                    .format(str(e)))
+    else:
+        # A previous install workflow may have failed,
+        # and no Kubernetes deployment info was recorded in runtime_properties.
+        # No need to run the undeploy operation
+        ctx.logger.info("No k8s deployment information, not attempting to delete k8s deployment")
 
 @wrap_error_handling_update
 @monkeypatch_loggers
@@ -575,7 +580,7 @@ def scale(replicas, **kwargs):
     if replicas > 0:
         current_replicas = ctx.instance.runtime_properties["replicas"]
         ctx.logger.info("Scaling {0} from {1} to {2} replica(s)".format(service_component_name, current_replicas, replicas))
-        deployment_description = ctx.instance.runtime_properties["k8s_deployment"]
+        deployment_description = ctx.instance.runtime_properties[K8S_DEPLOYMENT]
         k8sclient.scale(deployment_description, replicas)
         ctx.instance.runtime_properties["replicas"] = replicas
 
@@ -598,7 +603,7 @@ def update_image(image, **kwargs):
     if image:
         current_image = ctx.instance.runtime_properties["image"]
         ctx.logger.info("Updating app image for {0} from {1} to {2}".format(service_component_name, current_image, image))
-        deployment_description = ctx.instance.runtime_properties["k8s_deployment"]
+        deployment_description = ctx.instance.runtime_properties[K8S_DEPLOYMENT]
         k8sclient.upgrade(deployment_description, image)
         ctx.instance.runtime_properties["image"] = image
 
@@ -621,14 +626,19 @@ def update_image(image, **kwargs):
 @operation
 def cleanup_discovery(**kwargs):
     """Delete configuration from Consul"""
-    service_component_name = ctx.instance.runtime_properties[SERVICE_COMPONENT_NAME]
+    if SERVICE_COMPONENT_NAME in ctx.instance.runtime_properties:
+        service_component_name = ctx.instance.runtime_properties[SERVICE_COMPONENT_NAME]
 
-    try:
-        conn = dis.create_kv_conn(CONSUL_HOST)
-        dis.remove_service_component_config(conn, service_component_name)
-    except dis.DiscoveryConnectionError as e:
-        raise RecoverableError(e)
-
+        try:
+            conn = dis.create_kv_conn(CONSUL_HOST)
+            dis.remove_service_component_config(conn, service_component_name)
+        except dis.DiscoveryConnectionError as e:
+            raise RecoverableError(e)
+    else:
+        # When another node in the blueprint fails install,
+        # this node may not have generated a service component name.
+        # There's nothing to delete from Consul.
+        ctx.logger.info ("No service_component_name, not attempting to delete config from Consul")
 
 def _notify_container(**kwargs):
     """
@@ -655,7 +665,7 @@ def _notify_container(**kwargs):
             command = [script_path, "policies", json.dumps(policy_data)]
 
             # Execute the command
-            deployment_description = ctx.instance.runtime_properties["k8s_deployment"]
+            deployment_description = ctx.instance.runtime_properties[K8S_DEPLOYMENT]
             resp = k8sclient.execute_command_in_deployment(deployment_description, command)
 
     # else the default is no trigger
