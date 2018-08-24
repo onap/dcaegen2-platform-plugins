@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-
 <!--
 ================================================================================
 Copyright (c) 2017-2018 AT&T Intellectual Property. All rights reserved.
@@ -19,13 +18,12 @@ limitations under the License.
 
 ECOMP is a trademark and service mark of AT&T Intellectual Property.
 -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.onap.oparent</groupId>
     <artifactId>oparent</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
   </parent>
   <groupId>org.onap.dcaegen2.platform</groupId>
   <artifactId>plugins</artifactId>
