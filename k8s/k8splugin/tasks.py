@@ -296,6 +296,7 @@ def _create_and_start_container(container_name, image, **kwargs):
                      volumes=kwargs.get("volumes",[]),
                      ports=kwargs.get("ports",[]),
                      msb_list=kwargs.get("msb_list"),
+                     tls_info=kwargs.get("tls_info"),
                      env = env,
                      labels = kwargs.get("labels", {}),
                      log_info=kwargs.get("log_info"),
@@ -323,6 +324,10 @@ def _parse_cloudify_context(**kwargs):
         # Pick up the centralized logging info
     if "log_info" in ctx.node.properties and "log_directory" in ctx.node.properties["log_info"]:
         kwargs["log_info"] = ctx.node.properties["log_info"]
+
+    # Pick up TLS info if present
+    if "tls_info" in ctx.node.properties:
+        kwargs["tls_info"] = ctx.node.properties["tls_info"]
 
     # Pick up replica count and always_pull_image flag
     if "replicas" in ctx.node.properties:
@@ -380,6 +385,7 @@ def _create_and_start_component(**kwargs):
         "ports": kwargs.get("ports", None),
         "envs": kwargs.get("envs", {}),
         "log_info": kwargs.get("log_info", {}),
+        "tls_info": kwargs.get("tls_info", {}),
         "labels": kwargs.get("labels", {}),
         "readiness": kwargs.get("readiness",{})}
     _create_and_start_container(service_component_name, image, **sub_kwargs)
@@ -523,6 +529,10 @@ def create_and_start_container_for_platforms(**kwargs):
     # If centralized logging via ELK is desired, then set up the logging info
     if "log_info" in ctx.node.properties and "log_directory" in ctx.node.properties["log_info"]:
         kwargs["log_info"] = ctx.node.properties["log_info"]
+
+    # Pick up TLS info if present
+    if "tls_info" in ctx.node.properties:
+        kwargs["tls_info"] = ctx.node.properties["tls_info"]
 
     # Pick up replica count and always_pull_image flag
     if "replicas" in ctx.node.properties:

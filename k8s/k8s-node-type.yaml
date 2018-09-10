@@ -25,7 +25,7 @@ plugins:
   k8s:
     executor: 'central_deployment_agent'
     package_name: k8splugin
-    package_version: 1.4.2
+    package_version: 1.4.3
 
 data_types:
 
@@ -79,6 +79,22 @@ data_types:
         type: string
         required: false
 
+  dcae.types.TLSInfo:
+    description: >
+      Information for using TLS (HTTPS).  (The properties all have to be declared as not
+      required, otherwise the tls_info property on the node would also be required.)
+    properties:
+      cert_directory:
+        description: >
+          The path in the container where the component expects to find TLS-related data.
+        type: string
+        required: false
+      use_tls:
+        description: >
+          Flag indicating whether TLS (HTTPS) is to be used
+        type: boolean
+        required: false
+
 node_types:
     dcae.nodes.ContainerizedComponent:
     # Bese type for all containerized components
@@ -107,6 +123,12 @@ node_types:
               type: dcae.types.LoggingInfo
               description: >
                 Information for setting up centralized logging via ELK.
+              required: false
+
+            tls_info:
+              type: dcae.types.TLSInfo
+              description: >
+                Information for setting up TLS (HTTPS).
               required: false
 
             replicas:

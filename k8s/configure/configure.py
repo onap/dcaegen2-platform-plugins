@@ -32,6 +32,9 @@ FB_CONFIG_SUBPATH = "filebeat.yml"
 FB_CONFIG_MAP = "filebeat-conf"
 FB_IMAGE = "docker.elastic.co/beats/filebeat:5.5.0"
 
+TLS_CERT_PATH = "/opt/tls/shared"
+TLS_IMAGE = "tls-init:latest"
+
 def _set_defaults():
     """ Set default configuration parameters """
     return {
@@ -45,6 +48,10 @@ def _set_defaults():
             "config_subpath" : FB_CONFIG_SUBPATH,   # subpath for config data in filebeat container
             "config_map" : FB_CONFIG_MAP,           # ConfigMap holding the filebeat configuration
             "image": FB_IMAGE                       # Docker image to use for filebeat
+        },
+        "tls": {                                    # Configuration for setting up TLS init container
+            "cert_path" : TLS_CERT_PATH,            # mount point for certificate volume in TLS init container
+            "image": TLS_IMAGE                      # Docker image to use for TLS init container
         }
     }
 

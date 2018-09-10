@@ -84,7 +84,7 @@ def _parse_interval(t):
         raise ValueError("Bad interval specification: {0}".format(t))
     return time
 
-def _create_probe(hc, port):
+def _create_probe(hc, port, use_tls=False):
     ''' Create a Kubernetes probe based on info in the health check dictionary hc '''
     probe_type = hc['type']
     probe = None
@@ -99,7 +99,7 @@ def _create_probe(hc, port):
           http_get = client.V1HTTPGetAction(
               path = hc['endpoint'],
               port = port,
-              scheme = probe_type.upper()
+              scheme = 'HTTPS' if use_tls else probe_type.upper()
           )
         )
     elif probe_type in ['script', 'docker']:
@@ -114,7 +114,7 @@ def _create_probe(hc, port):
         )
     return probe
 
-def _create_container_object(name, image, always_pull, env={}, container_ports=[], volume_mounts = [], readiness = None):
+def _create_container_object(name, image, always_pull, use_tls=False, env={}, container_ports=[], volume_mounts = [], readiness = None):
     # Set up environment variables
     # Copy any passed in environment variables
     env_vars = [client.V1EnvVar(name=k, value=env[k]) for k in env.keys()]
@@ -130,7 +130,7 @@ def _create_container_object(name, image, always_pull, env={}, container_ports=[
         hc_port = None
         if len(container_ports) > 0:
             hc_port = container_ports[0]
-        probe = _create_probe(readiness, hc_port)
+        probe = _create_probe(readiness, hc_port, use_tls)
 
     # Define container for pod
     return client.V1Container(
@@ -145,6 +145,7 @@ def _create_container_object(name, image, always_pull, env={}, container_ports=[
 
 def _create_deployment_object(component_name,
                               containers,
+                              init_containers,
                               replicas,
                               volumes,
                               labels={},
@@ -166,6 +167,7 @@ def _create_deployment_object(component_name,
         metadata=client.V1ObjectMeta(labels=labels),
         spec=client.V1PodSpec(hostname=component_name,
                               containers=containers,
+                              init_containers=init_containers,
                               volumes=volumes,
                               image_pull_secrets=ips)
     )
@@ -333,6 +335,9 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
             "config_subpath" :  subpath for config data in filebeat container
             "config_map" : ConfigMap holding the filebeat configuration
             "image": Docker image to use for filebeat
+        - tls: a dictionary of TLS init container parameters:
+            "cert_path": mount point for certificate volume in init container
+            "image": Docker image to use for TLS init container
     kwargs may have:
         - volumes:  array of volume objects, where a volume object is:
             {"host":{"path": "/path/on/host"}, "container":{"bind":"/path/on/container","mode":"rw_or_ro"}
@@ -341,6 +346,8 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
         - msb_list: array of msb objects, where an msb object is as described in msb/msb.py.
         - log_info: an object with info for setting up ELK logging, with the form:
             {"log_directory": "/path/to/container/log/directory", "alternate_fb_path" : "/alternate/sidecar/log/path"}
+        - tls_info: an object with info for setting up TLS (HTTPS), with the form:
+            {"use_tls": true, "cert_directory": "/path/to/container/cert/directory" }
         - labels: dict with label-name/label-value pairs, e.g. {"cfydeployment" : "lsdfkladflksdfsjkl", "cfynode":"mycomponent"}
             These label will be set on all the pods deployed as a result of this deploy() invocation.
         - readiness: dict with health check info; if present, used to create a readiness probe for the main container.  Includes:
@@ -375,6 +382,7 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
 
         # Initialize the list of containers that will be part of the pod
         containers = []
+        init_containers = []
 
         # Set up the ELK logging sidecar container, if needed
         log_info = kwargs.get("log_info")
@@ -395,7 +403,7 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
             sidecar_volume_mounts.append(client.V1VolumeMount(name="filebeat-data", mount_path=fb["data_path"]))
 
             # Create the container for the sidecar
-            containers.append(_create_container_object("filebeat", fb["image"], False, {}, [], sidecar_volume_mounts))
+            containers.append(_create_container_object("filebeat", fb["image"], False, False, {}, [], sidecar_volume_mounts))
 
             # Create the volume for the sidecar configuration data and the volume mount for it
             # The configuration data is in a k8s ConfigMap that should be created when DCAE is installed.
@@ -404,14 +412,30 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
             sidecar_volume_mounts.append(
                 client.V1VolumeMount(name="filebeat-conf", mount_path=fb["config_path"], sub_path=fb["config_subpath"]))
 
+        # Set up the TLS init container, if needed
+        tls_info = kwargs.get("tls_info")
+        use_tls = False
+        if tls_info and "use_tls" in tls_info and tls_info["use_tls"]:
+            if "cert_directory" in tls_info and len(tls_info["cert_directory"]) > 0:
+                use_tls = True
+                tls_config = k8sconfig["tls"]
+
+                # Create the certificate volume and volume mounts
+                volumes.append(client.V1Volume(name="tls-info", empty_dir=client.V1EmptyDirVolumeSource()))
+                volume_mounts.append(client.V1VolumeMount(name="tls-info", mount_path=tls_info["cert_directory"]))
+                init_volume_mounts = [client.V1VolumeMount(name="tls-info", mount_path=tls_config["cert_path"])]
+
+                # Create the init container
+                init_containers.append(_create_container_object("init-tls", tls_config["image"], False, False, {}, [], init_volume_mounts))
+
         # Create the container for the component
         # Make it the first container in the pod
-        containers.insert(0, _create_container_object(component_name, image, always_pull, kwargs.get("env", {}), container_ports, volume_mounts, kwargs["readiness"]))
+        containers.insert(0, _create_container_object(component_name, image, always_pull, use_tls, kwargs.get("env", {}), container_ports, volume_mounts, kwargs["readiness"]))
 
         # Build the k8s Deployment object
         labels = kwargs.get("labels", {})
         labels.update({"app": component_name})
-        dep = _create_deployment_object(component_name, containers, replicas, volumes, labels, pull_secrets=k8sconfig["image_pull_secrets"])
+        dep = _create_deployment_object(component_name, containers, init_containers, replicas, volumes, labels, pull_secrets=k8sconfig["image_pull_secrets"])
 
         # Have k8s deploy it
         ext.create_namespaced_deployment(namespace, dep)

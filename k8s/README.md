@@ -16,6 +16,9 @@ creates the following Kubernetes entities:
   - If the blueprint specifies a logging directory via the `log_info` property, the `Deployment` includes a second container,
   running the `filebeat` logging sidecar that ships logging information to the ONAP ELK stack.  The `Deployment` will include
   some additional volumes needed by filebeat.
+  - If the blueprint specifies that the component uses TLS (HTTPS) via the `tls_info` property, the `Deployment` includes an init container,
+    a volume that holds TLS certificate artifacts, and volume mounts on the init container and the component's container.  The init container
+    populates the TLS certificate artifacts volume with certificates, keys, keystores, etc.
 - If the blueprint indicates that the component exposes any ports, the plugin will create a Kubernetes `Service` that allocates an address
   in the Kubernetes network address space that will route traffic to a container that's running the component.  This `Service` provides a
   fixed "virtual IP" for the component.
@@ -40,16 +43,20 @@ address=10.12.5.115:30270
 Additional configuration information is stored in the Consul KV store under the key `k8s-plugin`.
 The configuration is provided as JSON object with the following properties:
 
-    - namespace:  k8s namespace to use for DCAE
-    - consul_dns_name: k8s internal DNS name for Consul (passed to containers)
-    - image_pull_secrets: list of names of k8s secrets for accessing Docker registries, with the following properties:
-    - filebeat:  object containing onfiguration for setting up filebeat container
-            - log_path: mount point for log volume in filebeat container
-            - data_path: mount point for data volume in filebeat container
-            - config_path: mount point for config volume in filebeat container
-            - config_subpath: subpath for config data in filebeat container
-            - config_map: name of a ConfigMap holding the filebeat configuration file
-            - image: Docker image to use for filebeat
+    - `namespace`:  k8s namespace to use for DCAE
+    - `consul_dns_name`: k8s internal DNS name for Consul (passed to containers)
+    - `image_pull_secrets`: list of names of k8s secrets for accessing Docker registries, with the following properties:
+    - `filebeat`:  object containing onfiguration for setting up filebeat container
+            - `log_path`: mount point for log volume in filebeat container
+            - `data_path`: mount point for data volume in filebeat container
+            - `config_path`: mount point for config volume in filebeat container
+            - `config_subpath`: subpath for config data in filebeat container
+            - `config_map`: name of a ConfigMap holding the filebeat configuration file
+            - `image`: Docker image to use for filebeat
+    - `tls`: object containing configuration for setting up TLS init container
+            - `cert_path`: mount point for the TLS certificate artifact volume in the init container
+            - `image`: Docker image to use for the TLS init container
+
 
 #### Kubernetes access information
 The plugin accesses a Kubernetes cluster.  The information and credentials for accessing a cluster are stored in a "kubeconfig"
