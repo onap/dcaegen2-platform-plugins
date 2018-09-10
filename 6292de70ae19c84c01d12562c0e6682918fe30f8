@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a76adc5_8d15a74a",
+        "filename": "k8s/k8s-node-type.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1071
+      },
+      "writtenOn": "2018-09-10T15:13:26Z",
+      "side": 1,
+      "message": "Is there a use case where the existence of tls_info is not enough to indicate that tls should be used?  I\u0027m wondering why a user would have a tls_info object with use_tls equal to False.  Benefit of removing the need for use_tls is that it\u0027ll simplify logic in the plugin.",
+      "revId": "6292de70ae19c84c01d12562c0e6682918fe30f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
