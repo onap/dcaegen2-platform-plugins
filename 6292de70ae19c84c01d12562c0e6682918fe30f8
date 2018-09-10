@@ -16,6 +16,24 @@
       "revId": "6292de70ae19c84c01d12562c0e6682918fe30f8",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_a87651a2",
+        "filename": "k8s/k8s-node-type.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2018-09-10T15:18:26Z",
+      "side": 1,
+      "message": "My thinking here is that someone developing a component that could be used with TLS would always specify the cert_directory in a blueprint.  use_tls could be provided via an input at deployment time, so that the deployer could decide independently whether to use TLS or not.",
+      "parentUuid": "1a76adc5_8d15a74a",
+      "revId": "6292de70ae19c84c01d12562c0e6682918fe30f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
