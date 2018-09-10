@@ -34,6 +34,29 @@
       "revId": "6292de70ae19c84c01d12562c0e6682918fe30f8",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a76adc5_c88f0d29",
+        "filename": "k8s/setup.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1949
+      },
+      "writtenOn": "2018-09-10T16:05:18Z",
+      "side": 1,
+      "message": "it deserves at least second digit versioning",
+      "range": {
+        "startLine": 26,
+        "startChar": 13,
+        "endLine": 26,
+        "endChar": 18
+      },
+      "revId": "6292de70ae19c84c01d12562c0e6682918fe30f8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
