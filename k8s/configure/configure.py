@@ -33,7 +33,7 @@ FB_CONFIG_MAP = "filebeat-conf"
 FB_IMAGE = "docker.elastic.co/beats/filebeat:5.5.0"
 
 TLS_CERT_PATH = "/opt/tls/shared"
-TLS_IMAGE = "tls-init:latest"
+TLS_IMAGE = "onap/org.onap.dcaegen2.deployments.tls-init-container:1.0.0"
 
 def _set_defaults():
     """ Set default configuration parameters """
