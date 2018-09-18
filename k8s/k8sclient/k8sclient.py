@@ -99,7 +99,7 @@ def _create_probe(hc, port, use_tls=False):
           http_get = client.V1HTTPGetAction(
               path = hc['endpoint'],
               port = port,
-              scheme = 'HTTPS' if use_tls else probe_type.upper()
+              scheme = probe_type.upper()
           )
         )
     elif probe_type in ['script', 'docker']:
