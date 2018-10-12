@@ -2,6 +2,52 @@
   "comments": [
     {
       "key": {
+        "uuid": "bada0100_61c0f650",
+        "filename": ".gitignore",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1949
+      },
+      "writtenOn": "2018-10-12T18:59:20Z",
+      "side": 1,
+      "message": ".vscode/ is editor specific",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 8
+      },
+      "revId": "74aaa02970e8c4ee3f134ee378fd5b7167cd06a0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_01b56aed",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1949
+      },
+      "writtenOn": "2018-10-12T18:59:20Z",
+      "side": 1,
+      "message": "it would be nice to have the reference to a specific changed plugin in the commit message on the repo for collection of plugins",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 32
+      },
+      "revId": "74aaa02970e8c4ee3f134ee378fd5b7167cd06a0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bada0100_21e3ce08",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 1
