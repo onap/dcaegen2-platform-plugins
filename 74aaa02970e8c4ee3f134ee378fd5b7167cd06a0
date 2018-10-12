@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_21e3ce08",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 515
+      },
+      "writtenOn": "2018-10-12T18:46:33Z",
+      "side": 1,
+      "message": "sexier would be proto \u003d (m.group(3)).upper() if m.group(3) else \"TCP\"\n\nternary",
+      "revId": "74aaa02970e8c4ee3f134ee378fd5b7167cd06a0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
