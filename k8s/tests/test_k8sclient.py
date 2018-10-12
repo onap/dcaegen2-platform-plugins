@@ -84,3 +84,72 @@ def test_parse_interval():
     for interval in bad_intervals:
         with pytest.raises(ValueError):
             _parse_interval(interval)
+
+def test_parse_ports():
+    from k8sclient.k8sclient import _parse_ports
+
+    good_ports = [{"in": input, "ex": expected}
+        for (input, expected) in [
+            ("9101:0", (9101, 0, "TCP")),
+            ("9101/TCP:0", (9101, 0, "TCP")),
+            ("9101/tcp:0", (9101, 0, "TCP")),
+            ("9101/UDP:0", (9101, 0, "UDP")),
+            ("9101/udp:0", (9101, 0, "UDP")),
+            ("9101:31043", (9101, 31043, "TCP")),
+            ("9101/TCP:31043", (9101, 31043, "TCP")),
+            ("9101/tcp:31043", (9101, 31043, "TCP")),
+            ("9101/UDP:31043", (9101, 31043, "UDP")),
+            ("9101/udp:31043", (9101, 31043, "UDP"))
+        ]
+    ]
+    
+    bad_ports = [
+        "9101",
+        "9101:",
+        "9101:0x453",
+        "9101:0/udp",
+        "9101/:0",
+        "9101/u:0",
+        "9101/http:404",
+        "9101:-1"
+    ]
+
+    port_list = [
+        "9101:0",
+        "5053/tcp:5053",
+        "5053/udp:5053",
+        "9661:19661",
+        "9661/udp:19661",
+        "8080/tcp:8080"
+    ]
+
+    expected_port_map = {
+        (9101,"TCP") : 0,
+        (5053,"TCP") : 5053,
+        (5053,"UDP") : 5053,
+        (9661,"TCP") : 19661,
+        (9661,"UDP") : 19661,
+        (8080,"TCP") : 8080
+    }  
+
+    for test_case in good_ports:
+        container_ports, port_map = _parse_ports([test_case["in"]])  
+        (cport, hport, proto) = test_case["ex"]
+        assert container_ports == [(cport, proto)]
+        assert port_map == {(cport, proto) : hport}
+
+    for port in bad_ports:
+        with pytest.raises(ValueError):
+            _parse_ports([port])
+
+    container_ports, port_map = _parse_ports(port_list)
+    assert port_map == expected_port_map
+
+def test_create_container():
+    from k8sclient.k8sclient import _create_container_object
+    from kubernetes import client
+
+    container = _create_container_object("c1","nginx",False, container_ports=[(80, "TCP"), (53, "UDP")])
+
+    assert container.ports[0].container_port == 80 and container.ports[0].protocol == "TCP"
+    assert container.ports[1].container_port == 53 and container.ports[1].protocol == "UDP"

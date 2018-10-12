@@ -108,7 +108,9 @@ mode | Readable, writeable: `ro`, `rw`
 
 #### `ports`
 
-List of strings - Used to bind container ports to host ports. Each item is of the format: `<container port>:<host port>`.
+List of strings - Used to bind container ports to host ports. Each item is of the format: `<container port>:<host port>` or 
+<container port>/<protocol>:<host port>, where <protocol> can be "TCP", "tcp", "UDP", or "udp".   If the first format is used, the
+protocol defaults to TCP.
 
 Note that `ContainerizedPlatformComponent` has the property pair `host_port` and `container_port`. This pair will be merged with the input parameters ports.
 

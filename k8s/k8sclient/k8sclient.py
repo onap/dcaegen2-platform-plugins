@@ -32,6 +32,13 @@ INTERVAL_SPEC = re.compile("^([0-9]+)(s|m|h)?$")
 # Conversion factors to seconds
 FACTORS = {None: 1, "s": 1, "m": 60, "h": 3600}
 
+# Regular expression for port mapping
+# group 1: container port
+# group 2: / + protocol
+# group 3: protocol
+# group 4: host port
+PORTS = re.compile("^([0-9]+)(/(udp|UDP|tcp|TCP))?:([0-9]+)$")
+   
 def _create_deployment_name(component_name):
     return "dep-{0}".format(component_name)
 
@@ -129,7 +136,7 @@ def _create_container_object(name, image, always_pull, use_tls=False, env={}, co
     if readiness:
         hc_port = None
         if len(container_ports) > 0:
-            hc_port = container_ports[0]
+            (hc_port, proto) = container_ports[0]
         probe = _create_probe(readiness, hc_port, use_tls)
 
     # Define container for pod
@@ -138,7 +145,7 @@ def _create_container_object(name, image, always_pull, use_tls=False, env={}, co
         image=image,
         image_pull_policy='Always' if always_pull else 'IfNotPresent',
         env=env_vars,
-        ports=[client.V1ContainerPort(container_port=p) for p in container_ports],
+        ports=[client.V1ContainerPort(container_port=p, protocol=proto) for (p, proto) in container_ports],
         volume_mounts = volume_mounts,
         readiness_probe = probe
     )
@@ -207,17 +214,25 @@ def _create_service_object(service_name, component_name, service_ports, annotati
     return service
 
 def _parse_ports(port_list):
+    '''
+    Parse the port list into a list of container ports (needed to create the container)
+    and to a set of port mappings to set up k8s services.
+    '''
     container_ports = []
     port_map = {}
     for p in port_list:
-        try:
-            [container, host] = (p.strip()).split(":",2)
-            cport = int(container)
-            container_ports.append(cport)
-            hport = int(host)
-            port_map[container] = hport
-        except:
-            pass    # if something doesn't parse, we just ignore it
+        m = PORTS.match(p.strip())
+        if m:
+            cport = int(m.group(1))
+            hport = int (m.group(4))
+            if m.group(3):
+                proto = (m.group(3)).upper()
+            else:
+                proto = "TCP"
+            container_ports.append((cport, proto))
+            port_map[(cport, proto)] = hport
+        else:
+            raise ValueError("Bad port specification: {0}".format(p))
 
     return container_ports, port_map
 
@@ -374,7 +389,7 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
         core = client.CoreV1Api()
         ext = client.ExtensionsV1beta1Api()
 
-        # Parse the port mapping into [container_port,...] and [{"host_port" : "container_port"},...]
+        # Parse the port mapping
         container_ports, port_map = _parse_ports(kwargs.get("ports", []))
 
         # Parse the volumes list into volumes and volume_mounts for the deployment
@@ -446,10 +461,10 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
         if port_map:
             service_ports = []      # Ports exposed internally on the k8s network
             exposed_ports = []      # Ports to be mapped to ports on the k8s nodes via NodePort
-            for cport, hport in port_map.iteritems():
-                service_ports.append(client.V1ServicePort(port=int(cport),name="port-{}".format(cport)))
+            for (cport, proto), hport in port_map.iteritems():
+                service_ports.append(client.V1ServicePort(port=int(cport),protocol=proto,name="port-{0}-{1}".format(proto[0].lower(), cport)))
                 if int(hport) != 0:
-                    exposed_ports.append(client.V1ServicePort(port=int(cport), node_port=int(hport),name="xport-{}".format(cport)))
+                    exposed_ports.append(client.V1ServicePort(port=int(cport),protocol=proto,node_port=int(hport),name="xport-{0}-{1}".format(proto[0].lower(),cport)))
 
             # If there are ports to be exposed via MSB, set up the annotation for the service
             msb_list = kwargs.get("msb_list")

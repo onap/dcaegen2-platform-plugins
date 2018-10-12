@@ -6,6 +6,7 @@
 .project
 .pydevproject
 venv
+.vscode/
 
 
 # Byte-compiled / optimized / DLL files
