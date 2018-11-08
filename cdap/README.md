@@ -66,7 +66,7 @@ For publication, data router does not have the notion of AAF credentials, and th
        config_key: "mydrconfigkey"
 ```
 
-Data router subscription is not supported because there is an impedance mistmatch between DR and CDAP.
+Data router subscription is not supported because there is an impedance mismatch between DR and CDAP.
 CDAP streams expect a POST but DR outputs a PUT.
 Some future platform capability needs to fill this hole; either something like the AF team's DR Sub or DMD. 
 

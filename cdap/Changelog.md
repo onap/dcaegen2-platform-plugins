@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * Integrate with Policy handler. Policy handling for CDAP is done.
 
 ## [14.1.0] 
-* Merge the broker deleter function into here; no need for seperate plugin
+* Merge the broker deleter function into here; no need for separate plugin
 
 ## [14.0.2]
 * Start a tox/pytest unit test suite

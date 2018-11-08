@@ -71,5 +71,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * Verify that the container is running and healthy before finishing the start operation
 * Image names passed in are now required to be the fully tagged names including registry
 * Remove references to rework in the code namespaces
-* Application configuration is now a YAML map to accomodate future blueprint generation
+* Application configuration is now a YAML map to accommodate future blueprint generation
 * Update blueprints and cfyhelper.sh 
