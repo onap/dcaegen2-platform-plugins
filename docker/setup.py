@@ -24,7 +24,7 @@ from setuptools import setup
 setup(
     name='dockerplugin',
     description='Cloudify plugin for applications run in Docker containers',
-    version="3.2.0",
+    version="3.2.1",
     author='Michael Hwang, Tommy Carpenter',
     packages=['dockerplugin'],
     zip_safe=False,
@@ -32,6 +32,6 @@ setup(
         "python-consul>=0.6.0,<1.0.0",
         "onap-dcae-dockering>=1.0.0,<2.0.0",
         "uuid==1.30",
-        "onap-dcae-dcaepolicy-lib>=2.3.0,<3.0.0"
+        "onap-dcae-dcaepolicy-lib>=2.4.1,<3.0.0"
     ]
 )

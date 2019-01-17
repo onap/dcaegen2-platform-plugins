@@ -24,7 +24,7 @@ plugins:
   docker:
     executor: 'central_deployment_agent'
     package_name: dockerplugin
-    package_version: 3.2.0
+    package_version: 3.2.1
 
 
 data_types:
