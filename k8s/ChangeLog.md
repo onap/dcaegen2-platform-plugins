@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [1.4.5]
+* DCAEGEN2-1086 update onap-dcae-dcaepolicy-lib version to avoid Consul stores under old service_component_name
+
 ## [1.3.0]
 * Enhancement: Add support for changing the image running in the application container.  ("Rolling upgrade")
 
