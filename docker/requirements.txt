@@ -1,2 +1,2 @@
 onap-dcae-dockering==1.4.0
-onap-dcae-dcaepolicy-lib==2.4.1
+onap-dcae-dcaepolicy-lib>=2.4.1,<3.0.0
