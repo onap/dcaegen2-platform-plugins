@@ -1,0 +1,10 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Michael Hwang <mhwang@research.att.com>
+Code-Review+1: Andrew Gauld <agauld@att.com>
+Code-Review+1: Terry Schmalzried <ts862m@att.com>
+Code-Review+2: Vijay Venkatesh Kumar <vv770d@att.com>
+Submitted-by: Vijay Venkatesh Kumar <vv770d@att.com>
+Submitted-at: Tue, 05 Feb 2019 21:03:34 +0000
+Reviewed-on: https://gerrit.onap.org/r/75953
+Project: dcaegen2/platform/plugins
+Branch: refs/heads/master
