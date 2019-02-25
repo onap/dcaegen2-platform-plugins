@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [1.4.6]
+* Support for specifying CPU and memory resources in a blueprint for a containerized component
+* Changes the default time that the plugin will wait for a container to become ready from 300 seconds to 1800 seconds
+
 ## [1.4.5]
 * DCAEGEN2-1086 update onap-dcae-dcaepolicy-lib version to avoid Consul stores under old service_component_name
 

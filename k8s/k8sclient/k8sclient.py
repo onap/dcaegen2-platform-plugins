@@ -1,7 +1,7 @@
 # ============LICENSE_START=======================================================
 # org.onap.dcae
 # ================================================================================
-# Copyright (c) 2018 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -121,7 +121,17 @@ def _create_probe(hc, port, use_tls=False):
         )
     return probe
 
-def _create_container_object(name, image, always_pull, use_tls=False, env={}, container_ports=[], volume_mounts = [], readiness = None):
+def _create_resources(resources=None):
+    if resources is not None:
+        resources_obj = client.V1ResourceRequirements(
+          limits = resources.get("limits"),
+          requests = resources.get("requests")
+        )   
+        return resources_obj
+    else:
+        return None
+
+def _create_container_object(name, image, always_pull, use_tls=False, env={}, container_ports=[], volume_mounts = [], resources = None, readiness = None):
     # Set up environment variables
     # Copy any passed in environment variables
     env_vars = [client.V1EnvVar(name=k, value=env[k]) for k in env.keys()]
@@ -139,6 +149,10 @@ def _create_container_object(name, image, always_pull, use_tls=False, env={}, co
             (hc_port, proto) = container_ports[0]
         probe = _create_probe(readiness, hc_port, use_tls)
 
+    if resources:
+        resources_obj = _create_resources(resources)
+    else:
+        resources_obj = None
     # Define container for pod
     return client.V1Container(
         name=name,
@@ -147,6 +161,7 @@ def _create_container_object(name, image, always_pull, use_tls=False, env={}, co
         env=env_vars,
         ports=[client.V1ContainerPort(container_port=p, protocol=proto) for (p, proto) in container_ports],
         volume_mounts = volume_mounts,
+        resources = resources_obj,
         readiness_probe = probe
     )
 
@@ -326,7 +341,7 @@ def _execute_command_in_pod(namespace, pod_name, command):
 
     return {"pod" : pod_name, "output" : output}
 
-def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, **kwargs):
+def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, resources, **kwargs):
     '''
     This will create a k8s Deployment and, if needed, one or two k8s Services.
     (We are being opinionated in our use of k8s... this code decides what k8s abstractions and features to use.
@@ -445,7 +460,7 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
 
         # Create the container for the component
         # Make it the first container in the pod
-        containers.insert(0, _create_container_object(component_name, image, always_pull, use_tls, kwargs.get("env", {}), container_ports, volume_mounts, kwargs["readiness"]))
+        containers.insert(0, _create_container_object(component_name, image, always_pull, use_tls, kwargs.get("env", {}), container_ports, volume_mounts,  resources, kwargs["readiness"]))
 
         # Build the k8s Deployment object
         labels = kwargs.get("labels", {})
