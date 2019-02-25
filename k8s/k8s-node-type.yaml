@@ -1,5 +1,5 @@
 # ================================================================================
-# Copyright (c) 2017-2018 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2017-2019 AT&T Intellectual Property. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,13 +19,13 @@
 tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
-    - http://www.getcloudify.org/spec/cloudify/3.4/types.yaml
+    - http://www.getcloudify.org/spec/cloudify/4.2/types.yaml
 
 plugins:
   k8s:
     executor: 'central_deployment_agent'
     package_name: k8splugin
-    package_version: 1.4.5
+    package_version: 1.4.6
 
 data_types:
 
@@ -118,6 +118,11 @@ node_types:
                   This is what is the auxilary portion of the component spec that contains things
                   like healthcheck definitions for the Docker component. Health checks are
                   optional.
+
+            resource_config:
+                 default: {}
+                 description: >
+                   This is what is used to set resource limits to container level resource limits for cpu and memory
 
             log_info:
               type: dcae.types.LoggingInfo
