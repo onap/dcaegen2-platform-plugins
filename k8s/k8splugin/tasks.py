@@ -1,7 +1,7 @@
 # ============LICENSE_START=======================================================
 # org.onap.dcae
 # ================================================================================
-# Copyright (c) 2017-2018 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2017-2019 AT&T Intellectual Property. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,6 +42,7 @@ plugin_conf = configure.configure()
 CONSUL_HOST = plugin_conf.get("consul_host")
 CONSUL_INTERNAL_NAME = plugin_conf.get("consul_dns_name")
 DCAE_NAMESPACE = plugin_conf.get("namespace")
+DEFAULT_MAX_WAIT = plugin_conf.get("max_wait", 1800)
 
 # Used to construct delivery urls for data router subscribers. Data router in FTL
 # requires https but this author believes that ONAP is to be defaulted to http.
@@ -52,6 +53,7 @@ SERVICE_COMPONENT_NAME = "service_component_name"
 CONTAINER_ID = "container_id"
 APPLICATION_CONFIG = "application_config"
 K8S_DEPLOYMENT = "k8s_deployment"
+RESOURCE_KW = "resource_config"
 
 # Utility methods
 
@@ -97,6 +99,12 @@ def _done_for_create(**kwargs):
     ctx.logger.info("Done setting up: {0}".format(name))
     return kwargs
 
+def _get_resources(**kwargs):
+    if kwargs is not None:
+        ctx.logger.debug("{0}: {1}".format(RESOURCE_KW, kwargs.get(RESOURCE_KW)))
+        return kwargs.get(RESOURCE_KW)
+    ctx.logger.info("set resources to None")
+    return None
 
 @merge_inputs_for_create
 @monkeypatch_loggers
@@ -287,12 +295,14 @@ def _create_and_start_container(container_name, image, **kwargs):
     ctx.logger.info("Starting k8s deployment for {}, image: {}, env: {}, kwargs: {}".format(container_name, image, env, kwargs))
     ctx.logger.info("Passing k8sconfig: {}".format(plugin_conf))
     replicas = kwargs.get("replicas", 1)
+    resource_config = _get_resources(**kwargs)
     _,dep = k8sclient.deploy(DCAE_NAMESPACE,
                      container_name,
                      image,
                      replicas = replicas,
                      always_pull=kwargs.get("always_pull_image", False),
                      k8sconfig=plugin_conf,
+                     resources = resource_config,
                      volumes=kwargs.get("volumes",[]),
                      ports=kwargs.get("ports",[]),
                      msb_list=kwargs.get("msb_list"),
@@ -387,6 +397,7 @@ def _create_and_start_component(**kwargs):
         "log_info": kwargs.get("log_info", {}),
         "tls_info": kwargs.get("tls_info", {}),
         "labels": kwargs.get("labels", {}),
+        "resource_config": kwargs.get("resource_config",{}),
         "readiness": kwargs.get("readiness",{})}
     _create_and_start_container(service_component_name, image, **sub_kwargs)
 
@@ -396,7 +407,7 @@ def _verify_component(**kwargs):
     """Verify deployment is ready"""
     service_component_name = kwargs[SERVICE_COMPONENT_NAME]
 
-    max_wait = kwargs.get("max_wait", 300)
+    max_wait = kwargs.get("max_wait", DEFAULT_MAX_WAIT)
     ctx.logger.info("Waiting up to {0} secs for {1} to become ready".format(max_wait, service_component_name))
 
     if _verify_k8s_deployment(service_component_name, max_wait):
@@ -492,6 +503,8 @@ def create_and_start_container_for_platforms(**kwargs):
     # Capture node properties
     image = ctx.node.properties["image"]
     docker_config = ctx.node.properties.get("docker_config", {})
+    resource_config = ctx.node.properties.get("resource_config", {})
+    kwargs["resource_config"] = resource_config
     if "healthcheck" in docker_config:
         kwargs["readiness"] = docker_config["healthcheck"]
     if "dns_name" in ctx.node.properties:
@@ -543,7 +556,7 @@ def create_and_start_container_for_platforms(**kwargs):
 
     # Verify that the k8s deployment is ready
 
-    max_wait = kwargs.get("max_wait", 300)
+    max_wait = kwargs.get("max_wait", DEFAULT_MAX_WAIT)
     ctx.logger.info("Waiting up to {0} secs for {1} to become ready".format(max_wait, service_component_name))
 
     if _verify_k8s_deployment(service_component_name, max_wait):
@@ -595,7 +608,7 @@ def scale(replicas, **kwargs):
         ctx.instance.runtime_properties["replicas"] = replicas
 
         # Verify that the scaling took place as expected
-        max_wait = kwargs.get("max_wait", 300)
+        max_wait = kwargs.get("max_wait", DEFAULT_MAX_WAIT)
         ctx.logger.info("Waiting up to {0} secs for {1} to scale and become ready".format(max_wait, service_component_name))
         if _verify_k8s_deployment(service_component_name, max_wait):
             ctx.logger.info("Scaling complete: {0} from {1} to {2} replica(s)".format(service_component_name, current_replicas, replicas))
@@ -618,7 +631,7 @@ def update_image(image, **kwargs):
         ctx.instance.runtime_properties["image"] = image
 
         # Verify that the update took place as expected
-        max_wait = kwargs.get("max_wait", 300)
+        max_wait = kwargs.get("max_wait", DEFAULT_MAX_WAIT)
         ctx.logger.info("Waiting up to {0} secs for {1} to be updated and become ready".format(max_wait, service_component_name))
         if _verify_k8s_deployment(service_component_name, max_wait):
             ctx.logger.info("Update complete: {0} from {1} to {2}".format(service_component_name, current_image, image))
