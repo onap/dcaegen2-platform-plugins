@@ -71,6 +71,30 @@
     },
     {
       "key": {
+        "uuid": "c74a35f6_f1cc8550",
+        "filename": "k8s/k8s-node-type.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2019-02-26T19:34:13Z",
+      "side": 1,
+      "message": "I have not tested with this, but it should be OK.",
+      "parentUuid": "e1c87cab_d2de64ad",
+      "range": {
+        "startLine": 22,
+        "startChar": 47,
+        "endLine": 22,
+        "endChar": 50
+      },
+      "revId": "1dcf02bd3177c2d034c6eca7f45e091f52d3c187",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "92613594_db242b6d",
         "filename": "k8s/k8s-node-type.yaml",
         "patchSetId": 1
