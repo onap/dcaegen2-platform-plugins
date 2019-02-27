@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a1808bf3_786441b3",
+        "filename": "k8s/ChangeLog.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2019-02-27T14:25:13Z",
+      "side": 1,
+      "message": "1.4.6 specifically adds two features:\n-- Support for specifying CPU and memory resources in a blueprint for a containerized component\n-- Changes the default time that the plugin will wait for a container to become ready from 300 seconds to 1800 seconds\n\nShould make this clear in the changelog.  The JIRA referenced here is very broad.",
+      "revId": "6a061b49502d9b0012ba5e1ee009a6b14b963bcb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "802f3eb0_df43c4bd",
+        "filename": "k8s/k8s-node-type.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2019-02-27T14:25:13Z",
+      "side": 1,
+      "message": "I suggest adding a link to the k8s documentation for resources.  (https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/ is a good one.)  Also point out that we expect to see a \"requests\" property and/or a \"limits\" property, with subproproperties for cpu and memory.",
+      "revId": "6a061b49502d9b0012ba5e1ee009a6b14b963bcb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
