@@ -102,7 +102,7 @@ def test_parse_ports():
             ("9101/udp:31043", (9101, 31043, "UDP"))
         ]
     ]
-    
+
     bad_ports = [
         "9101",
         "9101:",
@@ -130,10 +130,10 @@ def test_parse_ports():
         (9661,"TCP") : 19661,
         (9661,"UDP") : 19661,
         (8080,"TCP") : 8080
-    }  
+    }
 
     for test_case in good_ports:
-        container_ports, port_map = _parse_ports([test_case["in"]])  
+        container_ports, port_map = _parse_ports([test_case["in"]])
         (cport, hport, proto) = test_case["ex"]
         assert container_ports == [(cport, proto)]
         assert port_map == {(cport, proto) : hport}
@@ -153,3 +153,122 @@ def test_create_container():
 
     assert container.ports[0].container_port == 80 and container.ports[0].protocol == "TCP"
     assert container.ports[1].container_port == 53 and container.ports[1].protocol == "UDP"
+
+def test_create_probe():
+    from k8sclient.k8sclient import _create_probe
+    from kubernetes import client
+
+    http_checks = [
+        {"type" : "http", "endpoint" : "/example/health"}
+    ]
+
+    script_checks = [
+        {"type" : "docker", "script": "/opt/app/health_check.sh"}
+    ]
+
+    for hc in http_checks:
+        probe = _create_probe(hc, 13131)
+        assert probe.http_get.path == hc["endpoint"]
+        assert probe.http_get.scheme == hc["type"].upper()
+
+    for hc in script_checks:
+        probe = _create_probe(hc, 13131)
+        assert probe._exec.command[0] == hc["script"]
+
+def test_deploy(monkeypatch):
+    import k8sclient.k8sclient
+    from kubernetes import client
+
+    # We need to patch the kubernetes 'client' module
+    # Awkward because of the way it requires a function call
+    # to get an API object
+    core = client.CoreV1Api()
+    ext = client.ExtensionsV1beta1Api()
+
+    def pseudo_deploy(namespace, dep):
+        return dep
+
+    def pseudo_service(namespace, svc):
+        return svc
+
+    # patched_core returns a CoreV1Api object with the
+    # create_namespaced_service method stubbed out so that there
+    # is no attempt to call the k8s API server
+    def patched_core():
+        monkeypatch.setattr(core, "create_namespaced_service", pseudo_service)
+        return core
+
+    # patched_ext returns an ExtensionsV1beta1Api object with the
+    # create_namespaced_deployment method stubbed out so that there
+    # is no attempt to call the k8s API server
+    def patched_ext():
+        monkeypatch.setattr(ext,"create_namespaced_deployment", pseudo_deploy)
+        return ext
+
+    def pseudo_configure():
+        pass
+
+    monkeypatch.setattr(k8sclient.k8sclient,"_configure_api", pseudo_configure)
+    monkeypatch.setattr(client, "CoreV1Api", patched_core)
+    monkeypatch.setattr(client,"ExtensionsV1beta1Api", patched_ext)
+
+    k8s_test_config = {
+        "image_pull_secrets" : ["secret0", "secret1"],
+        "filebeat" : {
+            "log_path": "/var/log/onap",
+            "data_path": "/usr/share/filebeat/data",
+            "config_path": "/usr/share/filebeat/filebeat.yml",
+            "config_subpath": "filebeat.yml",
+            "image" : "filebeat-repo/filebeat:latest",
+            "config_map" : "dcae-filebeat-configmap"
+        },
+        "tls" : {
+            "cert_path": "/opt/certs",
+            "image": "tlsrepo/tls-init-container:1.2.3"
+        }
+    }
+
+    resources = {
+        "limits": {
+            "cpu" : 0.5,
+            "memory" : "2Gi"
+        },
+        "requests": {
+            "cpu" : 0.5,
+            "memory" : "2Gi"
+        }
+    }
+
+    kwargs = {
+        "volumes": [
+            {"host":{"path": "/path/on/host"}, "container":{"bind":"/path/on/container","mode":"rw"}}
+        ],
+        "ports": ["80:0", "443:0"],
+        "env": {"name0": "value0", "name1": "value1"},
+        "log_info": {"log_directory": "/path/to/container/log/directory"},
+        "tls_info": {"use_tls": True, "cert_directory": "/path/to/container/cert/directory" },
+        "readiness": {"type": "http", "endpoint" : "/ready"}
+    }
+    dep, deployment_description = k8sclient.k8sclient.deploy("k8stest","testcomponent","example.com/testcomponent:1.4.3",1,False, k8s_test_config, resources, **kwargs)
+
+    assert deployment_description["deployment"] == "dep-testcomponent"
+    assert deployment_description["namespace"] == "k8stest"
+    assert deployment_description["services"][0] == "testcomponent"
+
+    # For unit test purposes, we want to make sure that the deployment object
+    # we're passing to the k8s API is correct
+    app_container = dep.spec.template.spec.containers[0]
+    assert app_container.image == "example.com/testcomponent:1.4.3"
+    assert app_container.image_pull_policy == "IfNotPresent"
+    assert len(app_container.ports) == 2
+    assert app_container.ports[0].container_port == 80
+    assert app_container.ports[1].container_port == 443
+    assert app_container.readiness_probe.http_get.path == "/ready"
+    assert app_container.readiness_probe.http_get.scheme == "HTTP"
+    assert len(app_container.volume_mounts) == 3
+    assert app_container.volume_mounts[0].mount_path == "/path/on/container"
+    assert app_container.volume_mounts[1].mount_path == "/path/to/container/log/directory"
+    assert app_container.volume_mounts[2].mount_path == "/path/to/container/cert/directory"
+
+    # Needs to be correctly labeled so that the Service can find it
+    assert dep.spec.template.metadata.labels["app"] == "testcomponent"

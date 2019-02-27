@@ -19,13 +19,13 @@
 tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
-    - http://www.getcloudify.org/spec/cloudify/4.2/types.yaml
+    - http://www.getcloudify.org/spec/cloudify/3.4/types.yaml
 
 plugins:
   k8s:
     executor: 'central_deployment_agent'
     package_name: k8splugin
-    package_version: 1.4.6
+    package_version: 1.4.7
 
 data_types:
 
@@ -123,9 +123,9 @@ node_types:
                 default: {}
                 description: >
                   This is used to specify the cpu and memory request and limit for container.
-                  Please specify "requests" property and/or a "limits" property, with subproproperties 
+                  Please specify "requests" property and/or a "limits" property, with subproproperties
                   for cpu and memory. (https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/)
-                   
+
 
             log_info:
               type: dcae.types.LoggingInfo

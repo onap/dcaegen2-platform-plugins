@@ -38,7 +38,7 @@ FACTORS = {None: 1, "s": 1, "m": 60, "h": 3600}
 # group 3: protocol
 # group 4: host port
 PORTS = re.compile("^([0-9]+)(/(udp|UDP|tcp|TCP))?:([0-9]+)$")
-   
+
 def _create_deployment_name(component_name):
     return "dep-{0}".format(component_name)
 
@@ -126,7 +126,7 @@ def _create_resources(resources=None):
         resources_obj = client.V1ResourceRequirements(
           limits = resources.get("limits"),
           requests = resources.get("requests")
-        )   
+        )
         return resources_obj
     else:
         return None
@@ -398,9 +398,9 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, r
     }
 
     try:
-        _configure_api()
 
         # Get API handles
+        _configure_api()
         core = client.CoreV1Api()
         ext = client.ExtensionsV1beta1Api()
 
