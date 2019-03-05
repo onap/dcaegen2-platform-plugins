@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.4.8]
+* If an installation step times out because a component does not become ready within the maximum wait time,
+delete the Kubernetes artifacts associated with the component.  Previously, an installation step might time
+out due to a very slow image pull.  Cloudify would report a failure, but the component would come up, much
+later, after Kubernetes finished pulling the image.   This should no longer happen.
+
+## [1.4.7]
+* Increase unit test coverage
 
 ## [1.4.6]
 * Support for specifying CPU and memory resources in a blueprint for a containerized component

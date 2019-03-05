@@ -208,8 +208,7 @@ def test_verify_container(monkeypatch, mockconfig):
     monkeypatch.setattr(k8sclient, "is_available",
             fake_is_available_never_good)
 
-    with pytest.raises(DockerPluginDeploymentError):
-        tasks._verify_k8s_deployment("some-name", 2)
+    assert not tasks._verify_k8s_deployment("some-name", 2)
 
 
 def test_update_delivery_url(monkeypatch, mockconfig):

@@ -238,7 +238,6 @@ def _lookup_service(service_component_name, consul_host=CONSUL_HOST,
     else:
         return results[0]["ServiceAddress"]
 
-
 def _verify_k8s_deployment(service_component_name, max_wait):
     """Verify that the k8s Deployment is ready
 
@@ -249,8 +248,7 @@ def _verify_k8s_deployment(service_component_name, max_wait):
 
     Return:
     -------
-    True if deployment is ready else a DockerPluginDeploymentError exception
-    will be raised.
+    True if deployment is ready within the maximum wait time, False otherwise
     """
     num_attempts = 1
 
@@ -261,7 +259,7 @@ def _verify_k8s_deployment(service_component_name, max_wait):
             num_attempts += 1
 
             if max_wait > 0 and max_wait < num_attempts:
-                raise DockerPluginDeploymentError("k8s deployment never became ready for {0}".format(service_component_name))
+                return False
 
             time.sleep(1)
 
@@ -314,8 +312,10 @@ def _create_and_start_container(container_name, image, **kwargs):
 
     # Capture the result of deployment for future use
     ctx.instance.runtime_properties[K8S_DEPLOYMENT] = dep
+    kwargs[K8S_DEPLOYMENT] = dep
     ctx.instance.runtime_properties["replicas"] = replicas
     ctx.logger.info ("k8s deployment initiated successfully for {0}: {1}".format(container_name, dep))
+    return kwargs
 
 def _parse_cloudify_context(**kwargs):
     """Parse Cloudify context
@@ -399,7 +399,8 @@ def _create_and_start_component(**kwargs):
         "labels": kwargs.get("labels", {}),
         "resource_config": kwargs.get("resource_config",{}),
         "readiness": kwargs.get("readiness",{})}
-    _create_and_start_container(service_component_name, image, **sub_kwargs)
+    returned_args = _create_and_start_container(service_component_name, image, **sub_kwargs)
+    kwargs[K8S_DEPLOYMENT] = returned_args[K8S_DEPLOYMENT]
 
     return kwargs
 
@@ -412,6 +413,16 @@ def _verify_component(**kwargs):
 
     if _verify_k8s_deployment(service_component_name, max_wait):
         ctx.logger.info("k8s deployment is ready for: {0}".format(service_component_name))
+    else:
+        # The component did not become ready within the "max_wait" interval.
+        # Delete the k8s components created already and remove configuration from Consul.
+        ctx.logger.error("k8s deployment never became ready for {0}".format(service_component_name))
+        if (K8S_DEPLOYMENT in kwargs) and (len(kwargs[K8S_DEPLOYMENT]["deployment"]) > 0):
+            ctx.logger.info("attempting to delete k8s artifacts: {0}".format(kwargs[K8S_DEPLOYMENT]))
+            k8sclient.undeploy(kwargs[K8S_DEPLOYMENT])
+            ctx.logger.info("deleted k8s artifacts: {0}".format(kwargs[K8S_DEPLOYMENT]))
+        cleanup_discovery(**kwargs)
+        raise DockerPluginDeploymentError("k8s deployment never became ready for {0}".format(service_component_name))
 
     return kwargs
 
@@ -552,16 +563,13 @@ def create_and_start_container_for_platforms(**kwargs):
         kwargs["replicas"] = ctx.node.properties["replicas"]
     if "always_pull_image" in ctx.node.properties:
         kwargs["always_pull_image"] = ctx.node.properties["always_pull_image"]
-    _create_and_start_container(service_component_name, image, **kwargs)
+    returned_args = _create_and_start_container(service_component_name, image, **kwargs)
 
     # Verify that the k8s deployment is ready
-
-    max_wait = kwargs.get("max_wait", DEFAULT_MAX_WAIT)
-    ctx.logger.info("Waiting up to {0} secs for {1} to become ready".format(max_wait, service_component_name))
-
-    if _verify_k8s_deployment(service_component_name, max_wait):
-        ctx.logger.info("k8s deployment ready for: {0}".format(service_component_name))
-
+    #   - Set service component name into kwargs
+    #   - max_wait is already in kwargs if it was set
+    returned_args[SERVICE_COMPONENT_NAME] = service_component_name
+    _verify_component(**returned_args)
 
 @wrap_error_handling_start
 @monkeypatch_loggers
