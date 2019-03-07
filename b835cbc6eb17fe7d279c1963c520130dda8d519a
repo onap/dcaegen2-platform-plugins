@@ -34,6 +34,24 @@
       "revId": "b835cbc6eb17fe7d279c1963c520130dda8d519a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b869ccae_9d7861c0",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 1071
+      },
+      "writtenOn": "2019-03-07T19:06:51Z",
+      "side": 1,
+      "message": "Apologies for confusion due to poor/incomplete wording but I meant error handling in the sense that you are in this block of code because the task in this Cloudify install workflow is deemed to be in an error state due to the time out.  This error in the task execution ends up throwing a Cloudify NonRecoverableError (which is mapped in decorators.wrap_error_handling_start).\n\nBefore this change, to my knowledge we had taken the approach to do no automatic cleanup of attempted created resources from the install workflow.  We simply raised errors and gave operators the chance to do their investigation and require them to manually cleanup via uninstall workflow.  I\u0027m pointing out that this approach is different and asking if this is a conscientious choice given the above.\n\nIf we want to be more consistent with handling these task errors, an alternative change could be to move this cleanup code to decorators.wrap_error_handling_start so that all exceptions that map to NonRecoverableErrors will attempt to execute the auto cleanup.\n\nDo you still want to move forward with this change?",
+      "parentUuid": "122103fa_2a8edc08",
+      "revId": "b835cbc6eb17fe7d279c1963c520130dda8d519a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
