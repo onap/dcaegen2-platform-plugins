@@ -16,6 +16,24 @@
       "revId": "b835cbc6eb17fe7d279c1963c520130dda8d519a",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "122103fa_2a8edc08",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2019-03-07T17:02:03Z",
+      "side": 1,
+      "message": "This isn\u0027t really a case of cleaning up after an error.  It\u0027s in effect implementing a feature that doesn\u0027t exist in Kubernetes.   When a user attempts to deploy a component via Cloudify, the user either specifies a limit on how long the plugin should wait for the component to become ready, or the user accepts a default.   Kubernetes has no such notion.  It will return an immediate success response to virtually any well-formed request to deploy something.  It creates all the Kubernetes data structures and tries to spin up the desired containers, mount volumes, etc.  Kubernetes never gives up.  For instance if a client asks Kubernetes to spin up a container and the Docker image doesn\u0027t exist, there\u0027s no error response from the Kubernetes API.  Kubernetes keeps trying.  \n\nWithout this change, after Cloudify declares an error due to a timeout, the Kubernetes entities continue to exist.  In some cases, when operations like pulling images are really slow and the timeout is set to a relatively small value, Kubernetes might eventually succeed and bring up components long after the plugin has timed out.  This change in effect is enforcing the timeout on Kubernetes--if the wait time expires before the component becomes ready, we tell Kubernetes to stop trying, by telling Kubernetes to delete the entities we asked it to create.\n\nNote also that the \"cleanup\" does not include deleting the Cloudify artifacts (the deployment and the blueprint).  That still has to be done manually.  AFAIK, there\u0027s no way for a workflow operating on a deployment to delete that deployment and its underlying blueprint.  In this respect, an install workflow failing due to a timeout is no different from an install workflow failing for any other reason.",
+      "parentUuid": "5f8f55a3_5c8b0e2c",
+      "revId": "b835cbc6eb17fe7d279c1963c520130dda8d519a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
