@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5f8f55a3_5c8b0e2c",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 1071
+      },
+      "writtenOn": "2019-03-07T15:39:35Z",
+      "side": 1,
+      "message": "Is this error handling logic (automatic cleanup) specific only to for this error case?  If so, this might cause confusion to the operator because there would be an inconsistency where some errors have auto cleanup vs some errors require manual cleanup.  Are we ok with this?",
+      "revId": "b835cbc6eb17fe7d279c1963c520130dda8d519a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
