@@ -286,6 +286,7 @@ def _create_and_start_container(container_name, image, **kwargs):
             {"log_directory": "/path/to/container/log/directory", "alternate_fb_path" : "/alternate/sidecar/log/path"}"
         - replicas: number of replicas to be launched initially
         - readiness: object with information needed to create a readiness check
+        - liveness: object with information needed to create a liveness check
     '''
     env = { "CONSUL_HOST": CONSUL_INTERNAL_NAME,
             "CONFIG_BINDING_SERVICE": "config-binding-service" }
@@ -308,7 +309,8 @@ def _create_and_start_container(container_name, image, **kwargs):
                      env = env,
                      labels = kwargs.get("labels", {}),
                      log_info=kwargs.get("log_info"),
-                     readiness=kwargs.get("readiness"))
+                     readiness=kwargs.get("readiness"),
+                     liveness=kwargs.get("liveness"))
 
     # Capture the result of deployment for future use
     ctx.instance.runtime_properties[K8S_DEPLOYMENT] = dep
@@ -327,8 +329,8 @@ def _parse_cloudify_context(**kwargs):
     # Set some labels for the Kubernetes pods
     kwargs["labels"] = {
         "cfydeployment" : ctx.deployment.id,
-        "cfynode": ctx.node.name,
-        "cfynodeinstance": ctx.instance.id
+        "cfynode": ctx.node.name[:63],
+        "cfynodeinstance": ctx.instance.id[:63]
     }
 
         # Pick up the centralized logging info
@@ -349,14 +351,16 @@ def _parse_cloudify_context(**kwargs):
 
 def _enhance_docker_params(**kwargs):
     '''
-    Set up Docker environment variables and readiness check info
+    Set up Docker environment variables and readiness/liveness check info
     and inject into kwargs.
     '''
 
-    # Get info for setting up readiness probe, if present
+    # Get info for setting up readiness/liveness probe, if present
     docker_config = kwargs.get("docker_config", {})
     if "healthcheck" in docker_config:
         kwargs["readiness"] = docker_config["healthcheck"]
+    if "livehealthcheck" in docker_config:
+        kwargs["liveness"] = docker_config["livehealthcheck"]
 
     envs = kwargs.get("envs", {})
 
@@ -371,8 +375,7 @@ def _enhance_docker_params(**kwargs):
 
     def combine_params(key, docker_config, kwargs):
         v = docker_config.get(key, []) + kwargs.get(key, [])
-        if v:
-            kwargs[key] = v
+        kwargs[key] = v
         return kwargs
 
     # Add the lists of ports and volumes unintelligently - meaning just add the
@@ -398,7 +401,8 @@ def _create_and_start_component(**kwargs):
         "tls_info": kwargs.get("tls_info", {}),
         "labels": kwargs.get("labels", {}),
         "resource_config": kwargs.get("resource_config",{}),
-        "readiness": kwargs.get("readiness",{})}
+        "readiness": kwargs.get("readiness",{}),
+        "liveness": kwargs.get("liveness",{})}
     returned_args = _create_and_start_container(service_component_name, image, **sub_kwargs)
     kwargs[K8S_DEPLOYMENT] = returned_args[K8S_DEPLOYMENT]
 
@@ -518,6 +522,8 @@ def create_and_start_container_for_platforms(**kwargs):
     kwargs["resource_config"] = resource_config
     if "healthcheck" in docker_config:
         kwargs["readiness"] = docker_config["healthcheck"]
+    if "livehealthcheck" in docker_config:
+        kwargs["liveness"] = docker_config["livehealthcheck"]
     if "dns_name" in ctx.node.properties:
         service_component_name = ctx.node.properties["dns_name"]
     else:
@@ -526,8 +532,8 @@ def create_and_start_container_for_platforms(**kwargs):
     # Set some labels for the Kubernetes pods
     kwargs["labels"] = {
         "cfydeployment" : ctx.deployment.id,
-        "cfynode": ctx.node.name,
-        "cfynodeinstance": ctx.instance.id
+        "cfynode": ctx.node.name[:63],
+        "cfynodeinstance": ctx.instance.id[:63]
     }
 
     host_port = ctx.node.properties["host_port"]

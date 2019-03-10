@@ -247,7 +247,7 @@ def test_enhance_docker_params(mockconfig):
     test_kwargs = { "docker_config": {}, "service_id": None }
     actual = tasks._enhance_docker_params(**test_kwargs)
 
-    assert actual == {'envs': {"SERVICE_TAGS": ""}, 'docker_config': {}, "service_id": None }
+    assert actual == {'envs': {"SERVICE_TAGS": ""}, 'docker_config': {}, 'ports': [], 'volumes': [], "service_id": None }
 
     # Good - Test just docker config ports and volumes
 
