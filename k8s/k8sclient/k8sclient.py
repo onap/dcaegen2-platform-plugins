@@ -116,7 +116,7 @@ def _create_probe(hc, port, use_tls=False):
           period_seconds = period,
           timeout_seconds = timeout,
           _exec = client.V1ExecAction(
-              command = [hc['script']]
+              command = hc['script'].split( )
           )
         )
     return probe
@@ -131,7 +131,7 @@ def _create_resources(resources=None):
     else:
         return None
 
-def _create_container_object(name, image, always_pull, use_tls=False, env={}, container_ports=[], volume_mounts = [], resources = None, readiness = None):
+def _create_container_object(name, image, always_pull, use_tls=False, env={}, container_ports=[], volume_mounts = [], resources = None, readiness = None, liveness = None):
     # Set up environment variables
     # Copy any passed in environment variables
     env_vars = [client.V1EnvVar(name=k, value=env[k]) for k in env.keys()]
@@ -139,15 +139,21 @@ def _create_container_object(name, image, always_pull, use_tls=False, env={}, co
     pod_ip = client.V1EnvVarSource(field_ref = client.V1ObjectFieldSelector(field_path="status.podIP"))
     env_vars.append(client.V1EnvVar(name="POD_IP",value_from=pod_ip))
 
-    # If a health check is specified, create a readiness probe
+    # If a health check is specified, create a readiness/liveness probe
     # (For an HTTP-based check, we assume it's at the first container port)
     probe = None
+    live_probe = None
 
     if readiness:
         hc_port = None
         if len(container_ports) > 0:
             (hc_port, proto) = container_ports[0]
         probe = _create_probe(readiness, hc_port, use_tls)
+    if liveness:
+        hc_port = None
+        if len(container_ports) > 0:
+            (hc_port, proto) = container_ports[0]
+        live_probe = _create_probe(liveness, hc_port, use_tls)
 
     if resources:
         resources_obj = _create_resources(resources)
@@ -162,7 +168,8 @@ def _create_container_object(name, image, always_pull, use_tls=False, env={}, co
         ports=[client.V1ContainerPort(container_port=p, protocol=proto) for (p, proto) in container_ports],
         volume_mounts = volume_mounts,
         resources = resources_obj,
-        readiness_probe = probe
+        readiness_probe = probe,
+        liveness_probe = live_probe
     )
 
 def _create_deployment_object(component_name,
@@ -386,6 +393,12 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, r
             - timeout:  time (in seconds) to allow a probe to complete
             - endpoint: the path portion of the URL that points to the readiness endpoint for "http" and "https" types
             - path: the full path to the script to be executed in the container for "script" and "docker" types
+        - liveiness: dict with health check info; if present, used to create a liveness probe for the main container.  Includes:
+            - type: check is done by making http(s) request to an endpoint ("http", "https") or by exec'ing a script in the container ("script", "docker")
+            - interval: period (in seconds) between probes
+            - timeout:  time (in seconds) to allow a probe to complete
+            - endpoint: the path portion of the URL that points to the liveness endpoint for "http" and "https" types
+            - path: the full path to the script to be executed in the container for "script" and "docker" types
 
     '''
 
@@ -460,7 +473,7 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, r
 
         # Create the container for the component
         # Make it the first container in the pod
-        containers.insert(0, _create_container_object(component_name, image, always_pull, use_tls, kwargs.get("env", {}), container_ports, volume_mounts,  resources, kwargs["readiness"]))
+        containers.insert(0, _create_container_object(component_name, image, always_pull, use_tls, kwargs.get("env", {}), container_ports, volume_mounts, resources, kwargs["readiness"], kwargs.get("liveness")))
 
         # Build the k8s Deployment object
         labels = kwargs.get("labels", {})

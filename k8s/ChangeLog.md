@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.4.9]
+* Support for liveness probes (https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/)
+* fix the readiness probe to run script such as "/opt/app/snmptrap/bin/snmptrapd.sh status"
+* change "ports" and the "mode" of volumne to be optional instead of mandatory
+
 ## [1.4.8]
 * If an installation step times out because a component does not become ready within the maximum wait time,
 delete the Kubernetes artifacts associated with the component.  Previously, an installation step might time
