@@ -194,21 +194,21 @@ def test_verify_container(monkeypatch, mockconfig):
     from k8splugin import tasks
     from k8splugin.exceptions import DockerPluginDeploymentError
 
-    def fake_is_available_success(ch, scn):
+    def fake_is_available_success(loc, ch, scn):
         return True
 
     monkeypatch.setattr(k8sclient, "is_available",
             fake_is_available_success)
 
-    assert tasks._verify_k8s_deployment("some-name", 3)
+    assert tasks._verify_k8s_deployment("some-location","some-name", 3)
 
-    def fake_is_available_never_good(ch, scn):
+    def fake_is_available_never_good(loc, ch, scn):
         return False
 
     monkeypatch.setattr(k8sclient, "is_available",
             fake_is_available_never_good)
 
-    assert not tasks._verify_k8s_deployment("some-name", 2)
+    assert not tasks._verify_k8s_deployment("some-location", "some-name", 2)
 
 
 def test_update_delivery_url(monkeypatch, mockconfig):

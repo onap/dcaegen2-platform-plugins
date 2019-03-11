@@ -205,7 +205,7 @@ def test_deploy(monkeypatch):
         monkeypatch.setattr(ext,"create_namespaced_deployment", pseudo_deploy)
         return ext
 
-    def pseudo_configure():
+    def pseudo_configure(loc):
         pass
 
     monkeypatch.setattr(k8sclient.k8sclient,"_configure_api", pseudo_configure)

@@ -24,6 +24,7 @@ _CONSUL_KEY = "k8s-plugin"              # Key under which CM configuration is st
 # Default configuration values
 DCAE_NAMESPACE = "dcae"
 CONSUL_DNS_NAME = "consul"
+K8S_LOCATION = "central"
 
 FB_LOG_PATH = "/var/log/onap"
 FB_DATA_PATH = "/usr/share/filebeat/data"
@@ -40,6 +41,7 @@ def _set_defaults():
     return {
         "namespace" : DCAE_NAMESPACE,               # k8s namespace to use for DCAE
         "consul_dns_name" : CONSUL_DNS_NAME,        # k8s internal DNS name for Consul
+        "default_k8s_location" : K8S_LOCATION,      # default k8s location to deploy components
         "image_pull_secrets" : [],                  # list of k8s secrets for accessing Docker registries
         "filebeat": {                               # Configuration for setting up filebeat container
             "log_path" : FB_LOG_PATH,               # mount point for log volume in filebeat container
