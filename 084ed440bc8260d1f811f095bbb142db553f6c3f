@@ -45,6 +45,23 @@
       "revId": "084ed440bc8260d1f811f095bbb142db553f6c3f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "92681596_0bba5288",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2019-03-11T13:11:19Z",
+      "side": 1,
+      "message": "This requires a change to the unit tests, because it means that the enhance_docker_params() function will always insert a \"ports\" field and a \"volumes\" field into the dict that it returns, even if there are no ports or volumes in the docker_config.   See tests/test_tasks.py, test_enhance_docker_params(), starting at line 243.",
+      "revId": "084ed440bc8260d1f811f095bbb142db553f6c3f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
