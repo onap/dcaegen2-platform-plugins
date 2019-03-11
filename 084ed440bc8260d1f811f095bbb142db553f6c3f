@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c01454ca_1b4cd921",
+        "filename": "k8s/ChangeLog.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-11T02:27:27Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 11,
+        "startChar": 35,
+        "endLine": 11,
+        "endChar": 42
+      },
+      "revId": "084ed440bc8260d1f811f095bbb142db553f6c3f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a343b981_d10fbc47",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-11T02:27:27Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 396,
+        "startChar": 10,
+        "endLine": 396,
+        "endChar": 19
+      },
+      "revId": "084ed440bc8260d1f811f095bbb142db553f6c3f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
