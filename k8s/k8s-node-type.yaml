@@ -25,7 +25,7 @@ plugins:
   k8s:
     executor: 'central_deployment_agent'
     package_name: k8splugin
-    package_version: 1.4.9
+    package_version: 1.4.10
 
 data_types:
 
@@ -126,7 +126,6 @@ node_types:
                   Please specify "requests" property and/or a "limits" property, with subproproperties
                   for cpu and memory. (https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/)
 
-
             log_info:
               type: dcae.types.LoggingInfo
               description: >
@@ -152,6 +151,16 @@ node_types:
                 before deploying.  By default the orchestrator pulls only if the image is
                 not already present on the Docker host where the container is being launched.
               default: false
+
+            location_id:
+              type: string
+              description: >
+                The identifier for the location where the component is to be deployed.
+                If absent, the plugin uses its configured default location, typically the location
+                where the plugin is running (the central site).  Also used to supply a location to
+                the DMaaP bus controller if the component is being provisioned as a publisher or
+                subscriber to a DMaaP feed or topic.
+              required: false
 
         interfaces:
             dcae.interfaces.update:

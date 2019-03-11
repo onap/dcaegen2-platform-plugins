@@ -1,7 +1,7 @@
 # ============LICENSE_START=======================================================
 # org.onap.dcae
 # ================================================================================
-# Copyright (c) 2018 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2018-2019 AT&T Intellectual Property. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ _CONSUL_KEY = "k8s-plugin"              # Key under which CM configuration is st
 # Default configuration values
 DCAE_NAMESPACE = "dcae"
 CONSUL_DNS_NAME = "consul"
+DEFAULT_K8S_LOCATION = "central"
 
 FB_LOG_PATH = "/var/log/onap"
 FB_DATA_PATH = "/usr/share/filebeat/data"
@@ -38,20 +39,21 @@ TLS_IMAGE = "nexus3.onap.org:10001/onap/org.onap.dcaegen2.deployments.tls-init-c
 def _set_defaults():
     """ Set default configuration parameters """
     return {
-        "namespace" : DCAE_NAMESPACE,               # k8s namespace to use for DCAE
-        "consul_dns_name" : CONSUL_DNS_NAME,        # k8s internal DNS name for Consul
-        "image_pull_secrets" : [],                  # list of k8s secrets for accessing Docker registries
-        "filebeat": {                               # Configuration for setting up filebeat container
-            "log_path" : FB_LOG_PATH,               # mount point for log volume in filebeat container
-            "data_path" : FB_DATA_PATH,             # mount point for data volume in filebeat container
-            "config_path" : FB_CONFIG_PATH,         # mount point for config volume in filebeat container
-            "config_subpath" : FB_CONFIG_SUBPATH,   # subpath for config data in filebeat container
-            "config_map" : FB_CONFIG_MAP,           # ConfigMap holding the filebeat configuration
-            "image": FB_IMAGE                       # Docker image to use for filebeat
+        "namespace" : DCAE_NAMESPACE,                   # k8s namespace to use for DCAE
+        "consul_dns_name" : CONSUL_DNS_NAME,            # k8s internal DNS name for Consul
+        "default_k8s_location" : DEFAULT_K8S_LOCATION,  # default k8s location to deploy components
+        "image_pull_secrets" : [],                      # list of k8s secrets for accessing Docker registries
+        "filebeat": {                                   # Configuration for setting up filebeat container
+            "log_path" : FB_LOG_PATH,                   # mount point for log volume in filebeat container
+            "data_path" : FB_DATA_PATH,                 # mount point for data volume in filebeat container
+            "config_path" : FB_CONFIG_PATH,             # mount point for config volume in filebeat container
+            "config_subpath" : FB_CONFIG_SUBPATH,       # subpath for config data in filebeat container
+            "config_map" : FB_CONFIG_MAP,               # ConfigMap holding the filebeat configuration
+            "image": FB_IMAGE                           # Docker image to use for filebeat
         },
-        "tls": {                                    # Configuration for setting up TLS init container
-            "cert_path" : TLS_CERT_PATH,            # mount point for certificate volume in TLS init container
-            "image": TLS_IMAGE                      # Docker image to use for TLS init container
+        "tls": {                                        # Configuration for setting up TLS init container
+            "cert_path" : TLS_CERT_PATH,                # mount point for certificate volume in TLS init container
+            "image": TLS_IMAGE                          # Docker image to use for TLS init container
         }
     }
 
