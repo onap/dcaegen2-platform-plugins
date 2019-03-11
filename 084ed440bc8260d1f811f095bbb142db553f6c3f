@@ -25,6 +25,23 @@
     },
     {
       "key": {
+        "uuid": "ff90ec5b_a523a7b5",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2019-03-11T13:22:09Z",
+      "side": 1,
+      "message": "For consistency, there should also be a change to _notify_container() in k8splugin/tasks.py, starting at line 680.  The code in _notify_container is setting up a script that\u0027s executed in a container to notify the container of a policy change.   It will also have a problem if the script definition includes an argument list.  The change there is somewhat more involved than the change here.",
+      "revId": "084ed440bc8260d1f811f095bbb142db553f6c3f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a343b981_d10fbc47",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 2
