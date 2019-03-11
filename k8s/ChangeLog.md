@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.4.10]
+ Support for deploying to multiple Kubernetes clusters.
+
 ## [1.4.9]
 * Support for liveness probes (https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/)
 * fix the readiness probe to run script such as "/opt/app/snmptrap/bin/snmptrapd.sh status"
