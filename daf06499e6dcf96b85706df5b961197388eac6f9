@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cddb503d_18b50ce6",
+        "filename": "k8s/configure/configure.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1949
+      },
+      "writtenOn": "2019-03-18T11:40:03Z",
+      "side": 1,
+      "message": "-2019",
+      "range": {
+        "startLine": 4,
+        "startChar": 16,
+        "endLine": 4,
+        "endChar": 20
+      },
+      "revId": "daf06499e6dcf96b85706df5b961197388eac6f9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "45f23469_9f872a9a",
+        "filename": "k8s/configure/configure.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1949
+      },
+      "writtenOn": "2019-03-18T11:40:03Z",
+      "side": 1,
+      "message": "would it be more explicit to name it DEFAULT_K8S_LOCATION ?",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 12
+      },
+      "revId": "daf06499e6dcf96b85706df5b961197388eac6f9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ecb4b3f_00dd867d",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1949
+      },
+      "writtenOn": "2019-03-18T11:40:03Z",
+      "side": 1,
+      "message": "it might be better to check the access level too like\nos.access(K8S_CONFIG_PATH, os.R_OK)",
+      "range": {
+        "startLine": 56,
+        "startChar": 4,
+        "endLine": 56,
+        "endChar": 38
+      },
+      "revId": "daf06499e6dcf96b85706df5b961197388eac6f9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da0171c4_c62fcb40",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 1949
+      },
+      "writtenOn": "2019-03-18T11:40:03Z",
+      "side": 1,
+      "message": "can it break if the k8s_location not in kwargs - you are using safer kwargs.get(\"k8s_location\") elsewhere",
+      "range": {
+        "startLine": 433,
+        "startChar": 30,
+        "endLine": 433,
+        "endChar": 52
+      },
+      "revId": "daf06499e6dcf96b85706df5b961197388eac6f9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b834cfb3_5e911a33",
+        "filename": "k8s/tests/test_k8sclient.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1949
+      },
+      "writtenOn": "2019-03-18T11:40:03Z",
+      "side": 1,
+      "message": "-2019",
+      "range": {
+        "startLine": 4,
+        "startChar": 16,
+        "endLine": 4,
+        "endChar": 20
+      },
+      "revId": "daf06499e6dcf96b85706df5b961197388eac6f9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2ac4c2fa_9f718c19",
+        "filename": "k8s/tests/test_tasks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1949
+      },
+      "writtenOn": "2019-03-18T11:40:03Z",
+      "side": 1,
+      "message": "-2019",
+      "range": {
+        "startLine": 4,
+        "startChar": 20,
+        "endLine": 4,
+        "endChar": 25
+      },
+      "revId": "daf06499e6dcf96b85706df5b961197388eac6f9",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
