@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.4.11]
+ change v['container']['mode'] to v['container'].get('mode') to allow v to be []
+ add comment: The name segment is required and must be 63 characters or less
+ (https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)
+
 ## [1.4.10]
  Support for deploying to multiple Kubernetes clusters.
 

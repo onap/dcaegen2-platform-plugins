@@ -338,6 +338,7 @@ def _parse_cloudify_context(**kwargs):
     kwargs["deployment_id"] = ctx.deployment.id
 
     # Set some labels for the Kubernetes pods
+    # The name segment is required and must be 63 characters or less
     kwargs["labels"] = {
         "cfydeployment" : ctx.deployment.id,
         "cfynode": ctx.node.name[:63],
@@ -545,6 +546,7 @@ def create_and_start_container_for_platforms(**kwargs):
         service_component_name = ctx.node.properties["name"]
 
     # Set some labels for the Kubernetes pods
+    # The name segment is required and must be 63 characters or less
     kwargs["labels"] = {
         "cfydeployment" : ctx.deployment.id,
         "cfynode": ctx.node.name[:63],

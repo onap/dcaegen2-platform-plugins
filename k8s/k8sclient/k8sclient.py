@@ -267,7 +267,7 @@ def _parse_volumes(volume_list):
         vname = str(uuid.uuid4())
         vhost = v['host']['path']
         vcontainer = v['container']['bind']
-        vro = (v['container']['mode'] == 'ro')
+        vro = (v['container'].get('mode') == 'ro')
         volumes.append(client.V1Volume(name=vname, host_path=client.V1HostPathVolumeSource(path=vhost)))
         volume_mounts.append(client.V1VolumeMount(name=vname, mount_path=vcontainer, read_only=vro))
 
