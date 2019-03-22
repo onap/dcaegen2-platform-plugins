@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "038b7eac_56f4058f",
+        "filename": "k8s/ChangeLog.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2019-03-22T11:51:21Z",
+      "side": 1,
+      "message": "Isn\u0027t v an object, not an array?  \nIf v can be {} (an empty object), wouldn\u0027t v[\u0027container\u0027] still be a problem?  And aren\u0027t there other lines of code that would have a similar problem?\nThe change you\u0027re making here looks more like a change to allow for the \u0027mode\u0027 value to be absent from v[\u0027container\u0027].\n\nI don\u0027t have an issue with the change, but I don\u0027t understand the explanation.",
+      "revId": "7dcfa7c0879e428232639ea9f94369757bfec925",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
