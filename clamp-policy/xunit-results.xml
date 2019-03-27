@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?><testsuite errors="0" failures="0" name="pytest" skipped="0" tests="1" time="0.554"><testcase classname="tests.test_tasks" file="tests/test_tasks.py" line="41" name="test_policy_get" time="0.005"><system-out>17:19:22 [INFO] [mock-context-logger] clamppolicyplugin - Inside policy_get dummy function
+</system-out></testcase></testsuite>
