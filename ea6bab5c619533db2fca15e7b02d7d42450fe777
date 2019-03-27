@@ -22,6 +22,23 @@
       "revId": "ea6bab5c619533db2fca15e7b02d7d42450fe777",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f3c1fbe3_70d8605f",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-03-27T16:06:19Z",
+      "side": 1,
+      "message": "add a line for Wipro 2019",
+      "revId": "ea6bab5c619533db2fca15e7b02d7d42450fe777",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
