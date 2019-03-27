@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "93c89c80_831bd4e8",
+        "filename": "clamp-policy/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-03-27T14:39:27Z",
+      "side": 1,
+      "message": "should be 1.0.0",
+      "range": {
+        "startLine": 30,
+        "startChar": 11,
+        "endLine": 30,
+        "endChar": 25
+      },
+      "revId": "ea6bab5c619533db2fca15e7b02d7d42450fe777",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
