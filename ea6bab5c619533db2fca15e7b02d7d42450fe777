@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "b5b1d555_e2edfd5a",
+        "filename": "clamp-policy/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 2659
+      },
+      "writtenOn": "2019-03-29T14:54:38Z",
+      "side": 1,
+      "message": "Modified the version number.",
+      "parentUuid": "93c89c80_831bd4e8",
+      "range": {
+        "startLine": 30,
+        "startChar": 11,
+        "endLine": 30,
+        "endChar": 25
+      },
+      "revId": "ea6bab5c619533db2fca15e7b02d7d42450fe777",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f3c1fbe3_70d8605f",
         "filename": "pom.xml",
         "patchSetId": 1
@@ -36,6 +60,24 @@
       "writtenOn": "2019-03-27T16:06:19Z",
       "side": 1,
       "message": "add a line for Wipro 2019",
+      "revId": "ea6bab5c619533db2fca15e7b02d7d42450fe777",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3c758989_896a9d3a",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 2659
+      },
+      "writtenOn": "2019-03-29T14:54:38Z",
+      "side": 1,
+      "message": "Hi Tony, Thanks for the comments. This is an existing file and I guess we should not modify license. We followed this practice in policy module changes. please confirm if we still need to add the aforementioned line.",
+      "parentUuid": "f3c1fbe3_70d8605f",
       "revId": "ea6bab5c619533db2fca15e7b02d7d42450fe777",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
