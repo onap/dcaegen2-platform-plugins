@@ -28,7 +28,7 @@ PROBE_DEFAULT_PERIOD = 15
 PROBE_DEFAULT_TIMEOUT = 1
 
 # Location of k8s cluster config file ("kubeconfig")
-K8S_CONFIG_PATH="/opt/onap/kubeconfig"
+K8S_CONFIG_PATH="/opt/onap/kube/kubeconfig"
 
 # Regular expression for interval/timeout specification
 INTERVAL_SPEC = re.compile("^([0-9]+)(s|m|h)?$")
