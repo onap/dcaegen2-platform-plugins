@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.4.12]
+ Change location of kubeconfig file for multi-cluster support.  Put the
+ file in a subdirectory so that the k8s volume mount does not require a
+ "subPath" parameter, so that updates to the ConfigMap hosting the kubeconfig
+ will be visible to the plugin without restarting Cloudify Manager.
+
 ## [1.4.11]
  change v['container']['mode'] to v['container'].get('mode') to allow for
  the 'mode' value to be absent from v['container']
