@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a89dc7d5_26e4a891",
+        "filename": "clamp-policy/clamppolicy-node-type.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-04-04T05:39:23Z",
+      "side": 1,
+      "message": "This may not be required I think. Jack,  can you confirm?",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 66
+      },
+      "revId": "938f7215a4688cff1934a356f2194df4c7ec63a6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "518d9add_cc8f5643",
+        "filename": "clamp-policy/clamppolicy-node-type.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-04-04T05:39:23Z",
+      "side": 1,
+      "message": "dcaepolicy.dcaepolicyplugin.policy_get",
+      "range": {
+        "startLine": 50,
+        "startChar": 36,
+        "endLine": 50,
+        "endChar": 76
+      },
+      "revId": "938f7215a4688cff1934a356f2194df4c7ec63a6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
