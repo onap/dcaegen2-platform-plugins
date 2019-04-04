@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "c03b4b5b_2e3439f0",
+        "filename": "clamp-policy/clamppolicy-node-type.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2019-04-04T14:06:27Z",
+      "side": 1,
+      "message": "I am not sure what the desired behavior is.  I have not been involved in the detailed discussions about this.  I thought originally CLAMP wanted to added a property to the policy node.  Alex Shatov suggested doing this by creating a new type, derived from dcae.policy.nodes, that simply added the field.   This can be done with a type file (or even with a type definition inside the blueprints).\n\nI pointed out that if we were not able to get a satisfactory resolution of DCAEGEN2-989 (related to type files being available in an environment without Internet connectivity), it would be necessary to package a new type file in some kind of a dummy plugin.  We did resolve DCAEGEN2-989, so all we need to solve the original problem as I understand it is a simple type file.   But I was not involved in the detailed discussions, so I may not understand the problem correctly.",
+      "parentUuid": "a89dc7d5_26e4a891",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 66
+      },
+      "revId": "938f7215a4688cff1934a356f2194df4c7ec63a6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "518d9add_cc8f5643",
         "filename": "clamp-policy/clamppolicy-node-type.yaml",
         "patchSetId": 3
