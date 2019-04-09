@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "96c4ce59_5c7a4570",
+        "filename": "clamp-policy/clamppolicy-node-type.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-04-09T22:18:19Z",
+      "side": 1,
+      "message": "1.0.0 as this is first version",
+      "range": {
+        "startLine": 28,
+        "startChar": 21,
+        "endLine": 28,
+        "endChar": 26
+      },
+      "revId": "40be56777a5a6ccafbd2559a46f438f45e1f6f62",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "db84ffc4_43c3235f",
         "filename": "clamp-policy/clamppolicy-node-type.yaml",
         "patchSetId": 4
@@ -13,6 +36,52 @@
       "writtenOn": "2019-04-09T21:12:23Z",
       "side": 1,
       "message": "Isn\u0027t this just inherited from dcae.nodes.policy?",
+      "revId": "40be56777a5a6ccafbd2559a46f438f45e1f6f62",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bb9046dd_6820653a",
+        "filename": "clamp-policy/clamppolicy-node-type.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-04-09T22:18:19Z",
+      "side": 1,
+      "message": "Agreed; this section can be removed",
+      "range": {
+        "startLine": 43,
+        "startChar": 8,
+        "endLine": 46,
+        "endChar": 74
+      },
+      "revId": "40be56777a5a6ccafbd2559a46f438f45e1f6f62",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b4730fc2_b49bbb9d",
+        "filename": "clamp-policy/setup.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2019-04-09T22:18:19Z",
+      "side": 1,
+      "message": "1.0.0",
+      "range": {
+        "startLine": 25,
+        "startChar": 13,
+        "endLine": 25,
+        "endChar": 18
+      },
       "revId": "40be56777a5a6ccafbd2559a46f438f45e1f6f62",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
