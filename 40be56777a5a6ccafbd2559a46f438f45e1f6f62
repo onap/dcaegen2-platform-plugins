@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "db84ffc4_43c3235f",
+        "filename": "clamp-policy/clamppolicy-node-type.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2019-04-09T21:12:23Z",
+      "side": 1,
+      "message": "Isn\u0027t this just inherited from dcae.nodes.policy?",
+      "revId": "40be56777a5a6ccafbd2559a46f438f45e1f6f62",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
