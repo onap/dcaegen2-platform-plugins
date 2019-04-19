@@ -174,21 +174,6 @@ def test_setup_for_discovery_streams(monkeypatch, mockconfig):
     with pytest.raises(NonRecoverableError):
         tasks._setup_for_discovery_streams(**test_input)
 
-
-def test_lookup_service(monkeypatch, mockconfig):
-    import k8splugin
-    from k8splugin import tasks
-    def fake_lookup(conn, scn):
-        return [{"ServiceAddress": "192.168.1.1", "ServicePort": "80"}]
-
-    monkeypatch.setattr(k8splugin.discovery, "lookup_service",
-            fake_lookup)
-
-    assert "192.168.1.1" == tasks._lookup_service("some-component")
-    assert "192.168.1.1:80" == tasks._lookup_service("some-component",
-            with_port=True)
-
-
 def test_verify_container(monkeypatch, mockconfig):
     import k8sclient
     from k8splugin import tasks
@@ -222,20 +207,12 @@ def test_update_delivery_url(monkeypatch, mockconfig):
                 {'type': 'data_router', 'name': 'feed01', 'username': 'hero',
                     'password': '123456', 'location': 'Bedminster',
                     'route': 'some-path'}],
-            'topic01': {'type': 'message_router', 'name': 'topic01'}}
+            'topic01': {'type': 'message_router', 'name': 'topic01'},
+            'ports': ['8080/tcp:0']}
     test_input["service_component_name"] = "some-foo-service-component"
 
-    def fake_lookup_service(name, with_port=False):
-        if with_port:
-            return "10.100.1.100:8080"
-        else:
-            return
-
-    monkeypatch.setattr(k8splugin.tasks, "_lookup_service",
-            fake_lookup_service)
-
     expected = copy.deepcopy(test_input)
-    expected["feed01"]["delivery_url"] = "http://10.100.1.100:8080/some-path"
+    expected["feed01"]["delivery_url"] = "http://some-foo-service-component:8080/some-path"
 
     assert tasks._update_delivery_url(**test_input) == expected
 

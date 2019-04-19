@@ -231,20 +231,6 @@ def create_for_platforms(**create_inputs):
             **_setup_for_discovery(
                 **create_inputs))
 
-
-def _lookup_service(service_component_name, consul_host=CONSUL_HOST,
-        with_port=False):
-    conn = dis.create_kv_conn(consul_host)
-    results = dis.lookup_service(conn, service_component_name)
-
-    if with_port:
-        # Just grab first
-        result = results[0]
-        return "{address}:{port}".format(address=result["ServiceAddress"],
-                port=result["ServicePort"])
-    else:
-        return results[0]["ServiceAddress"]
-
 def _verify_k8s_deployment(location, service_component_name, max_wait):
     """Verify that the k8s Deployment is ready
 
@@ -490,7 +476,14 @@ def _update_delivery_url(**kwargs):
         # TODO: Should NOT be setting up the delivery url with ip addresses
         # because in the https case, this will not work because data router does
         # a certificate validation using the fqdn.
-        subscriber_host = _lookup_service(service_component_name, with_port=True)
+        ports,_ = k8sclient.parse_ports(kwargs["ports"])
+        (dport, _) = ports[0]
+        # Using service_component_name as the host name in the subscriber URL
+        # will work in a single-cluster ONAP deployment.  Whether it will also work
+        # in a multi-cluster ONAP deployment--with a central location and one or
+        # more remote ("edge") locations depends on how networking and DNS is set
+        # up in a multi-cluster deployment
+        subscriber_host = "{host}:{port}".format(host=service_component_name, port=dport)
 
         for dr_sub in dr_subs:
             scheme = dr_sub["scheme"] if "scheme" in dr_sub else DEFAULT_SCHEME

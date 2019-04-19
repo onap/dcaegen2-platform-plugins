@@ -237,7 +237,7 @@ def _create_service_object(service_name, component_name, service_ports, annotati
     )
     return service
 
-def _parse_ports(port_list):
+def parse_ports(port_list):
     '''
     Parse the port list into a list of container ports (needed to create the container)
     and to a set of port mappings to set up k8s services.
@@ -425,7 +425,7 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, r
         ext = client.ExtensionsV1beta1Api()
 
         # Parse the port mapping
-        container_ports, port_map = _parse_ports(kwargs.get("ports", []))
+        container_ports, port_map = parse_ports(kwargs.get("ports", []))
 
         # Parse the volumes list into volumes and volume_mounts for the deployment
         volumes, volume_mounts = _parse_volumes(kwargs.get("volumes",[]))

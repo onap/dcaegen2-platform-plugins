@@ -86,7 +86,7 @@ def test_parse_interval():
             _parse_interval(interval)
 
 def test_parse_ports():
-    from k8sclient.k8sclient import _parse_ports
+    from k8sclient.k8sclient import parse_ports
 
     good_ports = [{"in": input, "ex": expected}
         for (input, expected) in [
@@ -133,16 +133,16 @@ def test_parse_ports():
     }
 
     for test_case in good_ports:
-        container_ports, port_map = _parse_ports([test_case["in"]])
+        container_ports, port_map = parse_ports([test_case["in"]])
         (cport, hport, proto) = test_case["ex"]
         assert container_ports == [(cport, proto)]
         assert port_map == {(cport, proto) : hport}
 
     for port in bad_ports:
         with pytest.raises(ValueError):
-            _parse_ports([port])
+            parse_ports([port])
 
-    container_ports, port_map = _parse_ports(port_list)
+    container_ports, port_map = parse_ports(port_list)
     assert port_map == expected_port_map
 
 def test_create_container():

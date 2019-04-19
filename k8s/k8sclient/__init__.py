@@ -17,4 +17,4 @@
 # ============LICENSE_END=========================================================
 #
 # ECOMP is a trademark and service mark of AT&T Intellectual Property.
-from .k8sclient import deploy, undeploy, is_available, scale, upgrade, rollback, execute_command_in_deployment
+from .k8sclient import deploy, undeploy, is_available, scale, upgrade, rollback, execute_command_in_deployment, parse_ports

@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.4.13]
+ Fix bug related to setting the delivery URL for a DR subscriber.  (DCAEGEN2-1009)
+
 ## [1.4.12]
  Change location of kubeconfig file for multi-cluster support.  Put the
  file in a subdirectory so that the k8s volume mount does not require a
