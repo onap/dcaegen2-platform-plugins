@@ -38,7 +38,3 @@ def test_create_kv_conn_parse_host():
     with pytest.raises(dis.DiscoveryError):
         dis._parse_host(host)
 
-    # Hanging colon
-    port = ""
-    host = "{0}:{1}".format(hostname, port)
-    assert (hostname, 8500) == dis._parse_host(host)
