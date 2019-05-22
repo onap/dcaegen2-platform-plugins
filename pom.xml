@@ -32,7 +32,6 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
   <url>http://maven.apache.org</url>
   <packaging>pom</packaging>
   <modules>
-     <module>cdap</module>
      <module>docker</module>
      <module>relationships</module>
      <module>dcae-policy</module>
@@ -81,7 +80,7 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
           </configuration>
         </plugin>
         <!-- first disable the default Java plugins at various stages -->
-        <!-- maven-resources-plugin is called during "*resource" phases by default behavior.  it prepares 
+        <!-- maven-resources-plugin is called during "*resource" phases by default behavior.  it prepares
          the resources dir.  we do not need it -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -112,7 +111,7 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
             </execution>
           </executions>
         </plugin>
-        <!-- maven-install-plugin is called during "install" phase by default behavior.  it tries to copy stuff under 
+        <!-- maven-install-plugin is called during "install" phase by default behavior.  it tries to copy stuff under
          target dir to ~/.m2.  we do not need it -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
