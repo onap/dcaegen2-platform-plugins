@@ -33,11 +33,7 @@ if [ "$RELEASE_TAG" != "R1" ]; then
 else
   RELEASE_TAGGED_DIR="releases"
 fi
-if ! wget -O ${PROJECT_ROOT}/mvn-phase-lib.sh \
-  "$MVN_RAWREPO_BASEURL_DOWNLOAD"/org.onap.dcaegen2.utils/${RELEASE_TAGGED_DIR}scripts/mvn-phase-lib.sh; then
-  echo "Fail to download mvn-phase-lib.sh"
-  exit 1
-fi
+
 source "${PROJECT_ROOT}"/mvn-phase-lib.sh
 
 
