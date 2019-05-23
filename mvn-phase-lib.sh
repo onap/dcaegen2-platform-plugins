@@ -299,8 +299,8 @@ build_archives_for_wagons()
 upload_raw_file()
 {
   # Extract the username and password to the nexus repo from the settings file
-  USER=$(xpath  "//servers/server[id='$MVN_RAWREPO_SERVERID']/username/text()" "$SETTINGS_FILE")
-  PASS=$(xpath  "//servers/server[id='$MVN_RAWREPO_SERVERID']/password/text()" "$SETTINGS_FILE")
+  USER=$(xpath "$SETTINGS_FILE" "//servers/server[id='$MVN_RAWREPO_SERVERID']/username/text()")
+  PASS=$(xpath "$SETTINGS_FILE" "//servers/server[id='$MVN_RAWREPO_SERVERID']/password/text()")
   NETRC=$(mktemp)
   echo "machine $MVN_RAWREPO_HOST login $USER password $PASS" > "$NETRC"
 
@@ -441,8 +441,8 @@ upload_files_of_extension_recursively()
 generate_pypirc_then_publish()
 {
   set +x
-  USER=$(xpath  "//servers/server[id='$MVN_PYPISERVER_SERVERID']/username/text()" "$SETTINGS_FILE")
-  PASS=$(xpath  "//servers/server[id='$MVN_PYPISERVER_SERVERID']/password/text()" "$SETTINGS_FILE")
+  USER=$(xpath "$SETTINGS_FILE" "//servers/server[id='$MVN_PYPISERVER_SERVERID']/username/text()")
+  PASS=$(xpath "$SETTINGS_FILE" "//servers/server[id='$MVN_PYPISERVER_SERVERID']/password/text()")
 
   if [[ "$MVN_PYPISERVER_BASEURL" != */ ]]; then
     MVN_PYPISERVER_BASEURL="${MVN_PYPISERVER_BASEURL}/"
@@ -507,8 +507,8 @@ build_and_push_docker()
   echo "DEPLOYMENT_TYPE is: $MVN_DEPLOYMENT_TYPE, repo is $REPO"
 
   if [ ! -z "$REPO" ]; then
-    USER=$(xpath  "//servers/server[id='$REPO']/username/text()" "$SETTINGS_FILE")
-    PASS=$(xpath  "//servers/server[id='$REPO']/password/text()" "$SETTINGS_FILE")
+    USER=$(xpath  "$SETTINGS_FILE" "//servers/server[id='$REPO']/username/text()")
+    PASS=$(xpath  "$SETTINGS_FILE" "//servers/server[id='$REPO']/password/text()")
     if [ -z "$USER" ]; then
       echo "Error: no user provided"
     fi
