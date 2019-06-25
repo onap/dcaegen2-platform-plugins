@@ -35,6 +35,10 @@ FB_IMAGE = "docker.elastic.co/beats/filebeat:5.5.0"
 
 TLS_CERT_PATH = "/opt/tls/shared"
 TLS_IMAGE = "nexus3.onap.org:10001/onap/org.onap.dcaegen2.deployments.tls-init-container:1.0.0"
+TLS_CA_CERT_PATH = "/opt/dcae/cacert/cacert.pem"
+TLS_CA_CONFIGMAP = "dcae-cacert-configmap"
+
+CBS_BASE_URL = "https://config-binding-service:10443/service_component_all"
 
 def _set_defaults():
     """ Set default configuration parameters """
@@ -51,10 +55,16 @@ def _set_defaults():
             "config_map" : FB_CONFIG_MAP,               # ConfigMap holding the filebeat configuration
             "image": FB_IMAGE                           # Docker image to use for filebeat
         },
-        "tls": {                                        # Configuration for setting up TLS init container
+        "tls": {                                        # Configuration for setting up TLS
             "cert_path" : TLS_CERT_PATH,                # mount point for certificate volume in TLS init container
-            "image": TLS_IMAGE                          # Docker image to use for TLS init container
+            "image": TLS_IMAGE,                         # Docker image to use for TLS init container
+            "component_ca_cert_path": TLS_CA_CERT_PATH, # Mount point for CA cert for components that are clients only
+            "ca_cert_configmap": TLS_CA_CONFIGMAP       # ConfigMap holding CA cert for components that are clients only
+        },
+        "cbs": {
+            "base_url" : CBS_BASE_URL                   # URL prefix for accessing config binding service
         }
+
     }
 
 def configure(config_path=_CONFIG_PATH, key = _CONSUL_KEY):

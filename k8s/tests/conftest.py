@@ -1,7 +1,7 @@
 # ============LICENSE_START=======================================================
 # org.onap.dcae
 # ================================================================================
-# Copyright (c) 2018 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2018-2019 AT&T Intellectual Property. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,13 +22,48 @@ import pytest
 
 @pytest.fixture()
 def mockconfig(monkeypatch):
+    from configure import configure
     """ Override the regular configure() routine that reads a file and calls Consul"""
     def altconfig():
-        return {
-            "consul_host": "consul",
-            "namespace":"dcae",
-            "consul_dns_name" : "consul",
-            "image_pull_secrets" : []
-        }
-    from configure import configure
+      config = configure._set_defaults()
+      config["consul_host"] = config["consul_dns_name"]
+      return config
     monkeypatch.setattr(configure, 'configure', altconfig)
+
+@pytest.fixture()
+def mockk8sapi(monkeypatch):
+    import k8sclient.k8sclient
+    from kubernetes import client
+
+    # We need to patch the kubernetes 'client' module
+    # Awkward because of the way it requires a function call
+    # to get an API object
+    core = client.CoreV1Api()
+    ext = client.ExtensionsV1beta1Api()
+
+    def pseudo_deploy(namespace, dep):
+        return dep
+
+    def pseudo_service(namespace, svc):
+        return svc
+
+    # patched_core returns a CoreV1Api object with the
+    # create_namespaced_service method stubbed out so that there
+    # is no attempt to call the k8s API server
+    def patched_core():
+        monkeypatch.setattr(core, "create_namespaced_service", pseudo_service)
+        return core
+
+    # patched_ext returns an ExtensionsV1beta1Api object with the
+    # create_namespaced_deployment method stubbed out so that there
+    # is no attempt to call the k8s API server
+    def patched_ext():
+        monkeypatch.setattr(ext,"create_namespaced_deployment", pseudo_deploy)
+        return ext
+
+    def pseudo_configure(loc):
+        pass
+
+    monkeypatch.setattr(k8sclient.k8sclient,"_configure_api", pseudo_configure)
+    monkeypatch.setattr(client, "CoreV1Api", patched_core)
+    monkeypatch.setattr(client,"ExtensionsV1beta1Api", patched_ext)

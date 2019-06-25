@@ -93,7 +93,7 @@ def _parse_interval(t):
         raise ValueError("Bad interval specification: {0}".format(t))
     return time
 
-def _create_probe(hc, port, use_tls=False):
+def _create_probe(hc, port):
     ''' Create a Kubernetes probe based on info in the health check dictionary hc '''
     probe_type = hc['type']
     probe = None
@@ -133,7 +133,7 @@ def _create_resources(resources=None):
     else:
         return None
 
-def _create_container_object(name, image, always_pull, use_tls=False, env={}, container_ports=[], volume_mounts = [], resources = None, readiness = None, liveness = None):
+def _create_container_object(name, image, always_pull, env={}, container_ports=[], volume_mounts = [], resources = None, readiness = None, liveness = None):
     # Set up environment variables
     # Copy any passed in environment variables
     env_vars = [client.V1EnvVar(name=k, value=env[k]) for k in env.keys()]
@@ -150,12 +150,12 @@ def _create_container_object(name, image, always_pull, use_tls=False, env={}, co
         hc_port = None
         if len(container_ports) > 0:
             (hc_port, proto) = container_ports[0]
-        probe = _create_probe(readiness, hc_port, use_tls)
+        probe = _create_probe(readiness, hc_port)
     if liveness:
         hc_port = None
         if len(container_ports) > 0:
             (hc_port, proto) = container_ports[0]
-        live_probe = _create_probe(liveness, hc_port, use_tls)
+        live_probe = _create_probe(liveness, hc_port)
 
     if resources:
         resources_obj = _create_resources(resources)
@@ -376,9 +376,11 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, r
             "config_subpath" :  subpath for config data in filebeat container
             "config_map" : ConfigMap holding the filebeat configuration
             "image": Docker image to use for filebeat
-        - tls: a dictionary of TLS init container parameters:
+        - tls: a dictionary of TLS-related information:
             "cert_path": mount point for certificate volume in init container
             "image": Docker image to use for TLS init container
+            "component_ca_cert_path" : mount point for CA cert for client-only containers
+            "ca_cert_configmap": the name of the ConfigMap where the CA cert is stored
     kwargs may have:
         - volumes:  array of volume objects, where a volume object is:
             {"host":{"path": "/path/on/host"}, "container":{"bind":"/path/on/container","mode":"rw_or_ro"}
@@ -453,7 +455,7 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, r
             sidecar_volume_mounts.append(client.V1VolumeMount(name="filebeat-data", mount_path=fb["data_path"]))
 
             # Create the container for the sidecar
-            containers.append(_create_container_object("filebeat", fb["image"], False, False, {}, [], sidecar_volume_mounts))
+            containers.append(_create_container_object("filebeat", fb["image"], False, {}, [], sidecar_volume_mounts))
 
             # Create the volume for the sidecar configuration data and the volume mount for it
             # The configuration data is in a k8s ConfigMap that should be created when DCAE is installed.
@@ -462,25 +464,44 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, r
             sidecar_volume_mounts.append(
                 client.V1VolumeMount(name="filebeat-conf", mount_path=fb["config_path"], sub_path=fb["config_subpath"]))
 
-        # Set up the TLS init container, if needed
-        tls_info = kwargs.get("tls_info")
-        use_tls = False
-        if tls_info and "use_tls" in tls_info and tls_info["use_tls"]:
-            if "cert_directory" in tls_info and len(tls_info["cert_directory"]) > 0:
-                use_tls = True
-                tls_config = k8sconfig["tls"]
+        # Set up TLS information
+        #   Two different ways of doing this, depending on whether the container will act as a TLS server or as a client only
+        #   If a server, then tls_info will be passed, and tls_info["use_tls"] will be set to true.  We create an InitContainer
+        #   that sets up the CA cert, the server cert, and the keys.
+        #   If a client only, only the CA cert is needed.  We mount the CA cert from a ConfigMap that has been created as part
+        #   of the installation process. If there is cert_directory information in tls_info, we use that directory in the mount path.
+        #   Otherwise, we use the configured default path in tls_config.
 
+        tls_info = kwargs.get("tls_info")
+        tls_config = k8sconfig["tls"]
+        tls_server = False
+        cert_directory = None
+
+        if tls_info and "cert_directory" in tls_info and len(tls_info["cert_directory"]) > 0:
+            cert_directory = tls_info["cert_directory"]
+            if tls_info and tls_info.get("use_tls", False):
+                tls_server = True
+                # Use an InitContainer to set up the certificate information
                 # Create the certificate volume and volume mounts
                 volumes.append(client.V1Volume(name="tls-info", empty_dir=client.V1EmptyDirVolumeSource()))
-                volume_mounts.append(client.V1VolumeMount(name="tls-info", mount_path=tls_info["cert_directory"]))
+                volume_mounts.append(client.V1VolumeMount(name="tls-info", mount_path=cert_directory))
                 init_volume_mounts = [client.V1VolumeMount(name="tls-info", mount_path=tls_config["cert_path"])]
 
                 # Create the init container
-                init_containers.append(_create_container_object("init-tls", tls_config["image"], False, False, {}, [], init_volume_mounts))
+                init_containers.append(_create_container_object("init-tls", tls_config["image"], False, {}, [], init_volume_mounts))
+
+        if not tls_server:
+            # Use a config map
+            # Create the CA cert volume
+            volumes.append(client.V1Volume(name="tls-cacert", config_map=client.V1ConfigMapVolumeSource(name=tls_config["ca_cert_configmap"])))
+
+            # Create the volume mount
+            mount_path= cert_directory if cert_directory else os.path.dirname(tls_config["component_ca_cert_path"])
+            volume_mounts.append(client.V1VolumeMount(name="tls-cacert", mount_path=mount_path))
 
         # Create the container for the component
         # Make it the first container in the pod
-        containers.insert(0, _create_container_object(component_name, image, always_pull, use_tls, kwargs.get("env", {}), container_ports, volume_mounts, resources, kwargs["readiness"], kwargs.get("liveness")))
+        containers.insert(0, _create_container_object(component_name, image, always_pull, kwargs.get("env", {}), container_ports, volume_mounts, resources, kwargs["readiness"], kwargs.get("liveness")))
 
         # Build the k8s Deployment object
         labels = kwargs.get("labels", {})
