@@ -44,6 +44,8 @@ CONSUL_INTERNAL_NAME = plugin_conf.get("consul_dns_name")
 DCAE_NAMESPACE = plugin_conf.get("namespace")
 DEFAULT_MAX_WAIT = plugin_conf.get("max_wait", 1800)
 DEFAULT_K8S_LOCATION = plugin_conf.get("default_k8s_location")
+COMPONENT_CA_CERT_PATH = plugin_conf.get("tls").get("component_ca_cert_path")
+CBS_BASE_URL = plugin_conf.get("cbs").get("base_url")
 
 # Used to construct delivery urls for data router subscribers. Data router in FTL
 # requires https but this author believes that ONAP is to be defaulted to http.
@@ -279,13 +281,19 @@ def _create_and_start_container(container_name, image, **kwargs):
         - msb_list: array of msb objects, where an msb object is as described in msb/msb.py.
         - log_info: an object with info for setting up ELK logging, with the form:
             {"log_directory": "/path/to/container/log/directory", "alternate_fb_path" : "/alternate/sidecar/log/path"}"
+        - tls_info: an object with information for setting up the component to act as a TLS server, with the form:
+            {"use_tls" : true_or_false, "cert_directory": "/path/to/directory_where_certs_should_be_placed" }
         - replicas: number of replicas to be launched initially
         - readiness: object with information needed to create a readiness check
         - liveness: object with information needed to create a liveness check
         - k8s_location: name of the Kubernetes location (cluster) where the component is to be deployed
     '''
+    tls_info = kwargs.get("tls_info")
     env = { "CONSUL_HOST": CONSUL_INTERNAL_NAME,
-            "CONFIG_BINDING_SERVICE": "config-binding-service" }
+            "CONFIG_BINDING_SERVICE": "config-binding-service",
+            "DCAE_CA_CERTPATH" : "{0}/cacert.pem".format(tls_info["cert_directory"]) if (tls_info and tls_info["cert_directory"]) else COMPONENT_CA_CERT_PATH,
+            "CBS_CONFIG_URL" : "{0}/{1}".format(CBS_BASE_URL, container_name)
+          }
     env.update(kwargs.get("envs", {}))
     ctx.logger.info("Starting k8s deployment for {}, image: {}, env: {}, kwargs: {}".format(container_name, image, env, kwargs))
     ctx.logger.info("Passing k8sconfig: {}".format(plugin_conf))
