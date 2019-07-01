@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "47494d9a_42f65331",
+        "filename": "k8s/k8s-node-type.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2019-07-01T12:04:08Z",
+      "side": 1,
+      "message": "Note that the import of the type file has been removed.  This is consistent with what some other plugins are already doing.  A blueprint that uses this plugin must import the Cloudify types.  Doing it this way means that there will be no conflict between the imports in the blueprint and the import in the type file.",
+      "revId": "5a73121bcaad1119b4c4b78973ec16c250d1269c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
