@@ -16,6 +16,40 @@
       "revId": "5a73121bcaad1119b4c4b78973ec16c250d1269c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d4e985a6_8c0a5f85",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-07-01T14:28:06Z",
+      "side": 1,
+      "message": "should the default here be True?",
+      "revId": "5a73121bcaad1119b4c4b78973ec16c250d1269c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "af4d065f_b967f41c",
+        "filename": "k8s/tests/conftest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-07-01T14:28:06Z",
+      "side": 1,
+      "message": "2018-2019",
+      "revId": "5a73121bcaad1119b4c4b78973ec16c250d1269c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
