@@ -22,7 +22,7 @@ plugins:
   k8s:
     executor: 'central_deployment_agent'
     package_name: k8splugin
-    package_version: 1.5.0
+    package_version: 1.6.0
 
 data_types:
 
@@ -94,7 +94,7 @@ data_types:
 
 node_types:
     dcae.nodes.ContainerizedComponent:
-    # Bese type for all containerized components
+    # Base type for all containerized components
     # Captures common properties and interfaces
         derived_from: cloudify.nodes.Root
         properties:
@@ -112,7 +112,7 @@ node_types:
             docker_config:
                 default: {}
                 description: >
-                  This is what is the auxilary portion of the component spec that contains things
+                  Copied from the auxiliary portion of the component spec that contains things
                   like healthcheck definitions for the Docker component. Health checks are
                   optional.
 
@@ -202,9 +202,9 @@ node_types:
                 type: string
                 description: >
                     Manually override and set the name for this Docker container node. If this
-                    is set, then the name will not be auto-generated. Platform services are the
-                    specific use cases for using this parameter because they have static
-                    names for example the CDAP broker.
+                    is set, then the name will not be auto-generated.  Using this feature provides
+                    a service component with a fixed name that's known in advance, but care must be taken
+                    to avoid attempting to deploy two components with the same name.
                 default: Null
 
         interfaces:
@@ -278,11 +278,8 @@ node_types:
         interfaces:
             cloudify.interfaces.lifecycle:
                 create:
-                    # Generate service component name and populate config into Consul
+                    # Generate service component name, populate config into Consul, set up runtime properties for DMaaP plugin
                     implementation: k8s.k8splugin.create_for_components_with_streams
-                start:
-                    # Create Docker container and start
-                    implementation: k8s.k8splugin.create_and_start_container_for_components_with_streams
 
     # ContainerizedPlatformComponent is intended for DCAE platform services.  Unlike the components,
     # platform services have well-known names and well-known ports.

@@ -24,7 +24,6 @@
 # __version__ = '0.1.0'
 
 from .tasks import create_for_components, create_for_components_with_streams, \
-        create_and_start_container_for_components_with_streams, \
         create_for_platforms, create_and_start_container, \
         create_and_start_container_for_components, create_and_start_container_for_platforms, \
         stop_and_remove_container, cleanup_discovery, policy_update, scale, update_image
