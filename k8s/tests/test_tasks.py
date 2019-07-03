@@ -53,38 +53,42 @@ def test_parse_streams(monkeypatch, mockconfig):
     assert expected == tasks._parse_streams(**test_input)
 
     # Good case for streams_subscribes (password provided)
-    test_input = { "streams_publishes": {},
+    test_input = { "ports": ["1919:0", "1920:0"],"name": "testcomponent",
+            "streams_publishes": {},
             "streams_subscribes": [{"name": "topic01", "type": "message_router"},
                 {"name": "feed01", "type": "data_router", "username": "hero",
-                    "password": "123456"}] }
+                    "password": "123456", "route":"test/v0"}] }
 
-    expected = {'feed01': {'type': 'data_router', 'name': 'feed01',
-                    'username': 'hero', 'password': '123456'},
-            'streams_publishes': {},
-            'streams_subscribes': [{'type': 'message_router', 'name': 'topic01'},
+    expected = {'ports': ['1919:0', '1920:0'], 'name': 'testcomponent',
+                'feed01': {'type': 'data_router', 'name': 'feed01',
+                    'username': 'hero', 'password': '123456', 'route': 'test/v0', 'delivery_url':'http://testcomponent:1919/test/v0'},
+                'streams_publishes': {},
+                'streams_subscribes': [{'type': 'message_router', 'name': 'topic01'},
                 {'type': 'data_router', 'name': 'feed01', 'username': 'hero',
-                    'password': '123456'}],
-            'topic01': {'type': 'message_router', 'name': 'topic01'}}
+                    'password': '123456', 'route':'test/v0'}],
+                'topic01': {'type': 'message_router', 'name': 'topic01'}}
 
     assert expected == tasks._parse_streams(**test_input)
 
     # Good case for streams_subscribes (password generated)
-    test_input = { "streams_publishes": {},
-            "streams_subscribes": [{"name": "topic01", "type": "message_router"},
+    test_input = { "ports": ["1919:0", "1920:0"],"name": "testcomponent",
+        "streams_publishes": {},
+        "streams_subscribes": [{"name": "topic01", "type": "message_router"},
                 {"name": "feed01", "type": "data_router", "username": None,
-                    "password": None}] }
+                    "password": None, "route": "test/v0"}] }
 
     def not_so_random(n):
         return "nosurprise"
 
     monkeypatch.setattr(k8splugin.utils, "random_string", not_so_random)
 
-    expected = {'feed01': {'type': 'data_router', 'name': 'feed01',
-                    'username': 'nosurprise', 'password': 'nosurprise'},
+    expected = { 'ports': ['1919:0', '1920:0'], 'name': 'testcomponent',
+             'feed01': {'type': 'data_router', 'name': 'feed01',
+                    'username': 'nosurprise', 'password': 'nosurprise', 'route':'test/v0', 'delivery_url':'http://testcomponent:1919/test/v0'},
             'streams_publishes': {},
             'streams_subscribes': [{'type': 'message_router', 'name': 'topic01'},
                 {'type': 'data_router', 'name': 'feed01', 'username': None,
-                    'password': None}],
+                    'password': None, 'route': 'test/v0'}],
             'topic01': {'type': 'message_router', 'name': 'topic01'}}
 
     assert expected == tasks._parse_streams(**test_input)
@@ -114,66 +118,6 @@ def test_setup_for_discovery(monkeypatch, mockconfig):
     with pytest.raises(RecoverableError):
         tasks._setup_for_discovery(**test_input)
 
-
-def test_setup_for_discovery_streams(monkeypatch, mockconfig):
-    import k8splugin
-    from k8splugin import tasks
-    test_input = {'feed01': {'type': 'data_router', 'name': 'feed01',
-                'username': 'hero', 'password': '123456', 'location': 'Bedminster'},
-            'streams_publishes': {},
-            'streams_subscribes': [{'type': 'message_router', 'name': 'topic01'},
-                {'type': 'data_router', 'name': 'feed01', 'username': 'hero',
-                    'password': '123456', 'location': 'Bedminster'}],
-            'topic01': {'type': 'message_router', 'name': 'topic01'}}
-    test_input["name"] = "some-foo-service-component"
-
-    # Good case
-    def fake_add_to_entry(conn, key, add_name, add_value):
-        """
-        This fake method will check all the pieces that are used to make store
-        details in Consul
-        """
-        if key != test_input["name"] + ":dmaap":
-            return None
-        if add_name != "feed01":
-            return None
-        if add_value != {"location": "Bedminster", "delivery_url": None,
-                "username": "hero", "password": "123456", "subscriber_id": None}:
-            return None
-
-        return "SUCCESS!"
-
-    monkeypatch.setattr(k8splugin.discovery, "add_to_entry",
-            fake_add_to_entry)
-
-    assert tasks._setup_for_discovery_streams(**test_input) == test_input
-
-    # Good case - no data router subscribers
-    test_input = {"streams_publishes": [{"name": "topic00", "type": "message_router"}],
-            'streams_subscribes': [{'type': 'message_router', 'name': 'topic01'}]}
-    test_input["name"] = "some-foo-service-component"
-
-    assert tasks._setup_for_discovery_streams(**test_input) == test_input
-
-    # Bad case - something happened from the Consul call
-    test_input = {'feed01': {'type': 'data_router', 'name': 'feed01',
-                'username': 'hero', 'password': '123456', 'location': 'Bedminster'},
-            'streams_publishes': {},
-            'streams_subscribes': [{'type': 'message_router', 'name': 'topic01'},
-                {'type': 'data_router', 'name': 'feed01', 'username': 'hero',
-                    'password': '123456', 'location': 'Bedminster'}],
-            'topic01': {'type': 'message_router', 'name': 'topic01'}}
-    test_input["name"] = "some-foo-service-component"
-
-    def barf(conn, key, add_name, add_value):
-        raise RuntimeError("Barf")
-
-    monkeypatch.setattr(k8splugin.discovery, "add_to_entry",
-            barf)
-
-    with pytest.raises(NonRecoverableError):
-        tasks._setup_for_discovery_streams(**test_input)
-
 def test_verify_container(monkeypatch, mockconfig):
     import k8sclient
     from k8splugin import tasks
@@ -194,28 +138,6 @@ def test_verify_container(monkeypatch, mockconfig):
             fake_is_available_never_good)
 
     assert not tasks._verify_k8s_deployment("some-location", "some-name", 2)
-
-
-def test_update_delivery_url(monkeypatch, mockconfig):
-    import k8splugin
-    from k8splugin import tasks
-    test_input = {'feed01': {'type': 'data_router', 'name': 'feed01',
-                'username': 'hero', 'password': '123456', 'location': 'Bedminster',
-                'route': 'some-path'},
-            'streams_publishes': {},
-            'streams_subscribes': [{'type': 'message_router', 'name': 'topic01'},
-                {'type': 'data_router', 'name': 'feed01', 'username': 'hero',
-                    'password': '123456', 'location': 'Bedminster',
-                    'route': 'some-path'}],
-            'topic01': {'type': 'message_router', 'name': 'topic01'},
-            'ports': ['8080/tcp:0']}
-    test_input["service_component_name"] = "some-foo-service-component"
-
-    expected = copy.deepcopy(test_input)
-    expected["feed01"]["delivery_url"] = "http://some-foo-service-component:8080/some-path"
-
-    assert tasks._update_delivery_url(**test_input) == expected
-
 
 def test_enhance_docker_params(mockconfig):
     from k8splugin import tasks

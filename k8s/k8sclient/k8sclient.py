@@ -545,7 +545,7 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, r
             core.delete_namespaced_service(_create_service_name(component_name), namespace)
         # If the deployment was created but not the service, delete the deployment
         if deployment_ok:
-            client.ExtensionsV1beta1Api().delete_namespaced_deployment(_create_deployment_name(component_name), namespace, client.V1DeleteOptions())
+            client.ExtensionsV1beta1Api().delete_namespaced_deployment(_create_deployment_name(component_name), namespace, body=client.V1DeleteOptions())
         raise e
 
     return dep, deployment_description
@@ -561,7 +561,7 @@ def undeploy(deployment_description):
 
     # Have k8s delete the underlying pods and replicaset when deleting the deployment.
     options = client.V1DeleteOptions(propagation_policy="Foreground")
-    client.ExtensionsV1beta1Api().delete_namespaced_deployment(deployment_description["deployment"], namespace, options)
+    client.ExtensionsV1beta1Api().delete_namespaced_deployment(deployment_description["deployment"], namespace, body=options)
 
 def is_available(location, namespace, component_name):
     _configure_api(location)
