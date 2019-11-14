@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "53056fee_fd816a34",
+        "filename": "dcae-policy/dcaepolicy-node-type.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-11-14T19:59:56Z",
+      "side": 1,
+      "message": "be sure to include 2019",
+      "revId": "198521e93ffb70a0ed4a292b1573c564da476c17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3dc256d1_5f3bd4b9",
+        "filename": "dcae-policy/dcaepolicyplugin/discovery.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-11-14T19:59:56Z",
+      "side": 1,
+      "message": "be sure to include 2019",
+      "revId": "198521e93ffb70a0ed4a292b1573c564da476c17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d5501956_2a2d440a",
+        "filename": "dcae-policy/dcaepolicyplugin/tasks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-11-14T19:59:56Z",
+      "side": 1,
+      "message": "be sure to include 2019",
+      "revId": "198521e93ffb70a0ed4a292b1573c564da476c17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "407f3c06_9b9cb11c",
+        "filename": "dcae-policy/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-11-14T19:59:56Z",
+      "side": 1,
+      "message": "be sure to include 2019",
+      "revId": "198521e93ffb70a0ed4a292b1573c564da476c17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0a4d8715_fa3dcc33",
+        "filename": "dcae-policy/setup.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-11-14T19:59:56Z",
+      "side": 1,
+      "message": "be sure to include 2019",
+      "revId": "198521e93ffb70a0ed4a292b1573c564da476c17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8dcd2181_72763bc7",
+        "filename": "dcae-policy/tests/test_discovery.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-11-14T19:59:56Z",
+      "side": 1,
+      "message": "there should be new tests to handle the additional conditions added in the plugin code",
+      "revId": "198521e93ffb70a0ed4a292b1573c564da476c17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fc9278e2_349e5f8d",
+        "filename": "dcae-policy/tests/test_discovery.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-11-14T19:59:56Z",
+      "side": 1,
+      "message": "be sure to include 2019",
+      "revId": "198521e93ffb70a0ed4a292b1573c564da476c17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d2bd00c7_f0744d25",
+        "filename": "dcae-policy/tests/test_tasks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2019-11-14T19:59:56Z",
+      "side": 1,
+      "message": "be sure to include 2019",
+      "revId": "198521e93ffb70a0ed4a292b1573c564da476c17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
