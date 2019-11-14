@@ -1,5 +1,5 @@
 # ================================================================================
-# Copyright (c) 2017-2018 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2017-2019 AT&T Intellectual Property. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ def discover_service_url(service_name):
     ctx.logger.info("getting service_url at {0}".format(service_url))
 
     try:
-        response = requests.get(service_url)
+        response = requests.get(service_url, timeout=60)
     except requests.ConnectionError as ex:
         raise NonRecoverableError(
             "ConnectionError - failed to get {0}: {1}".format(service_url, str(ex)))
@@ -63,7 +63,7 @@ def discover_value(key):
     ctx.logger.info("getting kv at {0}".format(kv_url))
 
     try:
-        response = requests.get(kv_url)
+        response = requests.get(kv_url, timeout=60)
     except requests.ConnectionError as ex:
         raise NonRecoverableError(
             "ConnectionError - failed to get {0}: {1}".format(kv_url, str(ex)))

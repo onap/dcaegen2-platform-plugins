@@ -1,5 +1,5 @@
 # ================================================================================
-# Copyright (c) 2018 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ from tests.mock_setup import (MONKEYED_POLICY_ID, POLICY_ID, MonkeyedNode,
 POLICY_HANDLER_FROM_KV = "http://policy_handler_from_kv:25577"
 
 
-def monkeyed_discovery_get_failure(full_path):
+def monkeyed_discovery_get_failure(full_path, **kwargs):
     """monkeypatch for the GET to consul"""
     raise requests.ConnectionError("monkey-boom")
 
@@ -65,7 +65,7 @@ def test_discovery_failure(monkeypatch):
         current_ctx.clear()
 
 
-def monkeyed_discovery_get_kv(full_path):
+def monkeyed_discovery_get_kv(full_path, **kwargs):
     """monkeypatch for the GET to consul"""
     if full_path.startswith(discovery.CONSUL_SERVICE_URL.format("")):
         return MonkeyedResponse(full_path)
@@ -102,7 +102,7 @@ def test_discovery_kv(monkeypatch):
         current_ctx.clear()
 
 
-def monkeyed_discovery_get(full_path):
+def monkeyed_discovery_get(full_path, **kwargs):
     """monkeypatch for the GET to consul"""
     return MonkeyedResponse(full_path, {},
         [{"ServiceAddress": "monkey-policy-handler-address", "ServicePort": "9999"}])

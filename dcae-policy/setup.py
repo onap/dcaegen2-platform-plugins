@@ -1,5 +1,5 @@
 # ================================================================================
-# Copyright (c) 2017-2018 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2017-2019 AT&T Intellectual Property. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ from setuptools import setup
 setup(
     name='dcaepolicyplugin',
     description='Cloudify plugin for dcae.nodes.policy node to retrieve the policy config',
-    version="2.3.0",
+    version="2.3.2",
     author='Alex Shatov',
     packages=['dcaepolicyplugin'],
     install_requires=[

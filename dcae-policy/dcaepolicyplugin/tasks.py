@@ -1,5 +1,5 @@
 # ================================================================================
-# Copyright (c) 2017-2018 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2017-2019 AT&T Intellectual Property. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -94,7 +94,7 @@ class PolicyHandler(object):
 
         ctx.logger.info("getting latest policy from {0} headers={1}".format(
             ph_path, json.dumps(headers)))
-        res = requests.get(ph_path, headers=headers)
+        res = requests.get(ph_path, headers=headers, timeout=60)
         ctx.logger.info("latest policy for policy_id({0}) status({1}) response: {2}"
                         .format(policy_id, res.status_code, res.text))
 
@@ -117,7 +117,7 @@ class PolicyHandler(object):
         ctx.logger.info("finding the latest polices from {0} by {1} headers={2}".format(
             ph_path, json.dumps(policy_filter), json.dumps(headers)))
 
-        res = requests.post(ph_path, json=policy_filter, headers=headers)
+        res = requests.post(ph_path, json=policy_filter, headers=headers, timeout=60)
         ctx.logger.info("latest policies status({0}) response: {1}"
                         .format(res.status_code, res.text))
 
@@ -150,8 +150,7 @@ def _policy_get():
     except Exception as ex:
         error = "failed to get policy({0}): {1}".format(policy_id, str(ex))
         ctx.logger.error("{0}: {1}".format(error, traceback.format_exc()))
-        if policy_required:
-            raise NonRecoverableError(error)
+        raise NonRecoverableError(error)
 
     if not policy:
         error = "policy not found for policy_id {0}".format(policy_id)
@@ -192,6 +191,8 @@ def _policies_find():
     if DCAE_POLICIES_TYPE not in ctx.node.type_hierarchy:
         return
 
+    policy_required = ctx.node.properties.get(POLICY_REQUIRED)
+
     try:
         policy_filter = copy.deepcopy(dict(
             (k, v) for (k, v) in dict(ctx.node.properties.get(POLICY_FILTER, {})).iteritems()
@@ -205,7 +206,10 @@ def _policies_find():
         policies_filtered = PolicyHandler.find_latest_policies(policy_filter)
 
         if not policies_filtered:
-            ctx.logger.info("policies not found by {0}".format(json.dumps(policy_filter)))
+            error = "policies not found by {0}".format(json.dumps(policy_filter))
+            ctx.logger.info(error)
+            if policy_required:
+                raise NonRecoverableError(error)
             return True
 
         ctx.logger.info("found policies by {0}: {1}".format(
@@ -216,6 +220,7 @@ def _policies_find():
     except Exception as ex:
         error = "failed to find policies: {0}".format(str(ex))
         ctx.logger.error("{0}: {1}".format(error, traceback.format_exc()))
+        raise NonRecoverableError(error)
 
     return True
 
