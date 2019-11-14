@@ -36,7 +36,7 @@ from tests.mock_setup import (CONFIG_NAME, MONKEYED_POLICY_ID, POLICY_BODY,
 LATEST_POLICIES = "latest_policies"
 
 
-def monkeyed_policy_handler_get(full_path, headers=None):
+def monkeyed_policy_handler_get(full_path, headers=None, **kwargs):
     """monkeypatch for the GET to policy-engine"""
     return MonkeyedResponse(full_path, headers,
         MonkeyedPolicyBody.create_policy(MONKEYED_POLICY_ID))
@@ -105,7 +105,7 @@ def test_policy_get_fail(monkeypatch):
         current_ctx.clear()
 
 
-def monkeyed_policy_handler_find(full_path, json, headers):
+def monkeyed_policy_handler_find(full_path, json, headers, **kwargs):
     """monkeypatch for the GET to policy-engine"""
     return MonkeyedResponse(
         full_path, headers,
