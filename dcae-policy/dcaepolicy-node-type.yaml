@@ -16,16 +16,11 @@
 #
 # ECOMP is a trademark and service mark of AT&T Intellectual Property.
 
-tosca_definitions_version: cloudify_dsl_1_3
-
-imports:
-    - http://www.getcloudify.org/spec/cloudify/3.4/types.yaml
-
 plugins:
   dcaepolicy:
     executor: 'central_deployment_agent'
     package_name: dcaepolicyplugin
-    package_version: 2.3.0
+    package_version: 2.3.2
 
 data_types:
     # the properties inside dcae.data.policy_filter are identical to /getConfig API of policy-engine except the requestID field.
@@ -77,6 +72,10 @@ node_types:
             policy_filter:
                 type: dcae.data.policy_filter
                 default: {}
+            policy_required:
+                description: whether to throw an exception when failed to get a policy
+                type: boolean
+                default: false
         interfaces:
             cloudify.interfaces.lifecycle:
                 create:

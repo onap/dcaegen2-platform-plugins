@@ -40,7 +40,7 @@ def discover_service_url(service_name):
     ctx.logger.info("getting service_url at {0}".format(service_url))
 
     try:
-        response = requests.get(service_url)
+        response = requests.get(service_url, timeout=60)
     except requests.ConnectionError as ex:
         raise NonRecoverableError(
             "ConnectionError - failed to get {0}: {1}".format(service_url, str(ex)))
@@ -63,7 +63,7 @@ def discover_value(key):
     ctx.logger.info("getting kv at {0}".format(kv_url))
 
     try:
-        response = requests.get(kv_url)
+        response = requests.get(kv_url, timeout=60)
     except requests.ConnectionError as ex:
         raise NonRecoverableError(
             "ConnectionError - failed to get {0}: {1}".format(kv_url, str(ex)))
