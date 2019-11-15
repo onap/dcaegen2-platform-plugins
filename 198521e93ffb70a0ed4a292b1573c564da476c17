@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "c0e87d0c_7211294d",
+        "filename": "dcae-policy/dcaepolicy-node-type.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 2835
+      },
+      "writtenOn": "2019-11-15T15:41:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53056fee_fd816a34",
+      "revId": "198521e93ffb70a0ed4a292b1573c564da476c17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3dc256d1_5f3bd4b9",
         "filename": "dcae-policy/dcaepolicyplugin/discovery.py",
         "patchSetId": 2
@@ -53,6 +71,24 @@
     },
     {
       "key": {
+        "uuid": "9e62c2f2_52aa4b98",
+        "filename": "dcae-policy/dcaepolicyplugin/tasks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 2835
+      },
+      "writtenOn": "2019-11-15T15:41:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5501956_2a2d440a",
+      "revId": "198521e93ffb70a0ed4a292b1573c564da476c17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "407f3c06_9b9cb11c",
         "filename": "dcae-policy/pom.xml",
         "patchSetId": 2
@@ -70,6 +106,24 @@
     },
     {
       "key": {
+        "uuid": "c9a444bd_4f365242",
+        "filename": "dcae-policy/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 2835
+      },
+      "writtenOn": "2019-11-15T15:41:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "407f3c06_9b9cb11c",
+      "revId": "198521e93ffb70a0ed4a292b1573c564da476c17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0a4d8715_fa3dcc33",
         "filename": "dcae-policy/setup.py",
         "patchSetId": 2
@@ -81,6 +135,24 @@
       "writtenOn": "2019-11-14T19:59:56Z",
       "side": 1,
       "message": "be sure to include 2019",
+      "revId": "198521e93ffb70a0ed4a292b1573c564da476c17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5548f42c_8f5bf951",
+        "filename": "dcae-policy/setup.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 2835
+      },
+      "writtenOn": "2019-11-15T15:41:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a4d8715_fa3dcc33",
       "revId": "198521e93ffb70a0ed4a292b1573c564da476c17",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
@@ -121,6 +193,24 @@
     },
     {
       "key": {
+        "uuid": "c4d40b44_98a135a4",
+        "filename": "dcae-policy/tests/test_discovery.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 2835
+      },
+      "writtenOn": "2019-11-15T15:41:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc9278e2_349e5f8d",
+      "revId": "198521e93ffb70a0ed4a292b1573c564da476c17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d2bd00c7_f0744d25",
         "filename": "dcae-policy/tests/test_tasks.py",
         "patchSetId": 2
@@ -132,6 +222,24 @@
       "writtenOn": "2019-11-14T19:59:56Z",
       "side": 1,
       "message": "be sure to include 2019",
+      "revId": "198521e93ffb70a0ed4a292b1573c564da476c17",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2600ef27_663f1610",
+        "filename": "dcae-policy/tests/test_tasks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 2835
+      },
+      "writtenOn": "2019-11-15T15:41:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2bd00c7_f0744d25",
       "revId": "198521e93ffb70a0ed4a292b1573c564da476c17",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
