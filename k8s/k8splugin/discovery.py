@@ -2,6 +2,7 @@
 # org.onap.dcae
 # ================================================================================
 # Copyright (c) 2017-2018 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2019 Pantheon.tech. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -233,12 +234,10 @@ def add_to_entry(conn, key, add_name, add_value):
 
 def _find_matching_services(services, name_search, tags):
     """Find matching services given search criteria"""
-    def is_match(service):
-        srv_name, srv_tags = service
-        return name_search in srv_name and \
-                all(map(lambda tag: tag in srv_tags, tags))
+    tags = set(tags)
+    return [srv_name for srv_name in services
+            if name_search in srv_name and tags <= set(services[srv_name])]
 
-    return [ srv[0] for srv in services.items() if is_match(srv) ]
 
 def search_services(conn, name_search, tags):
     """Search for services that match criteria
