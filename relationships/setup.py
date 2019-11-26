@@ -2,6 +2,7 @@
 # org.onap.dcae
 # ================================================================================
 # Copyright (c) 2017 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2019 Pantheon.tech. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,7 +29,6 @@ setup(
     author='Michael Hwang, Tommy Carpenter',
     packages=['relationshipplugin'],
     zip_safe=False,
-    install_requires=[
-        "python-consul>=0.6.0"
-    ]
+    #install_requires=[
+    #]
 )

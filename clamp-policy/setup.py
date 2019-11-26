@@ -1,5 +1,6 @@
 # ================================================================================
 # Copyright (c) 2019 Wipro Limited Intellectual Property. All rights reserved.
+# Copyright (c) 2019 Pantheon.tech. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,9 +26,8 @@ setup(
     version="1.0.0",
     author='Vignesh K',
     packages=['clamppolicyplugin'],
-    install_requires=[
-        "requests>=2.11.0,<3.0.0"
-    ],
+    #install_requires=[
+    #],
     keywords='clamp policy model cloudify plugin',
     classifiers=[
         'Development Status :: 4 - Beta',

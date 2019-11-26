@@ -2,6 +2,7 @@
 # org.onap.dcae
 # ================================================================================
 # Copyright (c) 2017-2019 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2019 Pantheon.tech. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +22,7 @@
 # Lifecycle interface calls for containerized components
 
 # Needed by Cloudify Manager to load google.auth for the Kubernetes python client
-import cloudify_importer
+#import cloudify_importer
 
 import time, copy
 import json
@@ -138,16 +139,14 @@ def _parse_streams(**kwargs):
     """Parse streams and setup for DMaaP plugin"""
     # The DMaaP plugin requires this plugin to set the runtime properties
     # keyed by the node name.
-    def setup_publishes(s):
-        kwargs[s["name"]] = s
+    for stream in kwargs["streams_publishes"]:
+        kwargs[stream["name"]] = stream
 
-    map(setup_publishes, kwargs["streams_publishes"])
-
-    def setup_subscribes(s):
-        if s["type"] == "data_router":
+    for stream in kwargs["streams_subscribes"]:
+        if stream["type"] == "data_router":
 
             # Don't want to mutate the source
-            s = copy.deepcopy(s)
+            stream = copy.deepcopy(stream)
 
             # Set up the delivery URL
             # Using service_component_name as the host name in the subscriber URL
@@ -156,29 +155,27 @@ def _parse_streams(**kwargs):
             # more remote ("edge") locations depends on how networking and DNS is set
             # up in a multi-cluster deployment
             service_component_name = kwargs["name"]
-            ports,_ = k8sclient.parse_ports(kwargs["ports"])
-            (dport, _) = ports[0]
+            ports, _ = k8sclient.parse_ports(kwargs["ports"])
+            dport, _ = ports[0]
             subscriber_host = "{host}:{port}".format(host=service_component_name, port=dport)
 
-            scheme = s["scheme"] if "scheme" in s else DEFAULT_SCHEME
-            if "route" not in s:
+            scheme = stream.get("scheme", DEFAULT_SCHEME)
+            if "route" not in stream:
                 raise NonRecoverableError("'route' key missing from data router subscriber")
-            path = s["route"]
-            s["delivery_url"] = "{scheme}://{host}/{path}".format(
+            path = stream["route"]
+            stream["delivery_url"] = "{scheme}://{host}/{path}".format(
                     scheme=scheme, host=subscriber_host, path=path)
 
             # If username and password has not been provided then generate it. The
             # DMaaP plugin doesn't generate for subscribers. The generation code
             # and length of username password has been lifted from the DMaaP
             # plugin.
-            if not s.get("username", None):
-                s["username"] = utils.random_string(8)
-            if not s.get("password", None):
-                s["password"] = utils.random_string(10)
+            if not stream.get("username", None):
+                stream["username"] = utils.random_string(8)
+            if not stream.get("password", None):
+                stream["password"] = utils.random_string(10)
 
-        kwargs[s["name"]] = s
-
-    map(setup_subscribes, kwargs["streams_subscribes"])
+        kwargs[stream["name"]] = stream
 
     return kwargs
 

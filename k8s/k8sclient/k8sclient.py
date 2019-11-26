@@ -2,6 +2,7 @@
 # org.onap.dcae
 # ================================================================================
 # Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2019 Pantheon.tech. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -136,7 +137,7 @@ def _create_resources(resources=None):
 def _create_container_object(name, image, always_pull, env={}, container_ports=[], volume_mounts = [], resources = None, readiness = None, liveness = None):
     # Set up environment variables
     # Copy any passed in environment variables
-    env_vars = [client.V1EnvVar(name=k, value=env[k]) for k in env.keys()]
+    env_vars = [client.V1EnvVar(name=k, value=env[k]) for k in env]
     # Add POD_IP with the IP address of the pod running the container
     pod_ip = client.V1EnvVarSource(field_ref = client.V1ObjectFieldSelector(field_path="status.podIP"))
     env_vars.append(client.V1EnvVar(name="POD_IP",value_from=pod_ip))
@@ -517,7 +518,7 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, r
         if port_map:
             service_ports = []      # Ports exposed internally on the k8s network
             exposed_ports = []      # Ports to be mapped to ports on the k8s nodes via NodePort
-            for (cport, proto), hport in port_map.iteritems():
+            for (cport, proto), hport in port_map.items():
                 service_ports.append(client.V1ServicePort(port=int(cport),protocol=proto,name="port-{0}-{1}".format(proto[0].lower(), cport)))
                 if int(hport) != 0:
                     exposed_ports.append(client.V1ServicePort(port=int(cport),protocol=proto,node_port=int(hport),name="xport-{0}-{1}".format(proto[0].lower(),cport)))
@@ -660,8 +661,6 @@ def execute_command_in_deployment(deployment_description, command):
         field_selector = "status.phase=Running"
     ).items]
 
-    def do_execute(pod_name):
-        return _execute_command_in_pod(location, namespace, pod_name, command)
-
     # Execute command in the running pods
-    return map(do_execute, pod_names)
+    return [_execute_command_in_pod(location, namespace, pod_name, command)
+            for pod_name in pod_names]

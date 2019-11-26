@@ -1,5 +1,6 @@
 # ================================================================================
 # Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2019 Pantheon.tech. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -75,7 +76,7 @@ def monkeyed_discovery_get_kv(full_path, **kwargs):
             {tasks.DCAE_POLICY_PLUGIN: {
                 tasks.PolicyHandler.SERVICE_NAME_POLICY_HANDLER: {
                     "url": POLICY_HANDLER_FROM_KV}}}
-        ))
+        ).encode()).decode()
         return MonkeyedResponse(full_path, {}, [{"Value": value}])
 
     return MonkeyedResponse(full_path)

@@ -1,6 +1,7 @@
 # org.onap.dcae
 # ================================================================================
 # Copyright (c) 2017 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2019 Pantheon.tech. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,8 +32,6 @@ setup(
     keywords = "",
     url = "https://gerrit.onap.org/r/#/admin/projects/dcaegen2/platform/plugins",
     zip_safe=False,
-    install_requires = [
-        "onap-dcae-dcaepolicy-lib>=1.0.0,<2.0.0"
-        "uuid==1.30"
-    ]
+    #install_requires = [
+    #]
 )

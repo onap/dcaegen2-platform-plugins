@@ -1,5 +1,6 @@
 # ================================================================================
 # Copyright (c) 2017-2019 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2019 Pantheon.tech. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -194,11 +195,15 @@ def _policies_find():
     policy_required = ctx.node.properties.get(POLICY_REQUIRED)
 
     try:
-        policy_filter = copy.deepcopy(dict(
-            (k, v) for (k, v) in dict(ctx.node.properties.get(POLICY_FILTER, {})).iteritems()
-            if v or isinstance(v, (int, float))
-        ))
-        _fix_policy_filter(policy_filter)
+        policy_filter = ctx.node.properties.get(POLICY_FILTER)
+        if policy_filter:
+            policy_filter = {
+                k: copy.deepcopy(v) for k, v in policy_filter.items()
+                if v or isinstance(v, (int, float))
+            }
+            _fix_policy_filter(policy_filter)
+        else:
+            policy_filter = {}
 
         if REQUEST_ID not in policy_filter:
             policy_filter[REQUEST_ID] = str(uuid.uuid4())
