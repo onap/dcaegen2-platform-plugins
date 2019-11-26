@@ -16,6 +16,24 @@
       "revId": "77e27adeab5ff155b690f2e058c06f0a7812e225",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "78dce5e5_6b79499e",
+        "filename": "k8s/setup.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 6172
+      },
+      "writtenOn": "2019-11-26T18:35:07Z",
+      "side": 0,
+      "message": "This pattern was the results of my previous attempts to get consistent results with tox and the ccsdk plugins. Even with latest setuptools, it doesn\u0027t appear full PEP 508 syntax may be used in install_requires.\n\nI also originally wanted to preserve the 2.7 version staying with the previous cloudify packages, thus using environment markers. CCSDK uses \u003d\u003d in install_requires even more than DCAEGEN2, for possibly valid reasons (?).\n\nAs a compromise, it works when I have install_requires with cloudify-common\u003e\u003d5.0.0, without specifying markers or the github source link, keeping the fuller requirements.txt intact for the tox venvs. Of course, an actually python3-compatible version of cloudify-common needs to land in PyPI for installs to work without the requirements file. And once that is true, the requirements file should drop the github link.\n\ndcaegen2-platform-plugins/relationships$ tox\nGLOB sdist-make: dcaegen2-platform-plugins/relationships/setup.py\nERROR: invocation failed (exit code 1), logfile: dcaegen2-platform-plugins/relationships/.tox/log/GLOB-0.log\n\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d log start \u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\nerror in relationshipplugin setup command: \u0027install_requires\u0027 must be a string or list of strings containing valid project/version requirement specifiers; Invalid requirement, parse error at \"\u0027python_v\u0027\"\n\n\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d log end \u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\nERROR: FAIL could not package project - v \u003d InvocationError(\u0027python3 setup.py sdist --formats\u003dzip --dist-dir dcaegen2-platform-plugins/relationships/.tox/dist\u0027, 1)",
+      "parentUuid": "49cc6430_64991a07",
+      "revId": "77e27adeab5ff155b690f2e058c06f0a7812e225",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }

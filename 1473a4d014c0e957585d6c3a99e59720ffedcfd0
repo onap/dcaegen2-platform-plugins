@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e07f0113_b846f78b",
+        "filename": "dcae-policy/tox-local.ini",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 6172
+      },
+      "writtenOn": "2019-11-26T18:35:07Z",
+      "side": 1,
+      "message": "37 does not appear available in the verify job environment.",
+      "parentUuid": "c6580406_3992f184",
+      "revId": "1473a4d014c0e957585d6c3a99e59720ffedcfd0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d80ee4eb_946df508",
         "filename": "dcae-policy/tox.ini",
         "patchSetId": 1
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "40607219_73a50cef",
+        "filename": "dcae-policy/tox.ini",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 6172
+      },
+      "writtenOn": "2019-11-26T18:35:07Z",
+      "side": 1,
+      "message": "This plugin is the only one whose tests do want to write to the logs directory. I did not add it into tox-local.ini, as I don\u0027t know why you\u0027d need an alternate file in the first place.",
+      "parentUuid": "d80ee4eb_946df508",
+      "revId": "1473a4d014c0e957585d6c3a99e59720ffedcfd0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7483753e_7bbac0a6",
         "filename": "k8s/k8splugin/tasks.py",
         "patchSetId": 1
@@ -50,6 +86,24 @@
       "revId": "1473a4d014c0e957585d6c3a99e59720ffedcfd0",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e4a9daab_ae21b466",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 6172
+      },
+      "writtenOn": "2019-11-26T18:35:07Z",
+      "side": 1,
+      "message": "I did not actually know whether the importer was still needed as the comment above states - tests working without it doesn\u0027t mean production will too.",
+      "parentUuid": "7483753e_7bbac0a6",
+      "revId": "1473a4d014c0e957585d6c3a99e59720ffedcfd0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
