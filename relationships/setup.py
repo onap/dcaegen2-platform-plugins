@@ -2,6 +2,7 @@
 # org.onap.dcae
 # ================================================================================
 # Copyright (c) 2017 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2019 Pantheon.tech. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,6 +30,7 @@ setup(
     packages=['relationshipplugin'],
     zip_safe=False,
     install_requires=[
-        "python-consul>=0.6.0"
+        'python-consul>=0.6.1',
+        'cloudify-common>=5.0.0',
     ]
 )

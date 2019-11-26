@@ -2,6 +2,7 @@
 # org.onap.dcae
 # ================================================================================
 # Copyright (c) 2017-2019 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2019 Pantheon.tech. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,11 +29,9 @@ setup(
     packages=['k8splugin','k8sclient','msb','configure'],
     zip_safe=False,
     install_requires=[
-        "python-consul>=0.6.0,<1.0.0",
-        "uuid==1.30",
-        "onap-dcae-dcaepolicy-lib>=2.4.1,<3.0.0",
-        "cloudify-plugins-common==3.4",
-        "cloudify-python-importer==0.1.0",
-        "kubernetes==9.0.0"
+        'python-consul>=0.6.0',
+        'onap-dcae-dcaepolicy-lib>=2.4.1',
+        'kubernetes>=9.0.0',
+        'cloudify-common>=5.0.0',
     ]
 )

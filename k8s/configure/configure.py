@@ -2,6 +2,7 @@
 # org.onap.dcae
 # ================================================================================
 # Copyright (c) 2018-2019 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2019 Pantheon.tech. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -75,13 +76,16 @@ def configure(config_path=_CONFIG_PATH, key = _CONSUL_KEY):
     """
 
     from cloudify.exceptions import NonRecoverableError
-    import ConfigParser
+    try:
+        import configparser
+    except ImportError:
+        import ConfigParser as configparser
     from k8splugin import discovery
     config = _set_defaults()
 
     try:
         # Get Consul address from a config file
-        c = ConfigParser.ConfigParser()
+        c = configparser.ConfigParser()
         c.read(config_path)
         config["consul_host"] = c.get('consul','address')
 

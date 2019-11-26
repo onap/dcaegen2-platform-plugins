@@ -1,5 +1,6 @@
 # ================================================================================
 # Copyright (c) 2017-2019 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2019 Pantheon.tech. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,7 +28,8 @@ setup(
     author='Alex Shatov',
     packages=['dcaepolicyplugin'],
     install_requires=[
-        "requests>=2.11.0,<3.0.0"
+        'requests>=2.11.0',
+        'cloudify-common>=5.0.0',
     ],
     keywords='policy dcae controller cloudify plugin',
     classifiers=[
