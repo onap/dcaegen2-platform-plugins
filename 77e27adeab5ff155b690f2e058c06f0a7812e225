@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "49cc6430_64991a07",
+        "filename": "k8s/setup.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 515
+      },
+      "writtenOn": "2019-11-26T13:49:48Z",
+      "side": 0,
+      "message": "is there a cloudify specific reason you are making this change? This is far less pythonic. Especially if plugins can ever be pipped. Unless there is a cloudify specific reason to move from install_requires to requirements, I do not agree with this change as it is an anti pattern. With the possibly exception of the kubernetes\u003d\u003d9.0.0 since install_Requires isn\u0027t really the place for exact dependencies, so that should not have been like that to begin with probably.",
+      "revId": "77e27adeab5ff155b690f2e058c06f0a7812e225",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}

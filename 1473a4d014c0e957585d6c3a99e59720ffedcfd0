@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c6580406_3992f184",
+        "filename": "dcae-policy/tox-local.ini",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 515
+      },
+      "writtenOn": "2019-11-26T13:49:48Z",
+      "side": 1,
+      "message": "no 37?",
+      "revId": "1473a4d014c0e957585d6c3a99e59720ffedcfd0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d80ee4eb_946df508",
+        "filename": "dcae-policy/tox.ini",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 515
+      },
+      "writtenOn": "2019-11-26T13:49:48Z",
+      "side": 1,
+      "message": "why was this commented out in other plugins but not here? why the difference?",
+      "revId": "1473a4d014c0e957585d6c3a99e59720ffedcfd0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7483753e_7bbac0a6",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 515
+      },
+      "writtenOn": "2019-11-26T13:49:48Z",
+      "side": 1,
+      "message": "please delete no longer needed code rather than commenting out",
+      "revId": "1473a4d014c0e957585d6c3a99e59720ffedcfd0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
