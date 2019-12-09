@@ -21,6 +21,9 @@
 
 # Lifecycle interface calls for containerized components
 
+# Needed by Cloudify Manager to load google.auth for the Kubernetes python client
+from . import cloudify_importer
+
 import time, copy
 import json
 from cloudify import ctx

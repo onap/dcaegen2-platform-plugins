@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.7.0]
+* DCAEGEN2-1956 support python3 in all plugins
+
 ## [1.4.13]
  Fix bug related to setting the delivery URL for a DR subscriber.  (DCAEGEN2-1009)
 

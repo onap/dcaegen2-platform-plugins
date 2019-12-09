@@ -22,7 +22,7 @@ plugins:
   k8s:
     executor: 'central_deployment_agent'
     package_name: k8splugin
-    package_version: 1.6.0
+    package_version: 1.7.0
 
 data_types:
 
