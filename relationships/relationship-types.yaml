@@ -24,7 +24,7 @@ plugins:
   relationships:
     executor: 'central_deployment_agent'
     package_name: relationshipplugin
-    package_version: 1.0.0
+    package_version: 1.1.0
 
 relationships:
     # The relationship type here is to be used between service component nodes. What is achieved here is

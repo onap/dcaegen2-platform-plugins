@@ -23,7 +23,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = "cdapcloudify",
-    version = "14.2.5",
+    version = "14.3.0",
     packages=find_packages(),
     author = "Tommy Carpenter",
     author_email = "tommy@research.att.com",

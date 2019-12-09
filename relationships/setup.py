@@ -25,7 +25,7 @@ from setuptools import setup
 setup(
     name='relationshipplugin',
     description='',
-    version="1.0.0",
+    version="1.1.0",
     author='Michael Hwang, Tommy Carpenter',
     packages=['relationshipplugin'],
     zip_safe=False,

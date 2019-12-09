@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.3.0]
+* DCAEGEN2-1956 support python3 in all plugins
+
 ## [3.2.1]
 * DCAEGEN2-1086 update onap-dcae-dcaepolicy-lib version to avoid Consul stores under old service_component_name
 

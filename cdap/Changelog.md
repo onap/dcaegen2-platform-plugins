@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [14.3.0]
+* DCAEGEN2-1956 support python3 in all plugins
+
 ## [14.2.5] - Sep 21 2017
 * Use the public pypi version of policy lib
 

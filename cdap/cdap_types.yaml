@@ -23,7 +23,7 @@ plugins:
   cdap_deploy:
     executor: central_deployment_agent
     package_name: cdapcloudify
-    package_version: 14.2.5
+    package_version: 14.3.0
 
 data_types:
     cdap_connections:
