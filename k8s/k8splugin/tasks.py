@@ -2,7 +2,7 @@
 # org.onap.dcae
 # ================================================================================
 # Copyright (c) 2017-2019 AT&T Intellectual Property. All rights reserved.
-# Copyright (c) 2019 Pantheon.tech. All rights reserved.
+# Copyright (c) 2020 Pantheon.tech. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -279,19 +279,19 @@ def _create_and_start_container(container_name, image, **kwargs):
     ctx.logger.info("Passing k8sconfig: {}".format(plugin_conf))
     replicas = kwargs.get("replicas", 1)
     resource_config = _get_resources(**kwargs)
-    _,dep = k8sclient.deploy(DCAE_NAMESPACE,
+    _, dep = k8sclient.deploy(DCAE_NAMESPACE,
                      container_name,
                      image,
-                     replicas = replicas,
+                     replicas=replicas,
                      always_pull=kwargs.get("always_pull_image", False),
                      k8sconfig=plugin_conf,
-                     resources = resource_config,
-                     volumes=kwargs.get("volumes",[]),
-                     ports=kwargs.get("ports",[]),
+                     resources=resource_config,
+                     volumes=kwargs.get("volumes", []),
+                     ports=kwargs.get("ports", []),
                      msb_list=kwargs.get("msb_list"),
                      tls_info=kwargs.get("tls_info"),
-                     env = env,
-                     labels = kwargs.get("labels", {}),
+                     env=env,
+                     labels=kwargs.get("labels", {}),
                      log_info=kwargs.get("log_info"),
                      readiness=kwargs.get("readiness"),
                      liveness=kwargs.get("liveness"),
@@ -639,23 +639,21 @@ def _notify_container(**kwargs):
     dc = kwargs["docker_config"]
     resp = []
 
-    if "policy" in dc:
-        if dc["policy"]["trigger_type"] == "docker":
+    if "policy" in dc and dc["policy"].get("trigger_type") == "docker":
+        # Build the command to execute in the container
+        # SCRIPT_PATH policies {"policies" : ...., "updated_policies" : ..., "removed_policies": ...}
+        script_path = dc["policy"]["script_path"]
+        policy_data = {
+            "policies": kwargs["policies"],
+            "updated_policies": kwargs["updated_policies"],
+            "removed_policies": kwargs["removed_policies"]
+        }
 
-             # Build the command to execute in the container
-             # SCRIPT_PATH policies {"policies" : ...., "updated_policies" : ..., "removed_policies": ...}
-            script_path = dc["policy"]["script_path"]
-            policy_data = {
-                "policies": kwargs["policies"],
-                "updated_policies": kwargs["updated_policies"],
-                "removed_policies": kwargs["removed_policies"]
-            }
+        command = [script_path, "policies", json.dumps(policy_data)]
 
-            command = [script_path, "policies", json.dumps(policy_data)]
-
-            # Execute the command
-            deployment_description = ctx.instance.runtime_properties[K8S_DEPLOYMENT]
-            resp = k8sclient.execute_command_in_deployment(deployment_description, command)
+        # Execute the command
+        deployment_description = ctx.instance.runtime_properties[K8S_DEPLOYMENT]
+        resp = k8sclient.execute_command_in_deployment(deployment_description, command)
 
     # else the default is no trigger
 
