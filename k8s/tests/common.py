@@ -2,6 +2,7 @@
 # org.onap.dcae
 # ================================================================================
 # Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2020 Pantheon.tech. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -121,13 +122,13 @@ def do_deploy(tls_info=None):
 
     k8s_test_config = _set_k8s_configuration()
 
-    resources = _set_resources()
-
     kwargs = _set_common_kwargs()
+    kwargs['resources'] = _set_resources()
+
     if tls_info:
         kwargs["tls_info"] = tls_info
 
-    dep, deployment_description = k8sclient.k8sclient.deploy("k8stest","testcomponent","example.com/testcomponent:1.4.3",1,False, k8s_test_config, resources, **kwargs)
+    dep, deployment_description = k8sclient.k8sclient.deploy("k8stest", "testcomponent", "example.com/testcomponent:1.4.3", 1, False, k8s_test_config, **kwargs)
 
     # Make sure all of the basic k8s parameters are correct
     verify_common(dep, deployment_description)
