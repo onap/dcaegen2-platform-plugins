@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "12241a3e_446df934",
+        "filename": "k8s/k8s-node-type.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-01-09T15:16:23Z",
+      "side": 1,
+      "message": "need to add 2020 to the copyright list in all modified files that have copyright notices",
+      "revId": "b9014ea8288211a2bc15e51c5d018152f79cb018",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fe1aaa82_17e71bcd",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-01-09T15:16:23Z",
+      "side": 1,
+      "message": "if container_ports is not passed in, it will be given a value of [] above.\n\nSubsequently container_ports[0][0] will thrown an exception\nIndexError: list index out of range",
+      "revId": "b9014ea8288211a2bc15e51c5d018152f79cb018",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d7bdd3d4_1bcc385c",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-01-09T15:16:23Z",
+      "side": 1,
+      "message": "suggest using dc[\"policy\"].get(\"trigger_type\") to prevent a\nKeyError: \u0027trigger_type\u0027 if it does not exist\n\nOR\n\nif \"policy\" in dc and \"trigger_type\" in dc[\"policy\"] and dc[\"policy\"][\"trigger_type\"] \u003d\u003d \"docker\":",
+      "revId": "b9014ea8288211a2bc15e51c5d018152f79cb018",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
