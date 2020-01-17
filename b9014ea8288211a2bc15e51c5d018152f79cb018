@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "d6b2e728_99f73d1f",
+        "filename": "k8s/k8s-node-type.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 6172
+      },
+      "writtenOn": "2020-01-17T12:37:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12241a3e_446df934",
+      "revId": "b9014ea8288211a2bc15e51c5d018152f79cb018",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fe1aaa82_17e71bcd",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 1
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "ba76bccf_7fdf8365",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 6172
+      },
+      "writtenOn": "2020-01-17T12:37:31Z",
+      "side": 1,
+      "message": "The line is correct as written. If container_ports is indeed an empty list, it will evaluate to False as the condition of the ternary operator. Hence, only the false branch of the expression will be evaluated, and None assigned to hc_port, as intended. If there is a member in container_ports, it is assumed to be a nonempty tuple (as in the previous implementation, line 153), hence both [0] calls will work.\n\n\u003e\u003e\u003e cp \u003d []\n\u003e\u003e\u003e cp[0][0] if cp else 12\n12\n\u003e\u003e\u003e cp.append((3, 4))\n\u003e\u003e\u003e cp[0][0] if cp else 12\n3\n\nhttps://docs.python.org/2/reference/expressions.html#conditional-expressions\nhttps://docs.python.org/2/library/stdtypes.html#truth-value-testing",
+      "parentUuid": "fe1aaa82_17e71bcd",
+      "revId": "b9014ea8288211a2bc15e51c5d018152f79cb018",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d7bdd3d4_1bcc385c",
         "filename": "k8s/k8splugin/tasks.py",
         "patchSetId": 1
@@ -47,6 +83,24 @@
       "writtenOn": "2020-01-09T15:16:23Z",
       "side": 1,
       "message": "suggest using dc[\"policy\"].get(\"trigger_type\") to prevent a\nKeyError: \u0027trigger_type\u0027 if it does not exist\n\nOR\n\nif \"policy\" in dc and \"trigger_type\" in dc[\"policy\"] and dc[\"policy\"][\"trigger_type\"] \u003d\u003d \"docker\":",
+      "revId": "b9014ea8288211a2bc15e51c5d018152f79cb018",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fd0c0eb2_e3fc6f75",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 6172
+      },
+      "writtenOn": "2020-01-17T12:37:31Z",
+      "side": 1,
+      "message": "I have done this change. Though, is trigger_type and optional item in a docker_config policy? The original code assumes it would be present. Is docker_config guaranteed to be present on line 639? As script_path still is assumed to be a member of the policy dict on line 645.",
+      "parentUuid": "d7bdd3d4_1bcc385c",
       "revId": "b9014ea8288211a2bc15e51c5d018152f79cb018",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
