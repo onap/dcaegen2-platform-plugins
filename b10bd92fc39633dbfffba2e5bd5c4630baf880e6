@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "40a11c18_2ec18f9f",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2020-01-17T21:19:17Z",
+      "side": 1,
+      "message": "log_info might be in kwargs, in which case _add_elk_logging_sidecar will attempt to do a get() on a NoneType.  This was the source of the problem reported in my earlier comments.\nkwargs.get(\"log_info\") or {}\nfixes that particular problem",
+      "revId": "b10bd92fc39633dbfffba2e5bd5c4630baf880e6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
