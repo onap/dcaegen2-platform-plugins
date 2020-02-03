@@ -33,8 +33,7 @@ def _set_k8s_configuration():
         "tls" : {
             "cert_path": "/opt/certs",
             "image": "tlsrepo/tls-init-container:1.2.3",
-            "component_ca_cert_path": "/opt/dcae/cacert/cacert.pem",
-            "ca_cert_configmap": "dcae-cacert-configmap"
+            "component_cert_dir": "/opt/dcae/cacert"
         },
         "cbs": {
             "base_url": "https://config-binding-service:10443/service_component_all/test-component"

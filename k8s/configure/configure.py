@@ -1,7 +1,7 @@
 # ============LICENSE_START=======================================================
 # org.onap.dcae
 # ================================================================================
-# Copyright (c) 2018-2019 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2018-2020 AT&T Intellectual Property. All rights reserved.
 # Copyright (c) 2019 Pantheon.tech. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============LICENSE_END=========================================================
-#
-# ECOMP is a trademark and service mark of AT&T Intellectual Property.
 
 _CONFIG_PATH = "/opt/onap/config.txt"   # Path to config file on the Cloudify Manager host
 _CONSUL_KEY = "k8s-plugin"              # Key under which CM configuration is stored in Consul
@@ -34,9 +32,9 @@ FB_CONFIG_SUBPATH = "filebeat.yml"
 FB_CONFIG_MAP = "filebeat-conf"
 FB_IMAGE = "docker.elastic.co/beats/filebeat:5.5.0"
 
-TLS_CERT_PATH = "/opt/tls/shared"
-TLS_IMAGE = "nexus3.onap.org:10001/onap/org.onap.dcaegen2.deployments.tls-init-container:1.0.0"
-TLS_CA_CERT_PATH = "/opt/dcae/cacert/cacert.pem"
+TLS_CERT_PATH = "/opt/app/osaaf"
+TLS_IMAGE = "nexus3.onap.org:10001/onap/org.onap.dcaegen2.deployments.tls-init-container:2.1.0"
+TLS_COMP_CERT_PATH = "/opt/dcae/cacert"
 TLS_CA_CONFIGMAP = "dcae-cacert-configmap"
 
 CBS_BASE_URL = "https://config-binding-service:10443/service_component_all"
@@ -59,8 +57,7 @@ def _set_defaults():
         "tls": {                                        # Configuration for setting up TLS
             "cert_path" : TLS_CERT_PATH,                # mount point for certificate volume in TLS init container
             "image": TLS_IMAGE,                         # Docker image to use for TLS init container
-            "component_ca_cert_path": TLS_CA_CERT_PATH, # Mount point for CA cert for components that are clients only
-            "ca_cert_configmap": TLS_CA_CONFIGMAP       # ConfigMap holding CA cert for components that are clients only
+            "component_cert_dir": TLS_COMP_CERT_PATH    # default mount point for certificate volume in component container
         },
         "cbs": {
             "base_url" : CBS_BASE_URL                   # URL prefix for accessing config binding service

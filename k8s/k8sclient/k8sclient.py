@@ -1,7 +1,7 @@
 # ============LICENSE_START=======================================================
 # org.onap.dcae
 # ================================================================================
-# Copyright (c) 2019 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2019-2020 AT&T Intellectual Property. All rights reserved.
 # Copyright (c) 2020 Pantheon.tech. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -297,34 +297,26 @@ def _add_elk_logging_sidecar(containers, volumes, volume_mounts, component_name,
     # Finally create the container for the sidecar
     containers.append(_create_container_object("filebeat", filebeat["image"], False, volume_mounts=sidecar_volume_mounts))
 
-def _add_tls_init_container(init_containers, volumes, volume_mounts, tls_info, tls_config):
-    #   Two different ways of doing this, depending on whether the container will act as a TLS server or as a client only
-    #   If a server, then tls_info will be passed, and tls_info["use_tls"] will be set to true.  We create an InitContainer
-    #   that sets up the CA cert, the server cert, and the keys.
-    #   If a client only, only the CA cert is needed.  We mount the CA cert from a ConfigMap that has been created as part
-    #   of the installation process. If there is cert_directory information in tls_info, we use that directory in the mount path.
-    #   Otherwise, we use the configured default path in tls_config.
-    cert_directory = None
-    if tls_info:
-        cert_directory = tls_info.get("cert_directory")
-        if cert_directory and tls_info.get("use_tls"):
-            # Use an InitContainer to set up the certificate information
-            # Create the certificate volume and volume mounts
-            volumes.append(client.V1Volume(name="tls-info", empty_dir=client.V1EmptyDirVolumeSource()))
-            volume_mounts.append(client.V1VolumeMount(name="tls-info", mount_path=cert_directory))
-            init_volume_mounts = [client.V1VolumeMount(name="tls-info", mount_path=tls_config["cert_path"])]
+def _add_tls_init_container(init_containers, volumes, volume_mounts, tls_info={}, tls_config={}):
+    #   Adds an InitContainer to the pod to set up TLS certificate information.  For components that act as a
+    #   server(tls_info["use_tls"] is True), the InitContainer will populate a directory with server and CA certificate
+    #   materials in various formats.   For other components (tls_info["use_tls"] is False, or tls_info is not specified),
+    #   the InitContainer will populate a directory with CA certificate materials in PEM and JKS formats.
+    #   In either case, the certificate directory is mounted onto the component container filesystem at the location
+    #   specified by tls_info["component_cert_dir"], if present, otherwise at the configured default mount point
+    #   (tls_config["component_cert_dir"]).
 
-            # Just create the init container
-            init_containers.append(_create_container_object("init-tls", tls_config["image"], False, volume_mounts=init_volume_mounts))
-            return
+    cert_directory = tls_info.get("cert_directory") or tls_config.get("component_cert_dir")
+    env = {}
+    env["TLS_SERVER"] = "true" if tls_info.get("use_tls") else "false"
 
-    # Use a config map
-    # Create the CA cert volume
-    volumes.append(client.V1Volume(name="tls-cacert", config_map=client.V1ConfigMapVolumeSource(name=tls_config["ca_cert_configmap"])))
+    # Create the certificate volume and volume mounts
+    volumes.append(client.V1Volume(name="tls-info", empty_dir=client.V1EmptyDirVolumeSource()))
+    volume_mounts.append(client.V1VolumeMount(name="tls-info", mount_path=cert_directory))
+    init_volume_mounts = [client.V1VolumeMount(name="tls-info", mount_path=tls_config["cert_path"])]
 
-    # Create the volume mount
-    mount_path = cert_directory or os.path.dirname(tls_config["component_ca_cert_path"])
-    volume_mounts.append(client.V1VolumeMount(name="tls-cacert", mount_path=mount_path))
+    # Create the init container
+    init_containers.append(_create_container_object("init-tls", tls_config["image"], False, volume_mounts=init_volume_mounts, env=env))
 
 def _process_port_map(port_map):
     service_ports = []      # Ports exposed internally on the k8s network
@@ -444,8 +436,7 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
         - tls: a dictionary of TLS-related information:
             "cert_path": mount point for certificate volume in init container
             "image": Docker image to use for TLS init container
-            "component_ca_cert_path" : mount point for CA cert for client-only containers
-            "ca_cert_configmap": the name of the ConfigMap where the CA cert is stored
+            "component_cert_dir" : default mount point for certs
     kwargs may have:
         - volumes:  array of volume objects, where a volume object is:
             {"host":{"path": "/path/on/host"}, "container":{"bind":"/path/on/container","mode":"rw_or_ro"}
