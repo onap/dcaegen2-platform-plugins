@@ -1,3 +1,4 @@
+setuptools<45.0.0
 python-consul>=0.6.0
 onap-dcae-dcaepolicy-lib>=2.4.1
 kubernetes>=9.0.0
