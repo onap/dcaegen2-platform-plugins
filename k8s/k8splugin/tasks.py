@@ -1,7 +1,7 @@
 # ============LICENSE_START=======================================================
 # org.onap.dcae
 # ================================================================================
-# Copyright (c) 2017-2019 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2017-2020 AT&T Intellectual Property. All rights reserved.
 # Copyright (c) 2020 Pantheon.tech. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============LICENSE_END=========================================================
-#
-# ECOMP is a trademark and service mark of AT&T Intellectual Property.
 
 # Lifecycle interface calls for containerized components
 
@@ -43,9 +41,9 @@ plugin_conf = configure.configure()
 CONSUL_HOST = plugin_conf.get("consul_host")
 CONSUL_INTERNAL_NAME = plugin_conf.get("consul_dns_name")
 DCAE_NAMESPACE = plugin_conf.get("namespace")
-DEFAULT_MAX_WAIT = plugin_conf.get("max_wait", 1800)
+DEFAULT_MAX_WAIT = plugin_conf.get("max_wait")
 DEFAULT_K8S_LOCATION = plugin_conf.get("default_k8s_location")
-COMPONENT_CA_CERT_PATH = plugin_conf.get("tls").get("component_ca_cert_path")
+COMPONENT_CERT_DIR = plugin_conf.get("tls",{}).get("component_cert_dir")
 CBS_BASE_URL = plugin_conf.get("cbs").get("base_url")
 
 # Used to construct delivery urls for data router subscribers. Data router in FTL
@@ -268,10 +266,11 @@ def _create_and_start_container(container_name, image, **kwargs):
         - liveness: object with information needed to create a liveness check
         - k8s_location: name of the Kubernetes location (cluster) where the component is to be deployed
     '''
-    tls_info = kwargs.get("tls_info")
+    tls_info = kwargs.get("tls_info") or {}
+    cert_dir = tls_info.get("cert_directory") or COMPONENT_CERT_DIR
     env = { "CONSUL_HOST": CONSUL_INTERNAL_NAME,
             "CONFIG_BINDING_SERVICE": "config-binding-service",
-            "DCAE_CA_CERTPATH" : "{0}/cacert.pem".format(tls_info["cert_directory"]) if (tls_info and tls_info["cert_directory"]) else COMPONENT_CA_CERT_PATH,
+            "DCAE_CA_CERTPATH" : "{0}/cacert.pem".format(cert_dir),
             "CBS_CONFIG_URL" : "{0}/{1}".format(CBS_BASE_URL, container_name)
           }
     env.update(kwargs.get("envs", {}))
