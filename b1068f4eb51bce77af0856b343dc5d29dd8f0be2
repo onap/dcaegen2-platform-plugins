@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9711d374_c651bbba",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 6172
+      },
+      "writtenOn": "2020-02-10T11:32:54Z",
+      "side": 1,
+      "message": "Notice the single caller of this function on line 501 always assigns both tls_info and tls_config, meaning these defaults are never used.\n\nTools like pylint would flag these as dangerous defaults, though that\u0027s only dangerous if one modifies them in the function.\n\nThe line 501 call already ensures tls_info is an empty dict if unset, the same could be done for tls_config. However, lines 316 and 319 still assume tls_config will definitely be set to a dict with at least those keys, and line 309 probably doesn\u0027t mean to set cert_directory to None, ever.\n\nAll this just to say, the \u003d{} are not doing anything ov value here.\n\nFor that matter, the get(...) or {} I should\u0027ve done for the _add_elk_logging_sidecar call as well.",
+      "revId": "b1068f4eb51bce77af0856b343dc5d29dd8f0be2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eda44c49_5576038e",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 6172
+      },
+      "writtenOn": "2020-02-10T11:32:54Z",
+      "side": 1,
+      "message": "In case the tls key is optional, and unset, the second .get call in these two lines will fail anyway. \n\nThe configure.configure() function seems to have a builtin default for each of the keys here available to it. Another thing is that it doesn\u0027t really merge the subdicts like \"tls\", but has them replaced by whatever comes out of consul.\n\nUsing .get here suggests plugin_conf could be missing these keys where it shall not, and that having None in these constants is supported, which I doubt.",
+      "revId": "b1068f4eb51bce77af0856b343dc5d29dd8f0be2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "83d5a246_f59cd178",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 6172
+      },
+      "writtenOn": "2020-02-10T11:32:54Z",
+      "side": 1,
+      "message": "This guards against tls_info being None (i.e. not present in kwargs), and its cert_directory being set to a False (None, \u0027\u0027) value. But it doesn\u0027t guard against cert_directory not being present in tls_info. I guess it is more likely that someone will leave the entry out entirely than that they will set it to empty/null.\n\nFor optional dict values like tls_info, which should be dicts, one can either use the more compact kwargs.get(\"tls_info\", {}), or kwargs.get(\"tls_info\") or {}.\n\nThe second form guards against the value being set to None, and does not create the empty dict unless the first term is a False (None, {}) value - a tiny advantage or drawback in case \"tls_info\" is actually set to an empty dict.\n\nIf one ensures line 269 sets tls_info to a dict, the expression on this line could be tls_info.get(\"cert_directory\") or COMPONENT_CERT_DIR. The default is set if cert_directory is missing or a False (None, \u0027\u0027) value.",
+      "revId": "b1068f4eb51bce77af0856b343dc5d29dd8f0be2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
