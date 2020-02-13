@@ -1,3 +1,1 @@
 python-consul>=0.6.1
-cloudify-common>=5.0.0; python_version<"3"
-cloudify-common @ git+https://github.com/cloudify-cosmo/cloudify-common@cy-1374-python3#egg=cloudify-common==5.0.0; python_version>="3"
