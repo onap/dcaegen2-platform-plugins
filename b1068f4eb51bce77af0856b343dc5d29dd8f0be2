@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "45e33892_10a4cb27",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2020-02-24T13:40:22Z",
+      "side": 1,
+      "message": "Doesn\u0027t the same reasoning apply to lines 40-43 and line 45?  Is the principle you want to apply that we should use [] rather than .get() if some value is guaranteed to be present?  Or are you specifically targeting the .get().get() because the second get() could fail?",
+      "parentUuid": "eda44c49_5576038e",
+      "revId": "b1068f4eb51bce77af0856b343dc5d29dd8f0be2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "83d5a246_f59cd178",
         "filename": "k8s/k8splugin/tasks.py",
         "patchSetId": 2
