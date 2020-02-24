@@ -54,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "01572a7c_5b54ccb1",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 6172
+      },
+      "writtenOn": "2020-02-24T13:59:31Z",
+      "side": 1,
+      "message": "Yes, the same reasoning applies for the other gets as well. If configure.configure guaranteed the structure of plugin_conf, then code using it wouldn\u0027t need to be as defensive.\n\nIf you want to keep using .get, then the first get should supply a default empty dict.\n\nI see max_wait is not handled in configure._set_defaults - perhaps it should, to really have the defaults in one place?",
+      "parentUuid": "45e33892_10a4cb27",
+      "revId": "b1068f4eb51bce77af0856b343dc5d29dd8f0be2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "83d5a246_f59cd178",
         "filename": "k8s/k8splugin/tasks.py",
         "patchSetId": 2
