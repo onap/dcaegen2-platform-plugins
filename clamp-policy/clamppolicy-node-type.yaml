@@ -1,6 +1,7 @@
-# ================================================================================
+# =================================================================================
 # Copyright (c) 2019 Wipro Limited Intellectual Property. All rights reserved.
-# ================================================================================
+# Modifications copyright (c) 2020 AT&T Intellectual Property. All rights reserved.
+# =================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -18,8 +19,8 @@
 tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
-    - http://www.getcloudify.org/spec/cloudify/3.4/types.yaml
-    - https://nexus.onap.org/service/local/repositories/raw/content/org.onap.dcaegen2.platform.plugins/R4/dcaepolicyplugin/2.3.0/dcaepolicyplugin_types.yaml
+    - http://www.getcloudify.org/spec/cloudify/4.5.5/types.yaml
+    - https://nexus.onap.org/service/local/repositories/raw/content/org.onap.dcaegen2.platform.plugins/R6/dcaepolicyplugin/2.4.0/dcaepolicyplugin_types.yaml
 
 plugins:
   clamppolicy:
