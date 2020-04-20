@@ -1,13 +1,13 @@
 # ONAP DCAE Kubernetes Plugin for Cloudify
 
-This directory contains a Cloudify plugin  used to orchestrate the deployment of containerized DCAE platform and service components  into a Kubernetes ("k8s")
+This directory contains a Cloudify plugin  used to orchestrate the deployment of containerized DCAE service components  into a Kubernetes ("k8s")
 environment. This work is based on the [ONAP DCAE Docker plugin] (../docker).
 
 This plugin is *not* a generic Kubernetes plugin that exposes the full set of Kubernetes features.
 In fact, the plugin largely hides the fact that we're using Kubernetes from both component developers and blueprint authors.
 The Cloudify node type definitions are very similar to the Cloudify type definitions used in the ONAP DCAE Docker plugin.
 
-For the node types `ContainerizedPlatformComponent`, `ContainerizedServiceComponent`, and `ContainerizedServiceComponentUsingDmaap`, this plugin
+For the node types `ContainerizedServiceComponent` and `ContainerizedServiceComponentUsingDmaap`, this plugin
 creates the following Kubernetes entities:
 
 - A Kubernetes `Deployment` containing information about what containers to run and what volume to mount.
@@ -108,11 +108,9 @@ mode | Readable, writeable: `ro`, `rw`
 
 #### `ports`
 
-List of strings - Used to bind container ports to host ports. Each item is of the format: `<container port>:<host port>` or 
+List of strings - Used to bind container ports to host ports. Each item is of the format: `<container port>:<host port>` or
 <container port>/<protocol>:<host port>, where <protocol> can be "TCP", "tcp", "UDP", or "udp".   If the first format is used, the
 protocol defaults to TCP.
-
-Note that `ContainerizedPlatformComponent` has the property pair `host_port` and `container_port`. This pair will be merged with the input parameters ports.
 
 ```yaml
 ports:
@@ -251,7 +249,7 @@ To form the application configuration:
 This also applies to data router feeds.
 
 ## Additional Operations Supported by the Plugin
-In addition to supporting the Cloudify `install` and `uninstall` workflows, the plugin provides two standalone operations that can be invoked using the Cloudify [`execute_operation` workflow](https://docs.cloudify.co/4.3.0/working_with/workflows/built-in-workflows/).  The `dcae.nodes.ContainerizedApplication`, `dcae.nodes.ContainerizedPlatformComponent`, `dcae.nodes.ContainerizedServiceComponent`, and `dcae.nodes.ContainerizedServiceComponentUsingDmaap` node types support these operations.
+In addition to supporting the Cloudify `install` and `uninstall` workflows, the plugin provides two standalone operations that can be invoked using the Cloudify [`execute_operation` workflow](https://docs.cloudify.co/4.3.0/working_with/workflows/built-in-workflows/).  The `dcae.nodes.ContainerizedApplication`, `dcae.nodes.ContainerizedServiceComponent`, and `dcae.nodes.ContainerizedServiceComponentUsingDmaap` node types support these operations.
 
 Currently, there's no convenient high-level interface to trigger these operations, but they could potentially be exposed through some kind of dashboard.
 

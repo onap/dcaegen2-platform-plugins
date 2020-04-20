@@ -197,20 +197,6 @@ def create_for_components_with_streams(**create_inputs):
                         **_generate_component_name(
                             **create_inputs)))))
 
-@merge_inputs_for_create
-@monkeypatch_loggers
-@operation
-def create_for_platforms(**create_inputs):
-    """Create step for platform components
-
-    This interface is responible for:
-
-    1. Populating config information into Consul
-    """
-    _done_for_create(
-            **_setup_for_discovery(
-                **create_inputs))
-
 def _verify_k8s_deployment(location, service_component_name, max_wait):
     """Verify that the k8s Deployment is ready
 
@@ -256,7 +242,6 @@ def _create_and_start_container(container_name, image, **kwargs):
         - always_pull: boolean.  If true, sets image pull policy to "Always"
           so that a fresh copy of the image is always pull.  Otherwise, sets
           image pull policy to "IfNotPresent"
-        - msb_list: array of msb objects, where an msb object is as described in msb/msb.py.
         - log_info: an object with info for setting up ELK logging, with the form:
             {"log_directory": "/path/to/container/log/directory", "alternate_fb_path" : "/alternate/sidecar/log/path"}"
         - tls_info: an object with information for setting up the component to act as a TLS server, with the form:
@@ -287,7 +272,6 @@ def _create_and_start_container(container_name, image, **kwargs):
                      resources=resource_config,
                      volumes=kwargs.get("volumes", []),
                      ports=kwargs.get("ports", []),
-                     msb_list=kwargs.get("msb_list"),
                      tls_info=kwargs.get("tls_info"),
                      env=env,
                      labels=kwargs.get("labels", {}),
@@ -352,13 +336,6 @@ def _enhance_docker_params(**kwargs):
 
     envs = kwargs.get("envs", {})
 
-    # Set tags on this component for its Consul registration as a service
-    tags = [kwargs.get("deployment_id", None), kwargs["service_id"]]
-    tags = [ str(tag) for tag in tags if tag is not None ]
-    # Registrator will use this to register this component with tags. Must be
-    # comma delimited.
-    envs["SERVICE_TAGS"] = ",".join(tags)
-
     kwargs["envs"] = envs
 
     def combine_params(key, docker_config, kwargs):
@@ -370,6 +347,9 @@ def _enhance_docker_params(**kwargs):
     # lists together with no deduping.
     kwargs = combine_params("ports", docker_config, kwargs)
     kwargs = combine_params("volumes", docker_config, kwargs)
+
+    # Merge env vars from kwarg inputs and docker_config
+    kwargs["envs"].update(docker_config.get("envs", {}))
 
 
     return kwargs
@@ -424,17 +404,6 @@ def _done_for_start(**kwargs):
     ctx.logger.info("Done starting: {0}".format(kwargs["name"]))
     return kwargs
 
-def _setup_msb_registration(service_name, msb_reg):
-    return {
-        "serviceName" : service_name,
-        "port" : msb_reg.get("port", "80"),
-        "version" : msb_reg.get("version", "v1"),
-        "url" : msb_reg.get("url_path", "/v1"),
-        "protocol" : "REST",
-        "enable_ssl" : msb_reg.get("uses_ssl", False),
-        "visualRange" : "1"
-}
-
 @wrap_error_handling_start
 @merge_inputs_for_start
 @monkeypatch_loggers
@@ -450,82 +419,6 @@ def create_and_start_container_for_components(**start_inputs):
             **_verify_component(
                 **_create_and_start_component(
                     **_parse_cloudify_context(**start_inputs))))
-
-@wrap_error_handling_start
-@monkeypatch_loggers
-@operation
-def create_and_start_container_for_platforms(**kwargs):
-    """Initiate Kubernetes deployment for platform components
-
-    This operation method is to be used with the ContainerizedPlatformComponent
-    node type.
-    """
-    # Capture node properties
-    image = ctx.node.properties["image"]
-    docker_config = ctx.node.properties.get("docker_config", {})
-    resource_config = ctx.node.properties.get("resource_config", {})
-    kwargs["resource_config"] = resource_config
-    if "healthcheck" in docker_config:
-        kwargs["readiness"] = docker_config["healthcheck"]
-    if "livehealthcheck" in docker_config:
-        kwargs["liveness"] = docker_config["livehealthcheck"]
-    if "dns_name" in ctx.node.properties:
-        service_component_name = ctx.node.properties["dns_name"]
-    else:
-        service_component_name = ctx.node.properties["name"]
-
-    # Set some labels for the Kubernetes pods
-    # The name segment is required and must be 63 characters or less
-    kwargs["labels"] = {
-        "cfydeployment" : ctx.deployment.id,
-        "cfynode": ctx.node.name[:63],
-        "cfynodeinstance": ctx.instance.id[:63]
-    }
-
-    host_port = ctx.node.properties["host_port"]
-    container_port = ctx.node.properties["container_port"]
-
-    # Cloudify properties are all required and Cloudify complains that None
-    # is not a valid type for integer. Defaulting to 0 to indicate to not
-    # use this and not to set a specific port mapping in cases like service
-    # change handler.
-    if container_port != 0:
-        # Doing this because other nodes might want to use this property
-        port_mapping = "{cp}:{hp}".format(cp=container_port, hp=host_port)
-        ports = kwargs.get("ports", []) + [ port_mapping ]
-        kwargs["ports"] = ports
-    if "ports" not in kwargs:
-        ctx.logger.warn("No port mappings defined. Will randomly assign port.")
-
-    # All of the new node properties could be handled more DRYly!
-    # If a registration to MSB is required, then set up the registration info
-    if "msb_registration" in ctx.node.properties and "port" in ctx.node.properties["msb_registration"]:
-        kwargs["msb_list"] = [_setup_msb_registration(service_component_name, ctx.node.properties["msb_registration"])]
-
-    # If centralized logging via ELK is desired, then set up the logging info
-    if "log_info" in ctx.node.properties and "log_directory" in ctx.node.properties["log_info"]:
-        kwargs["log_info"] = ctx.node.properties["log_info"]
-
-    # Pick up TLS info if present
-    if "tls_info" in ctx.node.properties:
-        kwargs["tls_info"] = ctx.node.properties["tls_info"]
-
-    # Pick up replica count and always_pull_image flag
-    if "replicas" in ctx.node.properties:
-        kwargs["replicas"] = ctx.node.properties["replicas"]
-    if "always_pull_image" in ctx.node.properties:
-        kwargs["always_pull_image"] = ctx.node.properties["always_pull_image"]
-
-    # Pick up location
-    kwargs["k8s_location"] = _get_location()
-
-    returned_args = _create_and_start_container(service_component_name, image, **kwargs)
-
-    # Verify that the k8s deployment is ready
-    #   - Set service component name into kwargs
-    #   - max_wait is already in kwargs if it was set
-    returned_args[SERVICE_COMPONENT_NAME] = service_component_name
-    _verify_component(**returned_args)
 
 @wrap_error_handling_start
 @monkeypatch_loggers
