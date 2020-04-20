@@ -1,7 +1,7 @@
 # ============LICENSE_START=======================================================
 # org.onap.dcae
 # ================================================================================
-# Copyright (c) 2017-2018 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2017-2020 AT&T Intellectual Property. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,6 +24,5 @@
 # __version__ = '0.1.0'
 
 from .tasks import create_for_components, create_for_components_with_streams, \
-        create_for_platforms, create_and_start_container, \
-        create_and_start_container_for_components, create_and_start_container_for_platforms, \
+        create_and_start_container, create_and_start_container_for_components,  \
         stop_and_remove_container, cleanup_discovery, policy_update, scale, update_image

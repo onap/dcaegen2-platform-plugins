@@ -146,7 +146,7 @@ def test_enhance_docker_params(mockconfig):
     test_kwargs = { "docker_config": {}, "service_id": None }
     actual = tasks._enhance_docker_params(**test_kwargs)
 
-    assert actual == {'envs': {"SERVICE_TAGS": ""}, 'docker_config': {}, 'ports': [], 'volumes': [], "service_id": None }
+    assert actual == {'envs': {}, 'docker_config': {}, 'ports': [], 'volumes': [], "service_id": None }
 
     # Good - Test just docker config ports and volumes
 
@@ -155,7 +155,7 @@ def test_enhance_docker_params(mockconfig):
         "service_id": None }
     actual = tasks._enhance_docker_params(**test_kwargs)
 
-    assert actual == {'envs': {"SERVICE_TAGS": ""}, 'docker_config': {'ports': ['1:1', '2:2'],
+    assert actual == {'envs': {}, 'docker_config': {'ports': ['1:1', '2:2'],
         'volumes': [{'host': 'somewhere else', 'container': 'somewhere'}]},
         'ports': ['1:1', '2:2'], 'volumes': [{'host': 'somewhere else',
             'container': 'somewhere'}], "service_id": None}
@@ -169,7 +169,7 @@ def test_enhance_docker_params(mockconfig):
         "service_id": None }
     actual = tasks._enhance_docker_params(**test_kwargs)
 
-    assert actual == {'envs': {"SERVICE_TAGS": ""}, 'docker_config': {'ports': ['1:1', '2:2'],
+    assert actual == {'envs': {}, 'docker_config': {'ports': ['1:1', '2:2'],
         'volumes': [{'host': 'somewhere else', 'container': 'somewhere'}]},
         'ports': ['1:1', '2:2', '3:3', '4:4'], 'volumes': [{'host': 'somewhere else',
             'container': 'somewhere'}, {'host': 'nowhere else', 'container':
@@ -181,7 +181,7 @@ def test_enhance_docker_params(mockconfig):
             "deployment_id": "abc" }
     actual = tasks._enhance_docker_params(**test_kwargs)
 
-    assert actual["envs"] == {"SERVICE_TAGS": "abc,zed"}
+    assert actual["envs"] == {}
 
 
 def test_notify_container(mockconfig):

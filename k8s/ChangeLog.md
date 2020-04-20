@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.0]
+* DCAEGEN2-1791 - eliminate the ContainerizedPlatformComponent type
+* DCAEGEN2-2215 - allow environment variables to be set via docker_config
+
 ## [1.7.2]
 * DCAEGEN2-2006 Reduce code complexity
  The k8sclient.k8sclient.deploy function parameter 'resources' is now an optional

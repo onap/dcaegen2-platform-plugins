@@ -21,7 +21,6 @@
 import os
 import re
 import uuid
-from msb import msb
 from kubernetes import config, client, stream
 
 # Default values for readiness probe
@@ -442,7 +441,6 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
             {"host":{"path": "/path/on/host"}, "container":{"bind":"/path/on/container","mode":"rw_or_ro"}
         - ports: array of strings in the form "container_port:host_port"
         - env: map of name-value pairs ( {name0: value0, name1: value1...}
-        - msb_list: array of msb objects, where an msb object is as described in msb/msb.py.
         - log_info: an object with info for setting up ELK logging, with the form:
             {"log_directory": "/path/to/container/log/directory", "alternate_fb_path" : "/alternate/sidecar/log/path"}
         - tls_info: an object with info for setting up TLS (HTTPS), with the form:
@@ -521,12 +519,8 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
         if port_map:
             service_ports, exposed_ports = _process_port_map(port_map)
 
-            # If there are ports to be exposed via MSB, set up the annotation for the service
-            msb_list = kwargs.get("msb_list")
-            annotations = msb.create_msb_annotation(msb_list) if msb_list else ''
-
             # Create a ClusterIP service for access via the k8s network
-            service = _create_service_object(_create_service_name(component_name), component_name, service_ports, annotations, labels, "ClusterIP")
+            service = _create_service_object(_create_service_name(component_name), component_name, service_ports, None, labels, "ClusterIP")
             core.create_namespaced_service(namespace, service)
             cip_service_created = True
             deployment_description["services"].append(_create_service_name(component_name))

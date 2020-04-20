@@ -23,34 +23,9 @@ plugins:
   k8s:
     executor: 'central_deployment_agent'
     package_name: k8splugin
-    package_version: 2.0.0
+    package_version: 3.0.0
 
 data_types:
-
-  dcae.types.MSBRegistration:
-    description: >
-      Information for registering an HTTP service into MSB.  It's optional to do so,
-      but if MSB registration is desired at least the port property must be provided.
-      If 'port' property is not provided, the plugin will not do the registration.
-      (The properties all have to be declared as not required, otherwise the
-      'msb_registration' property on the node would also be required.)
-    properties:
-      port:
-        description: The container port at which the service is exposed
-        type: string
-        required: false
-      version:
-        description: The version identifier for the service
-        type: string
-        required: false
-      url_path:
-        description: The URL path (e.g., "/api", not the full URL) to the service endpoint
-        type: string
-        required: false
-      uses_ssl:
-        description: Set to true if service endpoint uses SSL (TLS)
-        type: boolean
-        required: false
 
   dcae.types.LoggingInfo:
     description: >
@@ -106,7 +81,7 @@ node_types:
             application_config:
                 default: {}
                 description: >
-                  Application configuration for this Docker component. The data structure is
+                  Application configuration for this component. The data structure is
                   expected to be a complex map (native YAML) and to be constructed and filled
                   by the creator of the blueprint.
 
@@ -114,7 +89,7 @@ node_types:
                 default: {}
                 description: >
                   Copied from the auxiliary portion of the component spec that contains things
-                  like healthcheck definitions for the Docker component. Health checks are
+                  like healthcheck definitions for the component. Health checks are
                   optional.
 
             resource_config:
@@ -147,7 +122,7 @@ node_types:
               description: >
                 Set to true if the orchestrator should always pull a new copy of the image
                 before deploying.  By default the orchestrator pulls only if the image is
-                not already present on the Docker host where the container is being launched.
+                not already present on the host where the container is being launched.
               default: false
 
             location_id:
@@ -167,17 +142,14 @@ node_types:
                 update_image:
                     implementation: k8s.k8splugin.update_image
 
-    # The ContainerizedServiceComponent node type is to be used for DCAE service components that
-    # are to be run in a Docker container.  This node type goes beyond that of a ordinary Docker
-    # plugin where it has DCAE platform specific functionality:
+    # The ContainerizedServiceComponent node type is to be used for DCAE service components.
     #
-    #   * Generation of the service component name
-    #   * Managing of service component configuration information
-    #
-    # The plugin deploys the container into a Kubernetes cluster with a very specific choice
+    # The plugin deploys the component into a Kubernetes cluster with a very specific choice
     # of Kubernetes elements that are deliberately not under the control of the blueprint author.
     # The idea is to deploy all service components in a consistent way, with the details abstracted
-    # away from the blueprint author.
+    # away from the blueprint author.  The plugin is responsible for:
+    #   * Generation of the service component name
+    #   * Managing of service component configuration information
     dcae.nodes.ContainerizedServiceComponent:
         derived_from: dcae.nodes.ContainerizedComponent
         properties:
@@ -202,10 +174,12 @@ node_types:
             service_component_name_override:
                 type: string
                 description: >
-                    Manually override and set the name for this Docker container node. If this
+                    Manually override and set the name for this component. If this
                     is set, then the name will not be auto-generated.  Using this feature provides
                     a service component with a fixed name that's known in advance, but care must be taken
-                    to avoid attempting to deploy two components with the same name.
+                    to avoid attempting to deploy two components with the same name.  If the component
+                    exposes any ports, the k8s Service created by the plugin will use service_component_name_override
+                    as the DNS host name.
                 default: Null
 
         interfaces:
@@ -214,10 +188,10 @@ node_types:
                     # Generate service component name and populate config into Consul
                     implementation: k8s.k8splugin.create_for_components
                 start:
-                    # Create Docker container and start
+                    # Create k8s entities for the component and start
                     implementation: k8s.k8splugin.create_and_start_container_for_components
                 stop:
-                    # Stop and remove Docker container
+                    # Stop and remove k8s entities associated with the component
                     implementation: k8s.k8splugin.stop_and_remove_container
                 delete:
                     # Delete configuration from Consul
@@ -281,56 +255,6 @@ node_types:
                 create:
                     # Generate service component name, populate config into Consul, set up runtime properties for DMaaP plugin
                     implementation: k8s.k8splugin.create_for_components_with_streams
-
-    # ContainerizedPlatformComponent is intended for DCAE platform services.  Unlike the components,
-    # platform services have well-known names and well-known ports.
-    dcae.nodes.ContainerizedPlatformComponent:
-        derived_from: dcae.nodes.ContainerizedComponent
-        properties:
-            name:
-                description: >
-                  Container name used to register with Consul
-            dns_name:
-                required: false
-                description: >
-                  Name to be registered in the DNS for the service provided by the container.
-                  If not provided, the 'name' field is used.
-                  This is a work-around for the Kubernetes restriction on having '_' in a DNS name.
-                  Having this field allows a component to look up its configuration using a name that
-                  includes a '_' while providing a legal Kubernetes DNS name.
-
-            host_port:
-                type: integer
-                description: >
-                  Network port that the platform service is expecting to expose on the host
-                default: 0
-
-            container_port:
-                type: integer
-                description: >
-                  Network port that the platform service exposes in the container
-                default: 0
-
-            msb_registration:
-              type: dcae.types.MSBRegistration
-              description: >
-                Information for registering with MSB
-              required: false
-
-        interfaces:
-            cloudify.interfaces.lifecycle:
-                create:
-                    # Populate config into Consul
-                    implementation: k8s.k8splugin.create_for_platforms
-                start:
-                    # Create Docker container and start
-                    implementation: k8s.k8splugin.create_and_start_container_for_platforms
-                stop:
-                    # Stop and remove Docker container
-                    implementation: k8s.k8splugin.stop_and_remove_container
-                delete:
-                    # Delete configuration from Consul
-                    implementation: k8s.k8splugin.cleanup_discovery
 
     # ContainerizedApplication is intended to be more of an all-purpose Docker container node
     # for non-componentized applications.
