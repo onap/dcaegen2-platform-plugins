@@ -1,7 +1,7 @@
 # ============LICENSE_START=======================================================
 # org.onap.dcae
 # ================================================================================
-# Copyright (c) 2017 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2017-2020 AT&T Intellectual Property. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 # limitations under the License.
 # ============LICENSE_END=========================================================
 #
-# ECOMP is a trademark and service mark of AT&T Intellectual Property.
 
 import json
 from cloudify import ctx
@@ -107,7 +106,7 @@ def registered_to(**kwargs):
     #Storing in source because that's who is getting registered
     ctx.source.instance.runtime_properties[CONSUL_HOST] = "http://{0}:{1}".format(consul_host, consul_port)
     ctx.source.instance.runtime_properties["name_to_register"] = name #careful! delete does not have access to inputs
-    
+
     try:
         response = requests.put(url = "{0}/v1/agent/service/register".format(ctx.source.instance.runtime_properties[CONSUL_HOST]),
                      json = {
