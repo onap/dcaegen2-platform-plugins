@@ -1,0 +1,17 @@
+pyyaml>=3.12
+#cloudify-common>=5.0.5
+# The released version of cloudify-common has limited python3 support.
+#
+# This build linked from github is more complete in this regard, and
+# has at least the tests written for pgaas passing. The other plugins
+# do not seem to have tests that exercise the unconverted parts.
+#
+# The build was created from a WIP branch, but only parts of the branch
+# were merged for release 5.0.5.
+#
+# It means that while this plugin is ready for python3, all the plugins
+# will need to wait for a python3-supporting release of cloudify.
+# When such a version is released, the single requirement should suffice.
+# The install_requires in setup.py may also be uncommented then.
+cloudify-common>=5.0.5; python_version<"3"
+cloudify-common @ git+https://github.com/cloudify-cosmo/cloudify-common@cy-1374-python3#egg=cloudify-common==5.0.5; python_version>="3"

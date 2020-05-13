@@ -1,0 +1,147 @@
+# ============LICENSE_START==========================================
+# ===================================================================
+# Copyright (c) 2017 AT&T
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#============LICENSE_END============================================
+
+plugins:
+  helm-plugin:
+    executor: central_deployment_agent
+    package_name: helm
+    package_version: 4.1.0
+
+node_types:
+
+  onap.nodes.component:
+    derived_from: cloudify.nodes.Root
+    properties:
+      tiller_ip:
+        description: IP of tiller server
+        type: string
+      tiller_port:
+        default: local
+        description: Port of tiller server
+        type: string
+      chart_repo_url:
+        default: local
+        description: helm chart repo url
+        type: string
+      component_name:
+        description: onap component string
+        type: string
+      chart_version:
+        description: helm chart version
+        type: string
+      config_dir:
+        description: config file dir
+        default: '/opt/manager/resources/'
+        type: string
+      namespace:
+        description: k8s namespace
+        default: onap
+      config:
+        description: json object string
+        type: string
+        default: ''
+      config_url:
+        description: config file url, supports multiple urls seperated by commas 
+        type: string
+        default: ''
+      config_format:
+        description: config file format - json or yaml
+        type: string
+        default: 'yaml'
+      runtime_config:
+        default: ''
+        description: json object string, runtime config generate from other nodes.
+      config_set:
+        default: ''
+        description: json object string for supporting helm --set option.
+      tls_enable:
+        description: enable helm TSL
+        type: boolean
+        default: false
+      ca:
+        description: value of ca.pem
+        type: string
+        default: ''
+      cert:
+        description:  value of cert.pem
+        type: string
+        default: ''
+      key:
+        description:  value of key.pem
+        type: string
+        default: ''
+      stable_repo_url:
+        description:   URL for stable repository
+        type: string
+        default: 'https://kubernetes-charts.storage.googleapis.com'
+      repo_user:
+        description:  chart repo user name  
+        type: string
+        default: ''
+      repo_user_password:
+        description:  chart repo user password 
+        type: string
+        default: ''
+
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        configure: helm-plugin.plugin.tasks.config
+        start: helm-plugin.plugin.tasks.start
+        stop: helm-plugin.plugin.tasks.stop
+        upgrade: helm-plugin.plugin.tasks.upgrade
+        rollback: helm-plugin.plugin.tasks.rollback
+        status: helm-plugin.plugin.tasks.status
+
+
+workflows:
+  upgrade:
+    mapping: helm-plugin.plugin.workflows.upgrade
+    parameters:
+      node_instance_id:
+        description: The id of the node-instance that you want to modify.
+      config_set:
+        description: set option string 
+        default: ''
+      config:
+        description: json object string
+        default: ''
+      config_url:
+        description: config input url, supports multiple urls seperated by commas 
+        default: ''
+      config_format:
+        description: config input file format
+        default: 'yaml'
+      chart_version:
+        description: chart version
+      chart_repo_url:
+        description: chart repo url
+      repo_user:
+        description: chart repo user name
+        default: ''
+      repo_user_password:
+        description: chart repo user password 
+        default: ''
+  rollback:
+    mapping: helm-plugin.plugin.workflows.rollback
+    parameters:
+      node_instance_id:
+        description: The id of the node-instance that you want to modify.
+      revision:
+        description: Check the node runtime property history, find the revision number you want to rollback to
+  status:
+    mapping: helm-plugin.plugin.workflows.status
+    parameters:
