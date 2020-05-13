@@ -16,7 +16,6 @@
 # limitations under the License.
 # ============LICENSE_END=========================================================
 #
-# ECOMP is a trademark and service mark of AT&T Intellectual Property.
 
 # REVIEW: Tried to source the version from here but you run into import issues
 # because "tasks" module is loaded. This method seems to be the PEP 396
