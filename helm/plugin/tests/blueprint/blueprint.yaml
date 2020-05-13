@@ -1,0 +1,85 @@
+# DSL version, should appear in the main blueprint.yaml
+# and may appear in other imports. In such case, the versions must match
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+    # importing cloudify related types, plugins, workflow, etc...
+    # to speed things up, it is possible downloading this file,
+    # including it in the blueprint directory and importing it
+    # instead.
+    - http://www.getcloudify.org/spec/cloudify/4.1.1/types.yaml
+    # relative import of plugin.yaml that resides in the blueprint directory
+    - plugin/test_plugin.yaml
+
+inputs:
+    # example input that could be injected by test
+    test_input:
+        description: an input for the test
+        default: default_test_input
+    tiller-server-ip:
+        default: 1.1.1.1
+    tiller-server-port:
+        default: 8888
+    namespace:
+        default: onap
+    chart-repo-url:
+        default: local
+    chart-version :
+        default: 2.0.0
+    jsonConfig:
+        default: ''
+    config-url:
+        default: ''
+    config-set:
+        default: ''
+    config-format:
+        default: 'json'
+    tls-enable:
+        type: boolean
+        default: false
+    config-dir:
+        type: string
+        default: './'
+    repo-user:
+        type: string
+        default: ''
+    repo-user-password:
+        type: string
+        default: ''
+    stable-repo-url:
+        type: string
+        default: 'http://0.0.0.0/stable'
+
+
+node_templates:
+    # defining a single node template that will serve as our test node
+    test_node:
+        # using base cloudify type
+        type: onap.nodes.component
+        properties:
+            tiller_ip: { get_input: tiller-server-ip }
+            tiller_port: { get_input: tiller-server-port }
+            component_name: test_node
+            chart_repo_url: { get_input: chart-repo-url }
+            chart_version: { get_input: chart-version }
+            namespace: { get_input: namespace }
+            config: { get_input: jsonConfig}
+            config_set: { get_input: config-set}
+            config_url: { get_input: config-url}
+            repo_user: { get_input: repo-user}
+            repo_user_password: { get_input: repo-user-password}
+            config_format: { get_input: config-format}
+            tls_enable: { get_input: tls-enable}
+            ca: "result of get_secret ca_value"
+            cert: "result of get_secret cert_value"
+            key: "result of get_secret key_value"
+            config_dir: { get_input: config-dir}
+            stable_repo_url: { get_input: stable-repo-url}
+
+outputs:
+    # example output the could be used to simplify assertions by test
+    test_output:
+        description: an output for the test
+        value: 
+            helm-value: { get_attribute: [test_node, current-helm-value] }
+            helm-history: { get_attribute: [test_node, helm-history] }
