@@ -1,0 +1,2 @@
+psycopg2-binary
+cloudify-common>=5.0.5
