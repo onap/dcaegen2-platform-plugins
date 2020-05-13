@@ -17,7 +17,6 @@
 # limitations under the License.
 # ============LICENSE_END=========================================================
 #
-# ECOMP is a trademark and service mark of AT&T Intellectual Property.
 import os
 import re
 import uuid
