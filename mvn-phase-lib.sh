@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ================================================================================
-# Copyright (c) 2017-2019 AT&T Intellectual Property. All rights reserved.
+# Copyright (c) 2017-2020 AT&T Intellectual Property. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -101,13 +101,6 @@ clean_tox_files()
 expand_templates()
 {
   set +x
-  # set up env variables, get ready for template resolution
-  # NOTE: CCSDK artifacts do not distinguish REALESE vs SNAPSHOTs
-  export ONAPTEMPLATE_RAWREPOURL_org_onap_ccsdk_platform_plugins_releases="$MVN_RAWREPO_BASEURL_DOWNLOAD/org.onap.ccsdk.platform.plugins"
-  export ONAPTEMPLATE_RAWREPOURL_org_onap_ccsdk_platform_plugins_snapshots="$MVN_RAWREPO_BASEURL_DOWNLOAD/org.onap.ccsdk.platform.plugins"
-  export ONAPTEMPLATE_RAWREPOURL_org_onap_ccsdk_platform_blueprints_releases="$MVN_RAWREPO_BASEURL_DOWNLOAD/org.onap.ccsdk.platform.blueprints"
-  export ONAPTEMPLATE_RAWREPOURL_org_onap_ccsdk_platform_blueprints_snapshots="$MVN_RAWREPO_BASEURL_DOWNLOAD/org.onap.ccsdk.platform.blueprints"
-
 
   if [ -z "$RELEASE_TAG" ]; then
     export ONAPTEMPLATE_RAWREPOURL_org_onap_dcaegen2_releases="$MVN_RAWREPO_BASEURL_DOWNLOAD/org.onap.dcaegen2/releases"
@@ -233,11 +226,19 @@ run_tox_test()
     rm -rf ./venv-tox ./.tox
     virtualenv ./venv-tox
     source ./venv-tox/bin/activate
-    pip install pip==9.0.3
+
+    #pip install pip==9.0.3
+    #pip install --upgrade argparse
+    #pip install tox==2.9.1
+
+    pip install --upgrade pip
+    pip install --upgrade setuptools
     pip install --upgrade argparse
-    pip install tox==2.9.1
+    pip install tox
     pip freeze
+    pwd
     tox
+    coverage report
     deactivate
     rm -rf ./venv-tox ./.tox
   done
