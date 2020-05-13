@@ -1,0 +1,67 @@
+# -*- indent-tabs-mode: nil -*- # vi: set expandtab:
+tosca_definitions_version: cloudify_dsl_1_3
+
+plugins:
+  pgaas:
+    executor: central_deployment_agent
+    package_name: pgaas
+    package_version: 1.2.0
+
+node_types:
+  dcae.nodes.pgaas.cluster:
+    derived_from: cloudify.nodes.Root
+    properties:
+      writerfqdn:
+        description: 'FQDN used for admin/read-write access to the cluster'
+        type: string
+      use_existing:
+        type: boolean
+        default: false
+        description: 'If set to true, the cluster exists and is being referenced'
+      readerfqdn:
+        description: 'FQDN used for read-only access to the cluster (default - same as writerfqdn)'
+        type: string
+        default: ''
+      port:
+        description: 'Port used for access to the cluster'
+        type: string
+        default: '5432'
+      initialpassword:
+        description: 'Password of existing PG instance to take control of'
+        type: string
+        default: ''
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create: pgaas.pgaas.pgaas_plugin.add_pgaas_cluster
+        delete: pgaas.pgaas.pgaas_plugin.rm_pgaas_cluster
+
+  dcae.nodes.pgaas.database:
+    derived_from: cloudify.nodes.Root
+    properties:
+      name:
+        type: string
+        description: 'Name of database (max 44 alphanumeric)'
+      use_existing:
+        type: boolean
+        default: false
+        description: 'If set to true, the database exists and is being referenced'
+      writerfqdn:
+        type: string
+        default: ''
+        description: 'Shortcut for connecting to a pgaas.cluster node (with use_existing=true) with a runson_pgaas_cluster relationship'
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create: pgaas.pgaas.pgaas_plugin.create_database
+        delete: pgaas.pgaas.pgaas_plugin.delete_database
+
+relationships:
+  dcae.relationships.pgaas_cluster_uses_sshkeypair:
+    derived_from: cloudify.relationships.connected_to
+  dcae.relationships.database_runson_pgaas_cluster:
+    derived_from: cloudify.relationships.contained_in
+  dcae.relationships.application_uses_pgaas_database:
+    derived_from: cloudify.relationships.connected_to
+
+workflows:
+  update_db_passwd : 
+    mapping : pgaas.pgaas.pgaas_plugin.update_database
