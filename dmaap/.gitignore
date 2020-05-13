@@ -1,0 +1,4 @@
+# local additions to plugins .gitignore
+wheels
+cdap.zip
+docker.zip

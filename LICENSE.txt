@@ -1,7 +1,7 @@
 /*
 * ============LICENSE_START==========================================
 * ===================================================================
-* Copyright (c) 2017 AT&T Intellectual Property. All rights reserved.
+* Copyright (c) 2017-2020 AT&T Intellectual Property. All rights reserved.
 * ===================================================================
 *
 * Unless otherwise specified, all software contained herein is licensed
@@ -34,7 +34,6 @@
 *
 * ============LICENSE_END============================================
 *
-* ECOMP is a trademark and service mark of AT&T Intellectual Property.
 *
 */
 
