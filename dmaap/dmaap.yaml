@@ -1,0 +1,202 @@
+# ============LICENSE_START====================================================
+# org.onap.ccsdk
+# =============================================================================
+# Copyright (c) 2017-2019 AT&T Intellectual Property. All rights reserved.
+# =============================================================================
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ============LICENSE_END======================================================
+
+
+# Types and relationships for DMaaP data router feeds
+
+tosca_definitions_version: cloudify_dsl_1_3
+
+plugins:
+  dmaapplugin:
+    executor: 'central_deployment_agent'
+    package_name: dmaap
+    package_version: 1.4.0
+
+
+node_types:
+
+  # Data Router feed to be created
+  ccsdk.nodes.Feed:
+    derived_from: cloudify.nodes.Root
+
+    properties:
+      feed_name:
+        type: string
+        required: false
+      feed_version:
+        type: string
+        required: false
+      feed_description:
+        type: string
+        required: false
+      aspr_classification:
+        type: string
+        required: false
+      useExisting:
+        type: boolean
+        required: false
+
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation:
+            dmaapplugin.dmaapplugin.dr_lifecycle.create_feed
+        delete:
+          implementation:
+            dmaapplugin.dmaapplugin.dr_lifecycle.delete_feed
+
+  # Existing Data Router feed to be used as target for publishing/subscribing
+  ccsdk.nodes.ExistingFeed:
+    derived_from: cloudify.nodes.Root
+
+    properties:
+      feed_id:
+        type: string
+        required: false
+      feed_name:
+        type: string
+        required: false
+
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        configure:
+          implementation:
+            dmaapplugin.dmaapplugin.dr_lifecycle.get_existing_feed
+
+  # Existing Global Data Router feed (created via Invenio) to be used as target for bridging
+  ccsdk.nodes.ExternalTargetFeed:
+    derived_from: cloudify.nodes.Root
+
+    properties:
+      url:
+        type: string
+        required: true
+      username:
+        type: string
+        required: true
+      userpw:
+        type: string
+        required: true
+
+  # Global Data Router feed to be used as a source for bridging
+  # Has no properties
+  ccsdk.nodes.ExternalSourceFeed:
+    derived_from: cloudify.nodes.Root
+
+  # Message Router topic to be created
+  ccsdk.nodes.Topic:
+    derived_from: cloudify.nodes.Root
+
+    properties:
+      topic_name:
+        type: string
+        required: false
+      topic_description:
+        type: string
+        required: false
+      txenable:
+        type: boolean
+        required: false
+      replication_case:
+        type: string
+        required: false
+      global_mr_url:
+        type: string
+        required: false
+      useExisting:
+        type: boolean
+        required: false
+
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation:
+            dmaapplugin.dmaapplugin.mr_lifecycle.create_topic
+        delete:
+          implementation:
+            dmaapplugin.dmaapplugin.mr_lifecycle.delete_topic
+
+  # Existing Message Router topic to be used as target for publishing/subscribing
+  ccsdk.nodes.ExistingTopic:
+    derived_from: cloudify.nodes.Root
+
+    properties:
+      fqtn:
+        type: string
+        required: false
+      topic_name:
+        type: string
+        required: false
+
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        configure:
+          implementation:
+            dmaapplugin.dmaapplugin.mr_lifecycle.get_existing_topic
+
+relationships:
+
+  ccsdk.relationships.publish_files:
+    derived_from: cloudify.relationships.connected_to
+    target_interfaces:
+      cloudify.interfaces.relationship_lifecycle:
+        preconfigure: dmaapplugin.dmaapplugin.dr_relationships.add_dr_publisher
+        unlink: dmaapplugin.dmaapplugin.dr_relationships.delete_dr_publisher
+
+  ccsdk.relationships.subscribe_to_files:
+    derived_from: cloudify.relationships.connected_to
+    target_interfaces:
+      cloudify.interfaces.relationship_lifecycle:
+        preconfigure: dmaapplugin.dmaapplugin.dr_relationships.add_dr_subscriber
+        unlink: dmaapplugin.dmaapplugin.dr_relationships.delete_dr_subscriber
+
+  ccsdk.relationships.publish_events:
+    derived_from: cloudify.relationships.connected_to
+    target_interfaces:
+      cloudify.interfaces.relationship_lifecycle:
+        preconfigure: dmaapplugin.dmaapplugin.mr_relationships.add_mr_publisher
+        unlink: dmaapplugin.dmaapplugin.mr_relationships.delete_mr_client
+
+  ccsdk.relationships.subscribe_to_events:
+    derived_from: cloudify.relationships.connected_to
+    target_interfaces:
+      cloudify.interfaces.relationship_lifecycle:
+        preconfigure: dmaapplugin.dmaapplugin.mr_relationships.add_mr_subscriber
+        unlink: dmaapplugin.dmaapplugin.mr_relationships.delete_mr_client
+
+  ccsdk.relationships.bridges_to:
+    derived_from: cloudify.relationships.connected_to
+    target_interfaces:
+      cloudify.interfaces.relationship_lifecycle:
+        preconfigure: dmaapplugin.dmaapplugin.dr_bridge.create_dr_bridge
+        unlink: dmaapplugin.dmaapplugin.dr_bridge.remove_dr_bridge
+
+  ccsdk.relationships.bridges_to_external:
+    derived_from: cloudify.relationships.connected_to
+    target_interfaces:
+      cloudify.interfaces.relationship_lifecycle:
+        preconfigure: dmaapplugin.dmaapplugin.dr_bridge.create_external_dr_bridge
+        unlink: dmaapplugin.dmaapplugin.dr_bridge.remove_dr_bridge
+
+  ccsdk.relationships.bridges_from_external_to_internal:
+    derived_from: cloudify.relationships.connected_to
+    target_interfaces:
+      cloudify.interfaces.relationship_lifecycle:
+        preconfigure: dmaapplugin.dmaapplugin.dr_bridge.create_external_source_dr_bridge
+        unlink: dmaapplugin.dmaapplugin.dr_bridge.remove_dr_bridge
+
