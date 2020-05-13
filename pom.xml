@@ -32,10 +32,15 @@ ECOMP is a trademark and service mark of AT&T Intellectual Property.
   <url>http://maven.apache.org</url>
   <packaging>pom</packaging>
   <modules>
-     <module>dcae-policy</module>
-     <module>k8s</module>
      <module>clamp-policy</module>
+     <module>clamp-policy</module>
+     <module>dcae-policy</module>
+     <module>dmaap</module>
+     <module>helm</module>
+     <module>k8s</module>
+     <module>pgaas</module>
      <module>relationships</module>
+     <module>sshkeyshare</module>
   </modules>
   <properties>
     <onap.nexus.url>https://nexus.onap.org</onap.nexus.url>

@@ -1,0 +1,17 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+imports:
+  - http://www.getcloudify.org/spec/cloudify/3.4/types.yaml
+plugins:
+  ssh_keyshare:
+    executor: central_deployment_agent
+    package_name: sshkeyshare
+    package_version: 1.1.0
+node_types:
+  dcaegen2.nodes.ssh.keypair:
+    derived_from: cloudify.nodes.Root
+    properties:
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create:
+          implementation: ssh_keyshare.sshkeyshare.keyshare_plugin.generate

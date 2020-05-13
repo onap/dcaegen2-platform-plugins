@@ -1,0 +1,139 @@
+# ============LICENSE_START==========================================
+# ===================================================================
+# Copyright (c) 2017 AT&T
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#============LICENSE_END============================================
+
+plugins:
+  helm-plugin:
+    executor: central_deployment_agent
+    package_name: helm
+    install: false
+
+node_types:
+
+  onap.nodes.component:
+    derived_from: cloudify.nodes.Root
+    properties:
+      tiller_ip:
+        description: IP of tiller server
+        type: string
+      tiller_port:
+        default: local
+        description: Port of tiller server
+        type: string
+      chart_repo_url:
+        default: local
+        description: helm chart repo url
+        type: string
+      component_name:
+        description: onap component string
+        type: string
+      chart_version:
+        description: helm chart version
+        type: string
+      config_dir:
+        description: config file dir
+        default: '/opt/manager/resources/'
+        type: string
+      namespace:
+        description: k8s namespace
+        default: onap
+      config:
+        description: String format config file
+        type: string
+        default: ''
+      config_set:
+        description: String format config file
+        type: string
+        default: ''
+      config_url:
+        description: String format config file url
+        type: string
+        default: ''
+      config_format:
+        description: String format config file format
+        type: string
+        default: 'json'
+      runtime_config:
+        default: ''
+        description: String format json object. To save the runtime config generate from other nodes.
+      tls_enable:
+        description: enable helm TSL
+        type: boolean
+        default: false
+      ca:
+        description: value of ca.pem
+        type: string
+        default: ''
+      cert:
+        description:  value of cert.pem
+        type: string
+        default: ''
+      key:
+        description:  value of key.pem
+        type: string
+        default: ''
+      stable_repo_url:
+        description:   URL for stable repository
+        type: string
+        default: 'https://kubernetes-charts.storage.googleapis.com'
+      repo_user:
+        type: string
+        default: ''
+      repo_user_password:
+        type: string
+        default: ''
+
+
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        configure: helm-plugin.plugin.tasks.config
+        start: helm-plugin.plugin.tasks.start
+        stop: helm-plugin.plugin.tasks.stop
+        upgrade: helm-plugin.plugin.tasks.upgrade
+        rollback: helm-plugin.plugin.tasks.rollback
+
+
+workflows:
+  upgrade:
+    mapping: helm-plugin.plugin.workflows.upgrade
+    parameters:
+      node_instance_id:
+        description: The id of the node-instance that you want to modify.
+      config_set:
+        description: The set option string
+        default: ''
+      config:
+        description: The changes to the new config json
+        default: ''
+      config_url:
+        description: The config input url
+        default: ''
+      config_format:
+        description: The config url input format
+        default: 'json'
+      chart_version:
+        description: chart version
+      chart_repo_url:
+        description: chart repo url
+  rollback:
+    mapping: helm-plugin.plugin.workflows.rollback
+    parameters:
+      node_instance_id:
+        description: The id of the node-instance that you want to modify.
+        default: 'node_instance_id'
+      revision:
+        description: Check the node runtime property history, find the revision number you want to rollback to
+        default: 1

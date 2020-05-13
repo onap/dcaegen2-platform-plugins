@@ -101,13 +101,6 @@ clean_tox_files()
 expand_templates()
 {
   set +x
-  # set up env variables, get ready for template resolution
-  # NOTE: CCSDK artifacts do not distinguish REALESE vs SNAPSHOTs
-  export ONAPTEMPLATE_RAWREPOURL_org_onap_ccsdk_platform_plugins_releases="$MVN_RAWREPO_BASEURL_DOWNLOAD/org.onap.ccsdk.platform.plugins"
-  export ONAPTEMPLATE_RAWREPOURL_org_onap_ccsdk_platform_plugins_snapshots="$MVN_RAWREPO_BASEURL_DOWNLOAD/org.onap.ccsdk.platform.plugins"
-  export ONAPTEMPLATE_RAWREPOURL_org_onap_ccsdk_platform_blueprints_releases="$MVN_RAWREPO_BASEURL_DOWNLOAD/org.onap.ccsdk.platform.blueprints"
-  export ONAPTEMPLATE_RAWREPOURL_org_onap_ccsdk_platform_blueprints_snapshots="$MVN_RAWREPO_BASEURL_DOWNLOAD/org.onap.ccsdk.platform.blueprints"
-
 
   if [ -z "$RELEASE_TAG" ]; then
     export ONAPTEMPLATE_RAWREPOURL_org_onap_dcaegen2_releases="$MVN_RAWREPO_BASEURL_DOWNLOAD/org.onap.dcaegen2/releases"
