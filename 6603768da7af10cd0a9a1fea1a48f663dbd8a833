@@ -140,6 +140,52 @@
     },
     {
       "key": {
+        "uuid": "bb6986f0_ed2e3ced",
+        "filename": "helm/.travis.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-05-14T14:33:45Z",
+      "side": 1,
+      "message": "3.x?",
+      "range": {
+        "startLine": 4,
+        "startChar": 4,
+        "endLine": 4,
+        "endChar": 9
+      },
+      "revId": "6603768da7af10cd0a9a1fea1a48f663dbd8a833",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61c4b688_bbb27878",
+        "filename": "helm/.travis.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-05-14T14:33:45Z",
+      "side": 1,
+      "message": "include 37?",
+      "range": {
+        "startLine": 7,
+        "startChar": 15,
+        "endLine": 7,
+        "endChar": 18
+      },
+      "revId": "6603768da7af10cd0a9a1fea1a48f663dbd8a833",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d0ee4303_45148ccd",
         "filename": "helm/LICENSE",
         "patchSetId": 2
@@ -151,6 +197,29 @@
       "writtenOn": "2020-05-14T14:21:21Z",
       "side": 1,
       "message": "Should be switched onap license header",
+      "revId": "6603768da7af10cd0a9a1fea1a48f663dbd8a833",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "49dfa927_f8d21955",
+        "filename": "helm/circle.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-05-14T14:33:45Z",
+      "side": 1,
+      "message": "include 3.x?",
+      "range": {
+        "startLine": 19,
+        "startChar": 13,
+        "endLine": 19,
+        "endChar": 17
+      },
       "revId": "6603768da7af10cd0a9a1fea1a48f663dbd8a833",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
