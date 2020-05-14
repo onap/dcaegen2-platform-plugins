@@ -1,0 +1,296 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1b966df3_19b70424",
+        "filename": "dmaap/dmaap.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-05-14T14:21:21Z",
+      "side": 1,
+      "message": "Should we consider changing the nodetype? Or handled it as separate change later?",
+      "range": {
+        "startLine": 34,
+        "startChar": 2,
+        "endLine": 34,
+        "endChar": 18
+      },
+      "revId": "6603768da7af10cd0a9a1fea1a48f663dbd8a833",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6816aca6_cadfd559",
+        "filename": "dmaap/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-05-14T14:21:21Z",
+      "side": 1,
+      "message": "\u003cgroupId\u003eorg.onap.dcaegen2.platform\u003c/groupId\u003e\n    \u003cartifactId\u003eplugins\u003c/artifactId\u003e\n    \u003cversion\u003e1.2.0-SNAPSHOT\u003c/version\u003e",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 37
+      },
+      "revId": "6603768da7af10cd0a9a1fea1a48f663dbd8a833",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "34772d1a_093dc72a",
+        "filename": "dmaap/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-05-14T14:21:21Z",
+      "side": 1,
+      "message": "bump up the version with this migration",
+      "range": {
+        "startLine": 34,
+        "startChar": 11,
+        "endLine": 34,
+        "endChar": 25
+      },
+      "revId": "6603768da7af10cd0a9a1fea1a48f663dbd8a833",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ec26ace4_e1928f42",
+        "filename": "dmaap/setup.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-05-14T14:21:21Z",
+      "side": 1,
+      "message": "version to be bumped up",
+      "range": {
+        "startLine": 23,
+        "startChar": 14,
+        "endLine": 23,
+        "endChar": 21
+      },
+      "revId": "6603768da7af10cd0a9a1fea1a48f663dbd8a833",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4008d24d_90c74297",
+        "filename": "dmaap/tests/test_mr_lifecycle.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-05-14T14:21:21Z",
+      "side": 1,
+      "message": "to be removed",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 70
+      },
+      "revId": "6603768da7af10cd0a9a1fea1a48f663dbd8a833",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0b695445_bf38b6e5",
+        "filename": "dmaap/tests/test_plugin.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-05-14T14:21:21Z",
+      "side": 1,
+      "message": "2020",
+      "range": {
+        "startLine": 4,
+        "startChar": 21,
+        "endLine": 4,
+        "endChar": 25
+      },
+      "revId": "6603768da7af10cd0a9a1fea1a48f663dbd8a833",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0ee4303_45148ccd",
+        "filename": "helm/LICENSE",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-05-14T14:21:21Z",
+      "side": 1,
+      "message": "Should be switched onap license header",
+      "revId": "6603768da7af10cd0a9a1fea1a48f663dbd8a833",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4cd37f42_affb5389",
+        "filename": "helm/plugin/__init__.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-05-14T14:21:21Z",
+      "side": 1,
+      "message": "To be updated into onap license header",
+      "revId": "6603768da7af10cd0a9a1fea1a48f663dbd8a833",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f45da64a_17f1c31f",
+        "filename": "helm/plugin/tests/__init__.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-05-14T14:21:21Z",
+      "side": 1,
+      "message": "License to be updated",
+      "revId": "6603768da7af10cd0a9a1fea1a48f663dbd8a833",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "28ea4c75_7de6f0cd",
+        "filename": "helm/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-05-14T14:21:21Z",
+      "side": 1,
+      "message": "\u003cgroupId\u003eorg.onap.dcaegen2.platform\u003c/groupId\u003e\n    \u003cartifactId\u003eplugins\u003c/artifactId\u003e\n    \u003cversion\u003e1.2.0-SNAPSHOT\u003c/version\u003e",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 37
+      },
+      "revId": "6603768da7af10cd0a9a1fea1a48f663dbd8a833",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d93a0c02_da459ee2",
+        "filename": "helm/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-05-14T14:21:21Z",
+      "side": 1,
+      "message": "bump up version",
+      "range": {
+        "startLine": 34,
+        "startChar": 11,
+        "endLine": 34,
+        "endChar": 25
+      },
+      "revId": "6603768da7af10cd0a9a1fea1a48f663dbd8a833",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "981be35d_ea2dd3d6",
+        "filename": "pgaas/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-05-14T14:21:21Z",
+      "side": 1,
+      "message": "version to be bumped",
+      "range": {
+        "startLine": 33,
+        "startChar": 11,
+        "endLine": 33,
+        "endChar": 25
+      },
+      "revId": "6603768da7af10cd0a9a1fea1a48f663dbd8a833",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c71c991c_f8bac43b",
+        "filename": "pgaas/pom.xml~",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-05-14T14:21:21Z",
+      "side": 1,
+      "message": "This file should be removed",
+      "revId": "6603768da7af10cd0a9a1fea1a48f663dbd8a833",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "121a7b56_a1520f81",
+        "filename": "sshkeyshare/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-05-14T14:21:21Z",
+      "side": 1,
+      "message": "sshkeyshare plugin not required to be migrated",
+      "revId": "6603768da7af10cd0a9a1fea1a48f663dbd8a833",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
