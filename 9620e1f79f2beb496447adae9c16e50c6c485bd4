@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7de6c5b4_57a4c349",
+        "filename": "mvn-phase-lib.sh",
+        "patchSetId": 16
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-05-29T17:42:00Z",
+      "side": 1,
+      "message": "18:28:31 /w/workspace/dcaegen2-platform-plugins-master-verify-java/mvn-phase-lib.sh: line 241: coverage: command not found\n\nYou could remove this line and retry",
+      "range": {
+        "startLine": 241,
+        "startChar": 0,
+        "endLine": 241,
+        "endChar": 19
+      },
+      "revId": "9620e1f79f2beb496447adae9c16e50c6c485bd4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
