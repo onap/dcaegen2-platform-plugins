@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fb55bd57_3c4357e0",
+        "filename": "makefile",
+        "patchSetId": 27
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-06-01T21:57:03Z",
+      "side": 1,
+      "message": "File to be removed",
+      "revId": "e9a5eb4a9735812d1cc265a91a960b7bc1b74d71",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c9bf6ad_dad8e81c",
+        "filename": "mvn-phase-lib.sh",
+        "patchSetId": 27
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-06-01T21:57:03Z",
+      "side": 1,
+      "message": "remove this line",
+      "range": {
+        "startLine": 241,
+        "startChar": 3,
+        "endLine": 241,
+        "endChar": 21
+      },
+      "revId": "e9a5eb4a9735812d1cc265a91a960b7bc1b74d71",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6af46aac_8d9bd1f1",
+        "filename": "pgaas/tox.ini",
+        "patchSetId": 27
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-06-01T21:57:03Z",
+      "side": 1,
+      "message": "Commented lines can be removed",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 21
+      },
+      "revId": "e9a5eb4a9735812d1cc265a91a960b7bc1b74d71",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
