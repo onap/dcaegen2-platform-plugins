@@ -2,6 +2,40 @@
   "comments": [
     {
       "key": {
+        "uuid": "ee0e62e0_96c85a02",
+        "filename": "helm/LICENSE",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2020-06-02T11:47:28Z",
+      "side": 1,
+      "message": "Which license applies?  In other cases where the LICENSE file has two licenses, there is a statement that the Apache license applies to software and the CC license applies to documentation.",
+      "revId": "e9a5eb4a9735812d1cc265a91a960b7bc1b74d71",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "41890a28_388b69ce",
+        "filename": "helm/circle.yml",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2020-06-02T11:47:28Z",
+      "side": 1,
+      "message": "Do we need this file?",
+      "revId": "e9a5eb4a9735812d1cc265a91a960b7bc1b74d71",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fb55bd57_3c4357e0",
         "filename": "makefile",
         "patchSetId": 27
