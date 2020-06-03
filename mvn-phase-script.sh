@@ -58,28 +58,16 @@ test)
   ;;
 package)
   echo "==> package phase script"
-  case $MVN_PROJECT_MODULEID in
-    dcae-policy|k8s|clamp-policy|relationships)
-    build_archives_for_wagons
-    build_wagons
-    ;;
-  *)
-    ;;
-  esac
+  build_archives_for_wagons
+  build_wagons
   ;;
 install)
   echo "==> install phase script"
   ;;
 deploy)
   echo "==> deploy phase script"
-  case $MVN_PROJECT_MODULEID in
-    dcae-policy|k8s|clamp-policy|relationships)
-    upload_wagons_and_type_yamls
-    upload_wagon_archives
-    ;;
-  *)
-    ;;
-  esac
+  upload_wagons_and_type_yamls
+  upload_wagon_archives
   ;;
 *)
   echo "==> unprocessed phase"
