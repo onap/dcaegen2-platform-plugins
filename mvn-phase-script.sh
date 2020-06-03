@@ -57,12 +57,12 @@ test)
   run_tox_test
   ;;
 package)
-  echo "==> package phase script"
-  case $MVN_PROJECT_MODULEID in
-    dcae-policy|k8s|clamp-policy|relationships)
-    build_archives_for_wagons
-    build_wagons
-    ;;
+    echo "==> package phase script"
+    if grep "<module>$MVN_PROJECT_MODULEID</module>" pom.xml >/dev/null
+    then
+	build_archives_for_wagons
+	build_wagons
+    fi
   *)
     ;;
   esac
@@ -72,10 +72,11 @@ install)
   ;;
 deploy)
   echo "==> deploy phase script"
-  case $MVN_PROJECT_MODULEID in
-    dcae-policy|k8s|clamp-policy|relationships)
-    upload_wagons_and_type_yamls
-    upload_wagon_archives
+    if grep "<module>$MVN_PROJECT_MODULEID</module>" pom.xml >/dev/null
+    then
+	upload_wagons_and_type_yamls
+	upload_wagon_archives
+    fi
     ;;
   *)
     ;;
