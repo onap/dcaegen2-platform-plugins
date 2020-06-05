@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "b04916d6_f9019e22",
+        "filename": "mvn-phase-script.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-06-05T21:05:40Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "97727f35_f6678b24",
+      "revId": "b05d397926887f132781fbb4ec981abe11b92466",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3eab3892_1518f39b",
         "filename": "mvn-phase-script.sh",
         "patchSetId": 2
@@ -39,6 +57,30 @@
       "revId": "b05d397926887f132781fbb4ec981abe11b92466",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3019b273_082c5968",
+        "filename": "mvn-phase-script.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-06-05T21:05:40Z",
+      "side": 1,
+      "message": "ok",
+      "parentUuid": "3eab3892_1518f39b",
+      "range": {
+        "startLine": 72,
+        "startChar": 12,
+        "endLine": 73,
+        "endChar": 8
+      },
+      "revId": "b05d397926887f132781fbb4ec981abe11b92466",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
