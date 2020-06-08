@@ -25,7 +25,7 @@ plugins:
   dmaapplugin:
     executor: 'central_deployment_agent'
     package_name: dmaap
-    package_version: 1.4.0
+    package_version: 1.5.0
 
 
 node_types:

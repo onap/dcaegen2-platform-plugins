@@ -15,16 +15,20 @@ verify-versions:
 			echo "$$i version $$v not found in $$p/setup.py. Instead found the above version."; \
 			exit 1 ; \
 		fi; \
-		if [ -f "$$p"/*types.yaml ]; then \
-			if grep "package_version:[[:space:]]*$$v" "$$p"/*types.yaml > /dev/null 2>&1; then \
-				echo "$$i version $$v verified in" "$$p"/*types.yaml; \
-			else \
-				grep -n "<version>" $$i /dev/null | sed 2q | tail -n 1; \
-				grep -n "package_version:" "$$p"/*types.yaml /dev/null; \
-				exit 1 ; \
-			fi; \
+		typefiles=$$( grep -l "package_version[[:space:]]*:" $$p/* 2>/dev/null ); \
+		if [ -z "$$typefiles" ]; then \
+			echo "No type files found in $$p"; \
+			exit 1 ; \
 		else \
-			echo "No types file found in $$p"; \
+			for typefile in $$typefiles; do \
+				if grep "package_version:[[:space:]]*$$v" "$$typefile" > /dev/null 2>&1; then \
+					echo "$$i version $$v verified in" "$$typefile"; \
+				else \
+					grep -n "<version>" $$i /dev/null | sed 2q | tail -n 1; \
+					grep -n "package_version:" "$$typefile" /dev/null; \
+					exit 1 ; \
+				fi; \
+			done; \
 		fi; \
 		echo; \
 	done

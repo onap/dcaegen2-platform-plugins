@@ -19,7 +19,7 @@ plugins:
   helm-plugin:
     executor: central_deployment_agent
     package_name: helm
-    package_version: 4.1.0
+    package_version: 4.2.0
 
 node_types:
 
