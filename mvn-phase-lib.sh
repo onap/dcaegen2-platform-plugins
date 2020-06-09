@@ -389,7 +389,7 @@ upload_wagons_and_type_yamls()
 
     echo "Found setup file in $PLUGIN_DIR, for plugin $PLUGIN_NAME version $PLUGIN_VERSION"
 
-    TYPEFILE_NAME=$( grep -l "package_name:[[:space:]]*${PLUGIN_NAME}" * 2>/dev/null )
+    TYPEFILE_NAME=$( grep -l "package_name:[[:space:]]*${PLUGIN_NAME}" * 2>/dev/null || true )
     if [ -z "$TYPEFILE_NAME" ]; then
       echo "!!! No typefile found with matching package name $PLUGIN_NAME"
       exit -1
