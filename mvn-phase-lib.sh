@@ -253,7 +253,7 @@ build_wagons()
   for SETUPFILE in $SETUPFILES; do
     PLUGIN_DIR=$(dirname "$SETUPFILE")
     PLUGIN_NAME=$(grep 'name[[:space:]]*=' "$SETUPFILE" | cut -f2 -d'=' | sed 's/[^0-9a-zA-Z\.]*//g')
-    PLUGIN_VERSION=$(grep 'version' "$SETUPFILE" | cut -f2 -d'=' | sed 's/[^0-9\.]*//g')
+    PLUGIN_VERSION=$(grep 'version[[:space:]]*=' "$SETUPFILE" | cut -f2 -d'=' | sed 's/[^0-9\.]*//g')
 
     echo "In $PLUGIN_DIR, build plugin $PLUGIN_NAME, version $PLUGIN_VERSION"
 
@@ -278,7 +278,7 @@ build_archives_for_wagons()
     PLUGIN_FULL_DIR=$(dirname "$SETUPFILE")
     PLUGIN_BASE_DIR=$(basename "$PLUGIN_FULL_DIR")
     PLUGIN_NAME=$(grep 'name[[:space:]]*=' "$SETUPFILE" | cut -f2 -d'=' | sed 's/[^0-9a-zA-Z\.]*//g')
-    PLUGIN_VERSION=$(grep 'version' "$SETUPFILE" | cut -f2 -d'=' | sed 's/[^0-9\.]*//g')
+    PLUGIN_VERSION=$(grep 'version[[:space:]]*=' "$SETUPFILE" | cut -f2 -d'=' | sed 's/[^0-9\.]*//g')
 
     cd "${PLUGIN_FULL_DIR}"/..
     echo "In $(pwd), build plugin zip $PLUGIN_NAME, version $PLUGIN_VERSION"
@@ -352,7 +352,7 @@ upload_wagon_archives()
     PLUGIN_FULL_DIR=$(dirname "$SETUPFILE")
     PLUGIN_BASE_DIR=$(basename "$PLUGIN_FULL_DIR")
     PLUGIN_NAME=$(grep 'name[[:space:]]*=' "$SETUPFILE" | cut -f2 -d'=' | sed 's/[^0-9a-zA-Z\.]*//g')
-    PLUGIN_VERSION=$(grep 'version' "$SETUPFILE" | cut -f2 -d'=' | sed 's/[^0-9\.]*//g')
+    PLUGIN_VERSION=$(grep 'version[[:space:]]*=' "$SETUPFILE" | cut -f2 -d'=' | sed 's/[^0-9\.]*//g')
 
     cd "${PLUGIN_FULL_DIR}"/..
     echo "In $(pwd), upload zip archive for $PLUGIN_NAME, version $PLUGIN_VERSION"
@@ -383,13 +383,13 @@ upload_wagons_and_type_yamls()
   for SETUPFILE in $SETUPFILES; do
     PLUGIN_DIR=$(dirname "$SETUPFILE")
     PLUGIN_NAME=$(grep 'name[[:space:]]*=' "$SETUPFILE" | cut -f2 -d'=' | sed 's/[^0-9a-zA-Z\.]*//g')
-    PLUGIN_VERSION=$(grep 'version' "$SETUPFILE" | cut -f2 -d'=' | sed 's/[^0-9\.]*//g')
+    PLUGIN_VERSION=$(grep 'version[[:space:]]*=' "$SETUPFILE" | cut -f2 -d'=' | sed 's/[^0-9\.]*//g')
     PLUGIN_VERSION_MAJOR=$(echo "$PLUGIN_VERSION" | cut -f1 -d'.')
     PLUGIN_VERSION_MAJOR_MINOR=$(echo "$PLUGIN_VERSION" | cut -f1-2 -d'.')
 
     echo "Found setup file in $PLUGIN_DIR, for plugin $PLUGIN_NAME version $PLUGIN_VERSION"
 
-    TYPEFILE_NAME=$( grep -l "package_name:[[:space:]]*${PLUGIN_NAME}" * 2>/dev/null )
+    TYPEFILE_NAME=$( grep -l "package_name[[:space:]]*:[[:space:]]*${PLUGIN_NAME}" * 2>/dev/null || true )
     if [ -z "$TYPEFILE_NAME" ]; then
       echo "!!! No typefile found with matching package name $PLUGIN_NAME"
       exit -1
@@ -400,7 +400,7 @@ upload_wagons_and_type_yamls()
       cp -f "$TYPEFILE_NAME" "$NEWFILENAME"
     fi
 
-    TYPEFILE_PACKAGE_VERSION=$(grep -R 'package_version' "$TYPEFILE_NAME" |cut -f2 -d ':' |sed -r 's/\s+//g')
+    TYPEFILE_PACKAGE_VERSION=$(grep 'package_version[[:space:]]*:' "$TYPEFILE_NAME" |cut -f2 -d ':' |sed -r 's/\s+//g')
     WAGONFILE_NAME=$(ls -1 "${PLUGIN_NAME}"-"${TYPEFILE_PACKAGE_VERSION}"-*.wgn)
     if [ -z "$WAGONFILE_NAME" ]; then
       echo "!!! No wagonfile found with matching package name and version as required in typefile: "
