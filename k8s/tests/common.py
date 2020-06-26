@@ -35,6 +35,18 @@ def _set_k8s_configuration():
             "image": "tlsrepo/tls-init-container:1.2.3",
             "component_cert_dir": "/opt/dcae/cacert"
         },
+        "external_tls": {
+            "cert_path" : "/opt/certs",
+            "image": "repo/aaf-certservice-client:1.2.3",
+            "component_cert_dir": "/opt/dcae/cacert",
+            "request_url" : "https://request:1010/url",
+            "timeout" : "30000",
+            "country" : "US",
+            "organization" : "Linux-Foundation",
+            "state" : "California",
+            "organizational_unit" : "ONAP",
+            "location" : "San-Francisco"
+        },
         "cbs": {
             "base_url": "https://config-binding-service:10443/service_component_all/test-component"
         }
