@@ -3,6 +3,7 @@
 # ================================================================================
 # Copyright (c) 2019-2020 AT&T Intellectual Property. All rights reserved.
 # Copyright (c) 2020 Pantheon.tech. All rights reserved.
+# Copyright (c) 2020 Nokia. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,6 +35,16 @@ def _set_k8s_configuration():
             "cert_path": "/opt/certs",
             "image": "tlsrepo/tls-init-container:1.2.3",
             "component_cert_dir": "/opt/dcae/cacert"
+        },
+        "external_cert": {
+            "image_tag": "repo/aaf-certservice-client:1.2.3",
+            "request_url" : "https://request:1010/url",
+            "timeout" : "30000",
+            "country" : "US",
+            "organization" : "Linux-Foundation",
+            "state" : "California",
+            "organizational_unit" : "ONAP",
+            "location" : "San-Francisco"
         },
         "cbs": {
             "base_url": "https://config-binding-service:10443/service_component_all/test-component"
@@ -114,6 +125,37 @@ def verify_common(dep, deployment_description):
     # Needs to be correctly labeled so that the Service can find it
     assert dep.spec.template.metadata.labels["app"] == "testcomponent"
 
+def verify_external_cert(dep):
+    cert_container = dep.spec.template.spec.init_containers[1]
+    print(cert_container)
+    assert cert_container.image == "repo/aaf-certservice-client:1.2.3"
+    assert cert_container.name == "cert-service-client"
+    assert len(cert_container.volume_mounts) == 2
+    assert cert_container.volume_mounts[0].name == "tls-info"
+    assert cert_container.volume_mounts[0].mount_path == "/path/to/container/cert/directory/"
+    assert cert_container.volume_mounts[1].name == "tls-volume"
+    assert cert_container.volume_mounts[1].mount_path == "/etc/onap/aaf/certservice/certs/"
+
+    expected_envs = {
+            "REQUEST_URL": "https://request:1010/url",
+            "REQUEST_TIMEOUT": "30000",
+            "OUTPUT_PATH": "/path/to/container/cert/directory/external",
+            "OUTPUT_TYPE": "P12",
+            "CA_NAME": "myname",
+            "COMMON_NAME": "mycommonname",
+            "ORGANIZATION": "Linux-Foundation",
+            "ORGANIZATION_UNIT": "ONAP",
+            "LOCATION": "San-Francisco",
+            "STATE": "California",
+            "COUNTRY": "US",
+            "SANS": "mysans",
+            "KEYSTORE_PATH": "/keystore/path/keystore.jks",
+            "KEYSTORE_PASSWORD": "secret",
+            "TRUSTSTORE_PATH": "/truststore/path/truststore.jks",
+            "TRUSTSTORE_PASSWORD": "secret"}
+
+    envs = {k.name: k.value for k in cert_container.env}
+    assert all (k in envs for k in expected_envs)
 
 def do_deploy(tls_info=None):
     ''' Common deployment operations '''
@@ -126,6 +168,24 @@ def do_deploy(tls_info=None):
 
     if tls_info:
         kwargs["tls_info"] = tls_info
+
+    dep, deployment_description = k8sclient.k8sclient.deploy("k8stest", "testcomponent", "example.com/testcomponent:1.4.3", 1, False, k8s_test_config, **kwargs)
+
+    # Make sure all of the basic k8s parameters are correct
+    verify_common(dep, deployment_description)
+
+    return dep, deployment_description
+
+
+def do_deploy_ext(ext_tls_info):
+    ''' Common deployment operations '''
+    import k8sclient.k8sclient
+
+    k8s_test_config = _set_k8s_configuration()
+
+    kwargs = _set_common_kwargs()
+    kwargs['resources'] = _set_resources()
+    kwargs["external_cert"] = ext_tls_info
 
     dep, deployment_description = k8sclient.k8sclient.deploy("k8stest", "testcomponent", "example.com/testcomponent:1.4.3", 1, False, k8s_test_config, **kwargs)
 

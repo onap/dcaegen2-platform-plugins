@@ -3,6 +3,7 @@
 # ================================================================================
 # Copyright (c) 2017-2020 AT&T Intellectual Property. All rights reserved.
 # Copyright (c) 2020 Pantheon.tech. All rights reserved.
+# Copyright (c) 2020 Nokia. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,8 +23,8 @@ from setuptools import setup
 setup(
     name='k8splugin',
     description='Cloudify plugin for containerized components deployed using Kubernetes',
-    version="3.0.0",
-    author='J. F. Lucas, Michael Hwang, Tommy Carpenter',
+    version="3.1.0",
+    author='J. F. Lucas, Michael Hwang, Tommy Carpenter, Joanna Jeremicz',
     packages=['k8splugin','k8sclient','configure'],
     zip_safe=False,
     install_requires=[
