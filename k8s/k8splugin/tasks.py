@@ -3,6 +3,7 @@
 # ================================================================================
 # Copyright (c) 2017-2020 AT&T Intellectual Property. All rights reserved.
 # Copyright (c) 2020 Pantheon.tech. All rights reserved.
+# Copyright (c) 2020 Nokia. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -246,6 +247,15 @@ def _create_and_start_container(container_name, image, **kwargs):
             {"log_directory": "/path/to/container/log/directory", "alternate_fb_path" : "/alternate/sidecar/log/path"}"
         - tls_info: an object with information for setting up the component to act as a TLS server, with the form:
             {"use_tls" : true_or_false, "cert_directory": "/path/to/directory_where_certs_should_be_placed" }
+        - external_cert: an object with information for setting up the init container for external certificates creation, with the form:
+            {"external_cert":
+                "external_cert_directory": "/path/to/directory_where_certs_should_be_placed",
+                "use_external_tls": true or false,
+                "ca_name": "ca-name-value",
+                "cert_type": "P12" or "JKS" or "PEM",
+                "external_certificate_parameters":
+                    "common_name": "common-name-value",
+                    "sans": "sans-value"}
         - replicas: number of replicas to be launched initially
         - readiness: object with information needed to create a readiness check
         - liveness: object with information needed to create a liveness check
@@ -273,6 +283,7 @@ def _create_and_start_container(container_name, image, **kwargs):
                      volumes=kwargs.get("volumes", []),
                      ports=kwargs.get("ports", []),
                      tls_info=kwargs.get("tls_info"),
+                     external_cert=kwargs.get("external_cert"),
                      env=env,
                      labels=kwargs.get("labels", {}),
                      log_info=kwargs.get("log_info"),
@@ -309,6 +320,10 @@ def _parse_cloudify_context(**kwargs):
     # Pick up TLS info if present
     if "tls_info" in ctx.node.properties:
         kwargs["tls_info"] = ctx.node.properties["tls_info"]
+
+    # Pick up external TLS info if present
+    if "external_cert" in ctx.node.properties:
+        kwargs["external_cert"] = ctx.node.properties["external_cert"]
 
     # Pick up replica count and always_pull_image flag
     if "replicas" in ctx.node.properties:
@@ -367,6 +382,7 @@ def _create_and_start_component(**kwargs):
         "envs": kwargs.get("envs", {}),
         "log_info": kwargs.get("log_info", {}),
         "tls_info": kwargs.get("tls_info", {}),
+        "external_cert": kwargs.get("external_cert", {}),
         "labels": kwargs.get("labels", {}),
         "resource_config": kwargs.get("resource_config",{}),
         "readiness": kwargs.get("readiness",{}),
