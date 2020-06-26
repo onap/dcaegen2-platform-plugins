@@ -19,6 +19,8 @@ creates the following Kubernetes entities:
   - If the blueprint specifies that the component uses TLS (HTTPS) via the `tls_info` property, the `Deployment` includes an init container,
     a volume that holds TLS certificate artifacts, and volume mounts on the init container and the component's container.  The init container
     populates the TLS certificate artifacts volume with certificates, keys, keystores, etc.
+  - If the blueprint specifies that the component uses external TLS via the `external_cert` property, the `Deployment` includes an additional init container
+    and the component's container. The init container populates the external TLS certificate artifacts in mounted volume. The container requires CMPv2 CertService to work properly. 
 - If the blueprint indicates that the component exposes any ports, the plugin will create a Kubernetes `Service` that allocates an address
   in the Kubernetes network address space that will route traffic to a container that's running the component.  This `Service` provides a
   fixed "virtual IP" for the component.
@@ -56,6 +58,15 @@ The configuration is provided as JSON object with the following properties:
     - `tls`: object containing configuration for setting up TLS init container
             - `cert_path`: mount point for the TLS certificate artifact volume in the init container
             - `image`: Docker image to use for the TLS init container
+    - `external_cert`: object containing configuration for setting up external TLS init container
+            - `image_tag`: CertService client image name and version
+            - `request_url`: URL to Cert Service API
+            - `timeout`: Request timeout
+            - `country`: Country name in ISO 3166-1 alpha-2 format, for which certificate will be created
+            - `organization`: Organization name, for which certificate will be created
+            - `state`: State name, for which certificate will be created
+            - `organizational_unit`: Organizational unit name, for which certificate will be created
+            - `location`: Location name, for which certificate will be created
 
 
 #### Kubernetes access information
