@@ -38,6 +38,18 @@ TLS_IMAGE = "nexus3.onap.org:10001/onap/org.onap.dcaegen2.deployments.tls-init-c
 TLS_COMP_CERT_PATH = "/opt/dcae/cacert"
 TLS_CA_CONFIGMAP = "dcae-cacert-configmap"
 
+EXT_TLS_CERT_PATH = "/opt/app/dcae-certificate/external_cert"
+EXT_TLS_IMAGE = "nexus3.onap.org:10001/onap/org.onap.aaf.certservice.aaf-certservice-client:latest"
+EXT_TLS_COMP_CERT_PATH = "/opt/app/dcae-certificate/external_cert"
+EXT_TLS_REQUEST_URL = "https://aaf-cert-service:8443/v1/certificate/"
+EXT_TLS_TIMEOUT = "30000"
+EXT_TLS_COUNTRY = "US"
+EXT_TLS_ORGANIZATION = "Linux-Foundation"
+EXT_TLS_STATE = "California"
+EXT_TLS_ORGANIZATIONAL_UNIT = "ONAP"
+EXT_TLS_LOCATION = "San-Francisco"
+EXT_TLS_OUTPUT_PATH = "/var/certs"
+
 CBS_BASE_URL = "https://config-binding-service:10443/service_component_all"
 
 def _set_defaults():
@@ -60,6 +72,18 @@ def _set_defaults():
             "cert_path" : TLS_CERT_PATH,                # mount point for certificate volume in TLS init container
             "image": TLS_IMAGE,                         # Docker image to use for TLS init container
             "component_cert_dir": TLS_COMP_CERT_PATH    # default mount point for certificate volume in component container
+        },
+        "external_tls": {
+            "image": EXT_TLS_IMAGE,                     # Docker image to use for external TLS init container
+            "component_cert_dir": EXT_TLS_COMP_CERT_PATH,    # default mount point for certificate volume in component container
+            "request_url" : EXT_TLS_REQUEST_URL,
+            "timeout" : EXT_TLS_TIMEOUT,
+            "country" : EXT_TLS_COUNTRY,
+            "organization" : EXT_TLS_ORGANIZATION,
+            "state" : EXT_TLS_STATE,
+            "organizational_unit" : EXT_TLS_ORGANIZATIONAL_UNIT,
+            "location" : EXT_TLS_LOCATION,
+            "output_path" : EXT_TLS_OUTPUT_PATH
         },
         "cbs": {
             "base_url" : CBS_BASE_URL                   # URL prefix for accessing config binding service

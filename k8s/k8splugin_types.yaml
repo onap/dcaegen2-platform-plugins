@@ -67,6 +67,37 @@ data_types:
         type: boolean
         required: false
 
+  dcae.types.ExternalTLSInfo:
+    description: >
+      Information for using external TLS.
+    properties:
+      external_cert_directory:
+        description: >
+          The path in the container where the component expects to find TLS-related data.
+        type: string
+        required: false
+      use_external_tls:
+        description: >
+          Flag indicating whether external TLS is to be used
+        type: boolean
+        required: false
+      ca_name:
+        description: >
+          Name of Certificate Authority configured on CertService side
+        type: string
+        required: false
+      external_certificate_parameters:
+        common_name:
+          description: >
+            Common name which should be present in certificate
+          type: string
+          required: false
+        sans:
+          description: >
+            List of Subject Alternative Names (SANs) which should be present in certificate
+          type: string
+          required: false
+
 node_types:
     dcae.nodes.ContainerizedComponent:
     # Base type for all containerized components
@@ -108,6 +139,12 @@ node_types:
               type: dcae.types.TLSInfo
               description: >
                 Information for setting up TLS (HTTPS).
+              required: false
+
+            external_tls_info:
+              type: dcae.types.ExternalTLSInfo
+              description: >
+                Information for setting up external TLS
               required: false
 
             replicas:

@@ -20,6 +20,7 @@
 import os
 import re
 import uuid
+import base64
 from kubernetes import config, client, stream
 
 # Default values for readiness probe
@@ -316,6 +317,35 @@ def _add_tls_init_container(init_containers, volumes, volume_mounts, tls_info, t
     # Create the init container
     init_containers.append(_create_container_object("init-tls", tls_config["image"], False, volume_mounts=init_volume_mounts, env=env))
 
+def _add_external_tls_init_container(init_containers, volumes, volume_mounts, external_tls_info, external_tls_config):
+    env = {}
+    env["REQUEST_URL"] = external_tls_config.get("request_url")
+    env["REQUEST_TIMEOUT"] = external_tls_config.get("timeout")
+    env["OUTPUT_PATH"] = external_tls_config.get("output_path")
+    env["OUTPUT_TYPE"] = "P12"
+    env["CA_NAME"] = external_tls_info.get("ca_name")
+    env["COMMON_NAME"] = external_tls_info.get("external_certificate_parameters").get("common_name")
+    env["ORGANIZATION"] = external_tls_config.get("organization")
+    env["ORGANIZATION_UNIT"] = external_tls_config.get("organizational_unit")
+    env["LOCATION"] = external_tls_config.get("location")
+    env["STATE"] = external_tls_config.get("state")
+    env["COUNTRY"] = external_tls_config.get("country")
+    env["SANS"] = external_tls_info.get("external_certificate_parameters").get("sans")
+    env["KEYSTORE_PATH"] = external_tls_info.get("/etc/onap/aaf/certservice/certs/certServiceClient-keystore.jks")
+    env["KEYSTORE_PASSWORD"] = "secret"
+    env["TRUSTSTORE_PATH"] = external_tls_info.get("/etc/onap/aaf/certservice/certs/truststore.jks")
+    env["TRUSTSTORE_PASSWORD"] = "secret"
+
+    # Create the volumes and volume mounts
+    volumes.append(client.V1Volume(name="certs", empty_dir=client.V1EmptyDirVolumeSource()))
+    sec = client.V1SecretVolumeSource(secret_name="aaf-cert-service-client-tls-secret")
+    volumes.append(client.V1Volume(name="tls-volume", secret=sec))
+    volume_mounts.append(client.V1VolumeMount(name="certs", mount_path=external_tls_config.get("output_path")))
+    init_volume_mounts = [client.V1VolumeMount(name="certs", mount_path=external_tls_config.get("output_path")), client.V1VolumeMount(name="tls-volume", mount_path=external_tls_info.get("external_cert_directory"))]
+
+    # Create the init container
+    init_containers.append(_create_container_object("cert-service-client", external_tls_config["image"], False, volume_mounts=init_volume_mounts, env=env))
+
 def _process_port_map(port_map):
     service_ports = []      # Ports exposed internally on the k8s network
     exposed_ports = []      # Ports to be mapped to ports on the k8s nodes via NodePort
@@ -496,6 +526,10 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
 
         # Set up TLS information
         _add_tls_init_container(init_containers, volumes, volume_mounts, kwargs.get("tls_info") or {}, k8sconfig.get("tls"))
+
+        # Set up external TLS information
+        if kwargs.get("external_tls_info") and kwargs.get("external_tls_info").get("use_external_tls"):
+            _add_external_tls_init_container(init_containers, volumes, volume_mounts, kwargs.get("external_tls_info"), k8sconfig.get("external_tls"))
 
         # Create the container for the component
         # Make it the first container in the pod
