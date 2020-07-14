@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ba53c7ab_4925e89c",
+        "filename": "k8s/configure/configure.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-07-14T22:07:08Z",
+      "side": 1,
+      "message": "Please remove \"Modifications\" and the \u003d\u003d\u003d\u003d line above\nthe \"Modifications\" is implicit",
+      "revId": "16255c532e5c4117db2bc907f54d3e1c7d9266bd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4fc16a3b_13efe22b",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-07-14T22:07:08Z",
+      "side": 1,
+      "message": "see previous remark",
+      "revId": "16255c532e5c4117db2bc907f54d3e1c7d9266bd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e49f5c8a_b0f9ded1",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-07-14T22:07:08Z",
+      "side": 1,
+      "message": "see previous remark",
+      "revId": "16255c532e5c4117db2bc907f54d3e1c7d9266bd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6eb5a081_db3a1de2",
+        "filename": "k8s/k8splugin_types.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-07-14T22:07:08Z",
+      "side": 1,
+      "message": "see previous remark",
+      "revId": "16255c532e5c4117db2bc907f54d3e1c7d9266bd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a07edf35_f679363f",
+        "filename": "k8s/k8splugin_types.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-07-14T22:07:08Z",
+      "side": 1,
+      "message": "should there be a default value?\ndefault: \"\"\n\nsame comment for other parameters",
+      "revId": "16255c532e5c4117db2bc907f54d3e1c7d9266bd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cf2bda2e_ced8a234",
+        "filename": "k8s/pom.xml",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-07-14T22:07:08Z",
+      "side": 1,
+      "message": "see previous remark",
+      "revId": "16255c532e5c4117db2bc907f54d3e1c7d9266bd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fc5c2dd2_c9f4478e",
+        "filename": "k8s/setup.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-07-14T22:07:08Z",
+      "side": 1,
+      "message": "see previous remark",
+      "revId": "16255c532e5c4117db2bc907f54d3e1c7d9266bd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0eddde66_fb9f6b96",
+        "filename": "k8s/tests/common.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-07-14T22:07:08Z",
+      "side": 1,
+      "message": "see previous remark",
+      "revId": "16255c532e5c4117db2bc907f54d3e1c7d9266bd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "116d3f7c_01bd3d11",
+        "filename": "k8s/tests/test_k8sclient_deploy.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-07-14T22:07:08Z",
+      "side": 1,
+      "message": "see previous remark",
+      "revId": "16255c532e5c4117db2bc907f54d3e1c7d9266bd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
