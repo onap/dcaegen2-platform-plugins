@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "4fbc4afa_b4102581",
+        "filename": "k8s/configure/configure.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2020-07-14T12:11:15Z",
+      "side": 1,
+      "message": "You are right, I will bump and test the new version when it is released.",
+      "parentUuid": "b064d0c2_7a74d11d",
+      "revId": "e938ea4222c98f5893afe2158a793014a098c8e0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d009b04b_f6563350",
         "filename": "k8s/tests/common.py",
         "patchSetId": 8
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "3a3cdd6d_438748f9",
+        "filename": "k8s/tests/common.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2020-07-14T12:11:15Z",
+      "side": 1,
+      "message": "It just serves for tests purposes, so I think this version number is irrelevant.",
+      "parentUuid": "d009b04b_f6563350",
+      "revId": "e938ea4222c98f5893afe2158a793014a098c8e0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "47eb8eff_a12a311a",
         "filename": "k8s/tests/common.py",
         "patchSetId": 8
@@ -47,6 +83,24 @@
       "writtenOn": "2020-07-14T09:21:21Z",
       "side": 1,
       "message": "in other file you have 1.1.0. Is it correct?",
+      "revId": "e938ea4222c98f5893afe2158a793014a098c8e0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1b666f0e_d68f7fd2",
+        "filename": "k8s/tests/common.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2020-07-14T12:11:15Z",
+      "side": 1,
+      "message": "As above.",
+      "parentUuid": "47eb8eff_a12a311a",
       "revId": "e938ea4222c98f5893afe2158a793014a098c8e0",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
