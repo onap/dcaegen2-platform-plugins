@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b064d0c2_7a74d11d",
+        "filename": "k8s/configure/configure.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-07-14T09:21:21Z",
+      "side": 1,
+      "message": "is it proper version of container?\nsomeone from your team prepare MR with release file: 1.2.0",
+      "revId": "e938ea4222c98f5893afe2158a793014a098c8e0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d009b04b_f6563350",
+        "filename": "k8s/tests/common.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-07-14T09:21:21Z",
+      "side": 1,
+      "message": "in other file you have 1.1.0. Is it correct?",
+      "revId": "e938ea4222c98f5893afe2158a793014a098c8e0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "47eb8eff_a12a311a",
+        "filename": "k8s/tests/common.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2020-07-14T09:21:21Z",
+      "side": 1,
+      "message": "in other file you have 1.1.0. Is it correct?",
+      "revId": "e938ea4222c98f5893afe2158a793014a098c8e0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
