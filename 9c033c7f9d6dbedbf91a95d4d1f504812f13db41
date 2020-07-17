@@ -160,6 +160,29 @@
       "revId": "9c033c7f9d6dbedbf91a95d4d1f504812f13db41",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1878052c_4a7a1d07",
+        "filename": "k8s/tests/test_k8sclient_deploy.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-07-17T14:43:08Z",
+      "side": 1,
+      "message": "verify_external_cert(dep) could be added here and removed from do_deploy_ext",
+      "range": {
+        "startLine": 57,
+        "startChar": 3,
+        "endLine": 57,
+        "endChar": 55
+      },
+      "revId": "9c033c7f9d6dbedbf91a95d4d1f504812f13db41",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
