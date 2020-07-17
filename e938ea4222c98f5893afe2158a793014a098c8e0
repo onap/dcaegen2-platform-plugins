@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "34edce59_e13aaa9e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-07-17T14:28:32Z",
+      "side": 1,
+      "message": "Add message body here with some details.",
+      "revId": "e938ea4222c98f5893afe2158a793014a098c8e0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b064d0c2_7a74d11d",
         "filename": "k8s/configure/configure.py",
         "patchSetId": 8
