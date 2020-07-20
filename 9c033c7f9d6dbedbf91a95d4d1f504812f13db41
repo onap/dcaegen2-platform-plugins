@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "31add46c_2913414a",
+        "filename": "k8s/configure/configure.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2020-07-20T09:26:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e307e62_9c9ac53c",
+      "range": {
+        "startLine": 76,
+        "startChar": 8,
+        "endLine": 82,
+        "endChar": 41
+      },
+      "revId": "9c033c7f9d6dbedbf91a95d4d1f504812f13db41",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "754f4bbe_7824ea73",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 15
@@ -45,6 +69,30 @@
       "revId": "9c033c7f9d6dbedbf91a95d4d1f504812f13db41",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bbec04a4_f7ff24f8",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2020-07-20T09:26:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "754f4bbe_7824ea73",
+      "range": {
+        "startLine": 335,
+        "startChar": 59,
+        "endLine": 335,
+        "endChar": 64
+      },
+      "revId": "9c033c7f9d6dbedbf91a95d4d1f504812f13db41",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "9c8462c3_0184e3f4",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2020-07-20T09:26:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf5b278b_526f2c58",
+      "range": {
+        "startLine": 473,
+        "startChar": 0,
+        "endLine": 476,
+        "endChar": 64
+      },
+      "revId": "9c033c7f9d6dbedbf91a95d4d1f504812f13db41",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a48e8b38_f0986827",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 15
@@ -91,6 +163,30 @@
       "revId": "9c033c7f9d6dbedbf91a95d4d1f504812f13db41",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0fb9e222_b1f66fc6",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2020-07-20T09:26:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a48e8b38_f0986827",
+      "range": {
+        "startLine": 540,
+        "startChar": 43,
+        "endLine": 540,
+        "endChar": 70
+      },
+      "revId": "9c033c7f9d6dbedbf91a95d4d1f504812f13db41",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "90e0e2de_89161fe2",
+        "filename": "k8s/k8splugin_types.yaml",
+        "patchSetId": 15
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2020-07-20T09:26:47Z",
+      "side": 1,
+      "message": "Changed to \"external\"",
+      "parentUuid": "63d909d5_0c30e7b4",
+      "range": {
+        "startLine": 97,
+        "startChar": 44,
+        "endLine": 97,
+        "endChar": 57
+      },
+      "revId": "9c033c7f9d6dbedbf91a95d4d1f504812f13db41",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fa6d75dd_ee591a7a",
         "filename": "k8s/setup.py",
         "patchSetId": 15
@@ -137,6 +257,30 @@
       "revId": "9c033c7f9d6dbedbf91a95d4d1f504812f13db41",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4f93f60c_d914445f",
+        "filename": "k8s/setup.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2020-07-20T09:26:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa6d75dd_ee591a7a",
+      "range": {
+        "startLine": 27,
+        "startChar": 12,
+        "endLine": 27,
+        "endChar": 55
+      },
+      "revId": "9c033c7f9d6dbedbf91a95d4d1f504812f13db41",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -163,6 +307,30 @@
     },
     {
       "key": {
+        "uuid": "6984181c_6ff78a5e",
+        "filename": "k8s/tests/test_k8sclient_deploy.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2020-07-20T09:26:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41d237ef_3a4f1366",
+      "range": {
+        "startLine": 55,
+        "startChar": 48,
+        "endLine": 55,
+        "endChar": 266
+      },
+      "revId": "9c033c7f9d6dbedbf91a95d4d1f504812f13db41",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1878052c_4a7a1d07",
         "filename": "k8s/tests/test_k8sclient_deploy.py",
         "patchSetId": 15
@@ -183,6 +351,30 @@
       "revId": "9c033c7f9d6dbedbf91a95d4d1f504812f13db41",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "763c75bf_a7358818",
+        "filename": "k8s/tests/test_k8sclient_deploy.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2020-07-20T09:26:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1878052c_4a7a1d07",
+      "range": {
+        "startLine": 57,
+        "startChar": 3,
+        "endLine": 57,
+        "endChar": 55
+      },
+      "revId": "9c033c7f9d6dbedbf91a95d4d1f504812f13db41",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
