@@ -1,6 +1,6 @@
 setuptools<45.0.0
 python-consul>=0.6.0
 onap-dcae-dcaepolicy-lib>=2.4.1
-kubernetes==10.0.0
+kubernetes==11.0.0
 cloudify-common>=5.0.0; python_version<"3"
 cloudify-common @ git+https://github.com/cloudify-cosmo/cloudify-common@cy-1374-python3#egg=cloudify-common==5.0.0; python_version>="3"
