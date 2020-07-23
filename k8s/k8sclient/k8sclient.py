@@ -198,13 +198,15 @@ def _create_deployment_object(component_name,
     )
 
     # Define deployment spec
-    spec = client.ExtensionsV1beta1DeploymentSpec(
+    spec = client.V1DeploymentSpec(
         replicas=replicas,
+        selector=client.V1LabelSelector(match_labels=labels),
         template=template
     )
 
     # Create deployment object
-    deployment = client.ExtensionsV1beta1Deployment(
+    deployment = client.V1Deployment(
+        api_version="apps/v1",
         kind="Deployment",
         metadata=client.V1ObjectMeta(name=deployment_name),
         spec=spec
@@ -349,13 +351,13 @@ def _patch_deployment(location, namespace, deployment, modify):
     _configure_api(location)
 
     # Get deployment spec
-    spec = client.ExtensionsV1beta1Api().read_namespaced_deployment(deployment, namespace)
+    spec = client.AppsV1Api().read_namespaced_deployment(deployment, namespace)
 
     # Apply changes to spec
     spec = modify(spec)
 
     # Patch the deploy with updated spec
-    client.ExtensionsV1beta1Api().patch_namespaced_deployment(deployment, namespace, spec)
+    client.AppsV1Api().patch_namespaced_deployment(deployment, namespace, spec)
 
 def _execute_command_in_pod(location, namespace, pod_name, command):
     '''
@@ -479,7 +481,7 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
         # Get API handles
         _configure_api(kwargs.get("k8s_location"))
         core = client.CoreV1Api()
-        ext = client.ExtensionsV1beta1Api()
+        k8s_apps_v1_api_client = client.AppsV1Api()
 
         # Parse the port mapping
         container_ports, port_map = parse_ports(kwargs.get("ports", []))
@@ -510,7 +512,7 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
         dep = _create_deployment_object(component_name, containers, init_containers, replicas, volumes, labels, pull_secrets=k8sconfig["image_pull_secrets"])
 
         # Have k8s deploy it
-        ext.create_namespaced_deployment(namespace, dep)
+        k8s_apps_v1_api_client.create_namespaced_deployment(namespace, dep)
         deployment_ok = True
         deployment_description["deployment"] = _create_deployment_name(component_name)
 
@@ -537,7 +539,7 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
             core.delete_namespaced_service(_create_service_name(component_name), namespace)
         # If the deployment was created but not the service, delete the deployment
         if deployment_ok:
-            client.ExtensionsV1beta1Api().delete_namespaced_deployment(_create_deployment_name(component_name), namespace, body=client.V1DeleteOptions())
+            client.AppsV1Api().delete_namespaced_deployment(_create_deployment_name(component_name), namespace, body=client.V1DeleteOptions())
         raise e
 
     return dep, deployment_description
@@ -553,11 +555,11 @@ def undeploy(deployment_description):
 
     # Have k8s delete the underlying pods and replicaset when deleting the deployment.
     options = client.V1DeleteOptions(propagation_policy="Foreground")
-    client.ExtensionsV1beta1Api().delete_namespaced_deployment(deployment_description["deployment"], namespace, body=options)
+    client.AppsV1Api().delete_namespaced_deployment(deployment_description["deployment"], namespace, body=options)
 
 def is_available(location, namespace, component_name):
     _configure_api(location)
-    dep_status = client.AppsV1beta1Api().read_namespaced_deployment_status(_create_deployment_name(component_name), namespace)
+    dep_status = client.AppsV1Api().read_namespaced_deployment_status(_create_deployment_name(component_name), namespace)
     # Check if the number of available replicas is equal to the number requested and that the replicas match the current spec
     # This check can be used to verify completion of an initial deployment, a scale operation, or an update operation
     return dep_status.status.available_replicas == dep_status.spec.replicas and dep_status.status.updated_replicas == dep_status.spec.replicas
@@ -607,7 +609,7 @@ def rollback(deployment_description, rollback_to=0):
         client.AppsV1beta1DeploymentRollback(name=deployment, rollback_to=client.AppsV1beta1RollbackConfig(revision=rollback_to)))
 
     # Read back the spec for the rolled-back deployment
-    spec = client.ExtensionsV1beta1Api().read_namespaced_deployment(deployment, namespace)
+    spec = client.AppsV1Api().read_namespaced_deployment(deployment, namespace)
     return spec.spec.template.spec.containers[0].image, spec.spec.replicas
 
 def execute_command_in_deployment(deployment_description, command):

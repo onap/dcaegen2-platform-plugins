@@ -39,6 +39,7 @@ def mockk8sapi(monkeypatch):
     # to get an API object
     core = client.CoreV1Api()
     ext = client.ExtensionsV1beta1Api()
+    appsv1 = client.AppsV1Api()
 
     def pseudo_deploy(namespace, dep):
         return dep
@@ -60,9 +61,17 @@ def mockk8sapi(monkeypatch):
         monkeypatch.setattr(ext,"create_namespaced_deployment", pseudo_deploy)
         return ext
 
+    # patched_appsv1 returns an AppsV1Api object with the
+    # create_namespaced_deployment method stubbed out so that there
+    # is no attempt to call the k8s API server
+    def patched_appsv1():
+        monkeypatch.setattr(ext,"create_namespaced_deployment", pseudo_deploy)
+        return ext
+
     def pseudo_configure(loc):
         pass
 
     monkeypatch.setattr(k8sclient.k8sclient,"_configure_api", pseudo_configure)
     monkeypatch.setattr(client, "CoreV1Api", patched_core)
     monkeypatch.setattr(client,"ExtensionsV1beta1Api", patched_ext)
+    monkeypatch.setattr(client,"AppsV1Api", patched_appsv1)
