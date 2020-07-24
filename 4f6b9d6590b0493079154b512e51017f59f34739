@@ -282,6 +282,24 @@
     },
     {
       "key": {
+        "uuid": "0bcc4e65_821422a4",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-07-24T11:02:26Z",
+      "side": 1,
+      "message": "As far I understand we need it here to serve corrects configuration to Consul. In this enx rather path to password should be stored. Am I right?",
+      "parentUuid": "56145edd_08f5b97f",
+      "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fa3ef4c1_0ab0b50c",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 16
