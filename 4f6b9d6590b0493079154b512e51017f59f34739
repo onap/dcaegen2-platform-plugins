@@ -300,6 +300,24 @@
     },
     {
       "key": {
+        "uuid": "34984e61_9556d65e",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2020-07-24T11:10:04Z",
+      "side": 1,
+      "message": "Description available under: https://docs.onap.org/projects/onap-aaf-certservice/en/latest/sections/configuration.html#using-external-certificates-for-certservice-and-certservice-client \n\nThere are global values (end of chapter) which should hold such passwords.",
+      "parentUuid": "0bcc4e65_821422a4",
+      "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fa3ef4c1_0ab0b50c",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 16
