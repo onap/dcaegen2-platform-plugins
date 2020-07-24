@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "4dfa7d02_137238a4",
+        "filename": "k8s/ChangeLog.md",
+        "patchSetId": 16
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2020-07-24T09:28:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c58e78e_6a84be29",
+      "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "47a1646e_5f7561ad",
         "filename": "k8s/README.md",
         "patchSetId": 16
@@ -33,6 +51,24 @@
       "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "43a9452d_fa076002",
+        "filename": "k8s/README.md",
+        "patchSetId": 16
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2020-07-24T09:28:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47a1646e_5f7561ad",
+      "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "5eec8141_2b53fd81",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2020-07-24T09:28:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3bfb87e7_6dd23e84",
+      "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "01789737_3dba3949",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 16
@@ -67,6 +121,24 @@
       "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e1b7ec63_67f364b0",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2020-07-24T09:28:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "01789737_3dba3949",
+      "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "447d47e5_5364265f",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2020-07-24T09:28:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f65dde6b_9c58ec2f",
+      "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7db31056_cfed49d3",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 16
@@ -101,6 +191,24 @@
       "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8df4da62_0d95df39",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2020-07-24T09:28:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7db31056_cfed49d3",
+      "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "a3d03a3a_b1d69fa5",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2020-07-24T09:28:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a67e0e7_02c75c32",
+      "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7aa109d2_d3242f51",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 16
@@ -132,6 +258,24 @@
       "writtenOn": "2020-07-24T08:21:25Z",
       "side": 1,
       "message": "We have ability to inject customer certs between CertService client and CertService server (see RTD documentation). What will happen if someone will provide own certs and use different password?",
+      "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56145edd_08f5b97f",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2020-07-24T09:28:43Z",
+      "side": 1,
+      "message": "Does it mean a global helm value should be used here? Then shouldn\u0027t it be added to plugin configuration?https://wiki.onap.org/display/DW/DCAE+CertService+integration#DCAECertServiceintegration-ConfigurationspecificonlyforK8splugin",
+      "parentUuid": "7aa109d2_d3242f51",
       "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
