@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7c58e78e_6a84be29",
+        "filename": "k8s/ChangeLog.md",
+        "patchSetId": 16
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2020-07-24T08:21:25Z",
+      "side": 1,
+      "message": "Please use valid name of the Jira: \"Add support to request certificates from CMPv2 server in DCAE cloudify blueprints\". Current one can be misleading.",
+      "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "47a1646e_5f7561ad",
+        "filename": "k8s/README.md",
+        "patchSetId": 16
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2020-07-24T08:21:25Z",
+      "side": 1,
+      "message": "CMPv2 CertService instead of aaf-cert-service",
+      "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3bfb87e7_6dd23e84",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2020-07-24T08:21:25Z",
+      "side": 1,
+      "message": "Please declare MOUNT_PATH first and then use it in KEYSTORE and TRUSTSTORE PATHS",
+      "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "01789737_3dba3949",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2020-07-24T08:21:25Z",
+      "side": 1,
+      "message": "We don\u0027t need to default to P12. Such logic is in CertService client.",
+      "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f65dde6b_9c58ec2f",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2020-07-24T08:21:25Z",
+      "side": 1,
+      "message": "Does it mean that we allow empty ca_name and rely that init container will fail?",
+      "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7db31056_cfed49d3",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2020-07-24T08:21:25Z",
+      "side": 1,
+      "message": "Does it mean that we allow empty common_name and rely that init container will fail?",
+      "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a67e0e7_02c75c32",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2020-07-24T08:21:25Z",
+      "side": 1,
+      "message": "Does it mean that we allow empty sans and rely that init container will fail?",
+      "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7aa109d2_d3242f51",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2020-07-24T08:21:25Z",
+      "side": 1,
+      "message": "We have ability to inject customer certs between CertService client and CertService server (see RTD documentation). What will happen if someone will provide own certs and use different password?",
+      "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa3ef4c1_0ab0b50c",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2020-07-24T08:21:25Z",
+      "side": 1,
+      "message": "The same as above",
+      "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
