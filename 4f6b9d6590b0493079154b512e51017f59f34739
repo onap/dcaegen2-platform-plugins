@@ -318,6 +318,24 @@
     },
     {
       "key": {
+        "uuid": "d4f9c88a_fb82c117",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2020-07-24T14:13:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "34984e61_9556d65e",
+      "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fa3ef4c1_0ab0b50c",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 16
@@ -332,6 +350,24 @@
       "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b2ea3c0_93a7c3b4",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2020-07-24T14:13:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa3ef4c1_0ab0b50c",
+      "revId": "4f6b9d6590b0493079154b512e51017f59f34739",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
