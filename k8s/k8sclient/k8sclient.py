@@ -3,6 +3,7 @@
 # ================================================================================
 # Copyright (c) 2019-2020 AT&T Intellectual Property. All rights reserved.
 # Copyright (c) 2020 Pantheon.tech. All rights reserved.
+# Copyright (c) 2020 Nokia. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,6 +41,12 @@ FACTORS = {None: 1, "s": 1, "m": 60, "h": 3600}
 # group 3: protocol
 # group 4: host port
 PORTS = re.compile("^([0-9]+)(/(udp|UDP|tcp|TCP))?:([0-9]+)$")
+
+# Constants for external_cert
+MOUNT_PATH = "/etc/onap/aaf/certservice/certs/"
+KEYSTORE_PATH = MOUNT_PATH + "certServiceClient-keystore.jks"
+TRUSTSTORE_PATH = MOUNT_PATH + "truststore.jks"
+CERT_SECRET_NAME = "aaf-cert-service-client-tls-secret"
 
 def _create_deployment_name(component_name):
     return "dep-{0}".format(component_name)[:63]
@@ -316,6 +323,38 @@ def _add_tls_init_container(init_containers, volumes, volume_mounts, tls_info, t
     # Create the init container
     init_containers.append(_create_container_object("init-tls", tls_config["image"], False, volume_mounts=init_volume_mounts, env=env))
 
+def _add_external_tls_init_container(init_containers, volumes, external_cert, external_tls_config):
+    env = {}
+    output_path = external_cert.get("external_cert_directory")
+    if not output_path.endswith('/'):
+       output_path += '/'
+
+    env["REQUEST_URL"] = external_tls_config.get("request_url")
+    env["REQUEST_TIMEOUT"] = external_tls_config.get("timeout")
+    env["OUTPUT_PATH"] = output_path + "external"
+    env["OUTPUT_TYPE"] = external_cert.get("cert_type")
+    env["CA_NAME"] = external_cert.get("ca_name")
+    env["COMMON_NAME"] = external_cert.get("external_certificate_parameters").get("common_name")
+    env["ORGANIZATION"] = external_tls_config.get("organization")
+    env["ORGANIZATION_UNIT"] = external_tls_config.get("organizational_unit")
+    env["LOCATION"] = external_tls_config.get("location")
+    env["STATE"] = external_tls_config.get("state")
+    env["COUNTRY"] = external_tls_config.get("country")
+    env["SANS"] = external_cert.get("external_certificate_parameters").get("sans")
+    env["KEYSTORE_PATH"] = KEYSTORE_PATH
+    env["KEYSTORE_PASSWORD"] = external_tls_config.get("keystore_password")
+    env["TRUSTSTORE_PATH"] = TRUSTSTORE_PATH
+    env["TRUSTSTORE_PASSWORD"] = external_tls_config.get("truststore_password")
+
+    # Create the volumes and volume mounts
+    sec = client.V1SecretVolumeSource(secret_name=CERT_SECRET_NAME)
+    volumes.append(client.V1Volume(name="tls-volume", secret=sec))
+    init_volume_mounts = [client.V1VolumeMount(name="tls-info", mount_path=external_cert.get("external_cert_directory")),
+                          client.V1VolumeMount(name="tls-volume", mount_path=MOUNT_PATH)]
+
+    # Create the init container
+    init_containers.append(_create_container_object("cert-service-client", external_tls_config["image_tag"], False, volume_mounts=init_volume_mounts, env=env))
+
 def _process_port_map(port_map):
     service_ports = []      # Ports exposed internally on the k8s network
     exposed_ports = []      # Ports to be mapped to ports on the k8s nodes via NodePort
@@ -444,6 +483,15 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
             {"log_directory": "/path/to/container/log/directory", "alternate_fb_path" : "/alternate/sidecar/log/path"}
         - tls_info: an object with info for setting up TLS (HTTPS), with the form:
             {"use_tls": true, "cert_directory": "/path/to/container/cert/directory" }
+        - external_cert: an object with information for setting up the init container for external certificates creation, with the form:
+            {"external_cert":
+                "external_cert_directory": "/path/to/directory_where_certs_should_be_placed",
+                "use_external_tls": true or false,
+                "ca_name": "ca-name-value",
+                "cert_type": "P12" or "JKS" or "PEM",
+                "external_certificate_parameters":
+                    "common_name": "common-name-value",
+                    "sans": "sans-value"}
         - labels: dict with label-name/label-value pairs, e.g. {"cfydeployment" : "lsdfkladflksdfsjkl", "cfynode":"mycomponent"}
             These label will be set on all the pods deployed as a result of this deploy() invocation.
         - resources: dict with optional "limits" and "requests" resource requirements, each a dict containing:
@@ -496,6 +544,11 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
 
         # Set up TLS information
         _add_tls_init_container(init_containers, volumes, volume_mounts, kwargs.get("tls_info") or {}, k8sconfig.get("tls"))
+
+        # Set up external TLS information
+        external_cert = kwargs.get("external_cert")
+        if external_cert and external_cert.get("use_external_tls"):
+            _add_external_tls_init_container(init_containers, volumes, external_cert, k8sconfig.get("external_cert"))
 
         # Create the container for the component
         # Make it the first container in the pod
