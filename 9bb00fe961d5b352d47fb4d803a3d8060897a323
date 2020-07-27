@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "830f622d_655d6e55",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-07-27T17:16:51Z",
+      "side": 1,
+      "message": "add nokia to license header",
+      "revId": "9bb00fe961d5b352d47fb4d803a3d8060897a323",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ebc8365e_ae3724e7",
+        "filename": "k8s/tests/conftest.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-07-27T17:16:51Z",
+      "side": 1,
+      "message": "add nokia to license header",
+      "revId": "9bb00fe961d5b352d47fb4d803a3d8060897a323",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
