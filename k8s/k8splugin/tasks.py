@@ -23,6 +23,7 @@
 # Needed by Cloudify Manager to load google.auth for the Kubernetes python client
 from . import cloudify_importer
 
+import sys
 import time, copy
 import json
 from cloudify import ctx
@@ -58,6 +59,14 @@ APPLICATION_CONFIG = "application_config"
 K8S_DEPLOYMENT = "k8s_deployment"
 RESOURCE_KW = "resource_config"
 LOCATION_ID = "location_id"
+
+# External cert parameters
+EXT_CERT_DIR = "external_cert_directory"
+EXT_CA_NAME = "ca_name"
+EXT_CERT_PARAMS = "external_certificate_parameters"
+EXT_COMMON_NAME = "common_name"
+EXT_CERT_ERROR_MESSAGE = "Provided blueprint is incorrect. It specifies external_cert without all the required parameters. " \
+                         "Required parameters are: {0}, {1}, {2}.{3}".format(EXT_CERT_DIR, EXT_CA_NAME, EXT_CERT_PARAMS, EXT_COMMON_NAME)
 
 # Utility methods
 
@@ -227,6 +236,14 @@ def _verify_k8s_deployment(location, service_component_name, max_wait):
 
     return True
 
+def _fail_if_external_cert_incorrect(external_cert):
+    if not (external_cert.get(EXT_CERT_DIR)
+            and external_cert.get(EXT_CA_NAME)
+            and external_cert.get(EXT_CERT_PARAMS)
+            and external_cert.get(EXT_CERT_PARAMS).get(EXT_COMMON_NAME)):
+        ctx.logger.error(EXT_CERT_ERROR_MESSAGE)
+        sys.exit(EXT_CERT_ERROR_MESSAGE)
+
 def _create_and_start_container(container_name, image, **kwargs):
     '''
     This will create a k8s Deployment and, if needed, a k8s Service or two.
@@ -262,6 +279,9 @@ def _create_and_start_container(container_name, image, **kwargs):
         - k8s_location: name of the Kubernetes location (cluster) where the component is to be deployed
     '''
     tls_info = kwargs.get("tls_info") or {}
+    external_cert = kwargs.get("external_cert")
+    if external_cert:
+        _fail_if_external_cert_incorrect(external_cert)
     cert_dir = tls_info.get("cert_directory") or COMPONENT_CERT_DIR
     env = { "CONSUL_HOST": CONSUL_INTERNAL_NAME,
             "CONFIG_BINDING_SERVICE": "config-binding-service",
