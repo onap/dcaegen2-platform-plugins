@@ -23,7 +23,7 @@ plugins:
   k8s:
     executor: 'central_deployment_agent'
     package_name: k8splugin
-    package_version: 3.2.0
+    package_version: 3.3.0
 
 data_types:
 
@@ -100,7 +100,7 @@ data_types:
           Flag indicating whether external TLS is to be used
         type: boolean
         required: false
-        default: true
+        default: false
       ca_name:
         description: >
           Name of Certificate Authority configured on CertService side

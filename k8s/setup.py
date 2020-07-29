@@ -23,7 +23,7 @@ from setuptools import setup
 setup(
     name='k8splugin',
     description='Cloudify plugin for containerized components deployed using Kubernetes',
-    version="3.2.0",
+    version="3.3.0",
     author='J. F. Lucas, Michael Hwang, Tommy Carpenter, Joanna Jeremicz, Sylwia Jakubek',
     packages=['k8splugin','k8sclient','configure'],
     zip_safe=False,
