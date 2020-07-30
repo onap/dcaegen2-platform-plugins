@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dd000a02_2e030a3e",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-07-30T06:23:01Z",
+      "side": 1,
+      "message": "Consider raising NonRecoverableError.",
+      "range": {
+        "startLine": 244,
+        "startChar": 0,
+        "endLine": 245,
+        "endChar": 40
+      },
+      "revId": "f814527431ab896e0336215b1444675dc1e2101a",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
