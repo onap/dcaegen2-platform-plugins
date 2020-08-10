@@ -230,6 +230,7 @@ run_tox_test()
     pip install --upgrade pip
     pip install --upgrade setuptools
     pip install --upgrade argparse
+    pip install 'virtualenv==20.0.28'
     pip install tox
     pip freeze
     pwd
