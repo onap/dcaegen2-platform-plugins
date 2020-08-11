@@ -1,0 +1,8 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Remigiusz Janeczek <remigiusz.janeczek@nokia.com>
+Code-Review+2: Vijay Venkatesh Kumar <vv770d@att.com>
+Submitted-by: Vijay Venkatesh Kumar <vv770d@att.com>
+Submitted-at: Tue, 11 Aug 2020 14:23:12 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/dcaegen2/platform/plugins/+/110686
+Project: dcaegen2/platform/plugins
+Branch: refs/heads/master
