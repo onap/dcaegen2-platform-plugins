@@ -1,0 +1,32 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+description: >
+  Simple blueprint to launch nginx as a "service component"
+  Set nested application configuration
+
+imports:
+  - https://www.getcloudify.org/spec/cloudify/4.5.5/types.yaml
+  - plugin:k8splugin?version=3.0.0
+
+node_templates:
+  web_server:
+    type: dcae.nodes.ContainerizedServiceComponent
+    properties:
+        service_component_type: 'nginx-web'
+        image: nginx
+        application_config:
+          prop1: "val1"
+          prop2: 1434
+          prop3: ["a", "b", "c"]
+          prop4:
+            prop4a:
+              prop4a1: "val4a1"
+              prop4a2: 4343
+              prop4a3: ["x", "y", "z"]
+            prop4b: "val4b"
+        docker_config:
+            healthcheck:
+              type: "http"
+              endpoint: "/"
+            ports:
+              - '80:0'

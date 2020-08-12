@@ -1,0 +1,5 @@
+operation: update_image
+operation_kwargs:
+  image: nginx:1.15
+node_ids:
+  - "web_server"

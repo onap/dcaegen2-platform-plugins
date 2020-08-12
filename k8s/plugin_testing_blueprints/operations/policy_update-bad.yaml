@@ -1,0 +1,11 @@
+operation: dcae.interfaces.policy.policy_update
+operation_kwargs:
+  updated_policies:
+    - policy_id:  org.onap.policy008
+      policy_body:
+        policyVersion: "1463"
+        policyName: "org.onap.policy007.1463.xml"
+        config: {"type": "NoParking", "start": "0100", "end": "0630"}
+node_ids:
+  - "web_server"
+allow_kwargs_override: true

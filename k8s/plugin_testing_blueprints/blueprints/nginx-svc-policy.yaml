@@ -1,0 +1,39 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+description: >
+  Simple blueprint to launch nginx as a "service component"
+  Component gets config from policy, but we don't require a_policy
+  to be configured in the policy system.  Expect to see policy
+  plugin pulling empty policy from DCAE policy handler.
+
+
+imports:
+  - https://www.getcloudify.org/spec/cloudify/4.5.5/types.yaml
+  - plugin:k8splugin?version=3.0.0
+  - plugin:dcaepolicyplugin?version=2.4.0
+
+node_templates:
+
+  a_policy:
+    type: dcae.nodes.policy
+    properties:
+      policy_id: org.onap.policy007
+      policy_required: false
+
+  web_server:
+    type: dcae.nodes.ContainerizedServiceComponent
+    properties:
+      service_component_type: 'nginx-web'
+      image: nginx
+      docker_config:
+        healthcheck:
+          type: "http"
+          endpoint: "/"
+        policy:
+          trigger_type: "docker"
+          script_path: "echo"
+        ports:
+          - '80:0'
+    relationships:
+      - type: cloudify.relationships.depends_on
+        target: a_policy

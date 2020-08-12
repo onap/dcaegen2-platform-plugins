@@ -1,0 +1,5 @@
+operation: scale
+operation_kwargs:
+  replicas: 3
+node_ids:
+  - "web_server"

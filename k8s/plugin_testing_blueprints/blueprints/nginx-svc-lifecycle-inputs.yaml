@@ -1,0 +1,29 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+description: >
+  Simple blueprint to launch nginx as a "service component"
+  Set ports and envs via input to lifecycle operation
+
+imports:
+  - https://www.getcloudify.org/spec/cloudify/4.5.5/types.yaml
+  - plugin:k8splugin?version=3.0.0
+
+node_templates:
+  web_server:
+    type: dcae.nodes.ContainerizedServiceComponent
+    properties:
+      service_component_type: 'nginx-web'
+      image: nginx
+      docker_config:
+        healthcheck:
+          type: "http"
+          endpoint: "/"
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        start:
+          inputs:
+            ports:
+              - '80:0'
+            envs:
+              MY_ENV1: value1
+              MY_ENV0: value0

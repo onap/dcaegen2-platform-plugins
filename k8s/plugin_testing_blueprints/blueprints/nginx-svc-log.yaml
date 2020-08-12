@@ -1,0 +1,24 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+description: >
+  Simple blueprint to launch nginx as a "service component"
+  Specifies a log directory--expect logging sidecar to be deployed
+
+imports:
+  - https://www.getcloudify.org/spec/cloudify/4.5.5/types.yaml
+  - plugin:k8splugin?version=3.0.0
+
+node_templates:
+  web_server:
+    type: dcae.nodes.ContainerizedServiceComponent
+    properties:
+        service_component_type: 'nginx-web'
+        image: nginx
+        log_info:
+          log_directory: "/opt/logs"
+        docker_config:
+            healthcheck:
+              type: "http"
+              endpoint: "/"
+            ports:
+              - '80:0'

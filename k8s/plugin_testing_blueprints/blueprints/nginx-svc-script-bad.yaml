@@ -1,0 +1,30 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+description: >
+  Simple blueprint to launch nginx as a "service component"
+  Fails because healthcheck script always returns failure
+  max_wait set to 120 so timeout occurs quickly
+  expect k8s service/deployment to be created, pod started
+  but plugin will clean up k8s after timeout
+
+imports:
+  - https://www.getcloudify.org/spec/cloudify/4.5.5/types.yaml
+  - plugin:k8splugin?version=3.0.0
+
+node_templates:
+  web_server:
+    type: dcae.nodes.ContainerizedServiceComponent
+    properties:
+      service_component_type: 'nginx-web'
+      image: nginx
+      docker_config:
+        healthcheck:
+          type: "script"
+          script: "/bin/false"
+        ports:
+          - '80:0'
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        start:
+          inputs:
+            max_wait: 120

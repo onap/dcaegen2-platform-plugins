@@ -1,0 +1,41 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+description: >
+  Simple blueprint to launch nginx as a "service component"
+  Creates DR feed and sets up component as subscriber
+
+imports:
+  - https://www.getcloudify.org/spec/cloudify/4.5.5/types.yaml
+  - plugin:dmaap?version=1.5.0
+  - plugin:k8splugin?version=3.0.0
+node_templates:
+  feed00:
+    type: dcaegen2.nodes.Feed
+    properties:
+      feed_name: feed-000
+      feed_version: 2.0.0
+
+  web_server:
+    type: dcae.nodes.ContainerizedServiceComponentUsingDmaap
+    properties:
+        service_component_type: 'nginx-web'
+        image: nginx
+        docker_config:
+          ports:
+            - "80:0"
+            - "443:0"
+          healthcheck:
+            type: "http"
+            endpoint: "/"
+        streams_subscribes:
+          - name: feed00
+            type: data_router
+            location: san-francisco
+            username: fred
+            password: fredzW0rd
+            route: app
+            scheme: http
+
+    relationships:
+      - type: dcaegen2.relationships.subscribe_to_files
+        target: feed00

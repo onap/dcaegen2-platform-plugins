@@ -1,0 +1,27 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+description: >
+  Simple blueprint to launch nginx as a "service component"
+  Put full certificate materials in non-default location
+  (Note that we don't configure nginx to actually use the
+  certificate.  This test just installs the certificate.)
+
+imports:
+  - https://www.getcloudify.org/spec/cloudify/4.5.5/types.yaml
+  - plugin:k8splugin?version=3.0.0
+
+node_templates:
+  web_server:
+    type: dcae.nodes.ContainerizedServiceComponent
+    properties:
+      service_component_type: 'nginx-web'
+      image: nginx
+      tls_info:
+        use_tls: true
+        cert_directory: "/opt/altcert"
+      docker_config:
+        healthcheck:
+          type: "http"
+          endpoint: "/"
+        ports:
+          - '80:0'

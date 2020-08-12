@@ -1,0 +1,26 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+description: >
+  Simple blueprint to launch nginx as a "service component"
+  Create UDP ports, test /tcp, /udp syntax
+
+imports:
+  - https://www.getcloudify.org/spec/cloudify/4.5.5/types.yaml
+  - plugin:k8splugin?version=3.0.0
+
+node_templates:
+  web_server:
+    type: dcae.nodes.ContainerizedServiceComponent
+    properties:
+      service_component_type: 'nginx-web'
+      image: nginx
+      docker_config:
+        healthcheck:
+          type: "http"
+          endpoint: "/"
+        ports:
+          - '80:0'
+          - '9191/tcp:0'
+          - '1919:0'
+          - '1919/udp:0'
+          - '2060/udp:31060'

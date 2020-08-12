@@ -1,0 +1,30 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+description: >
+  Simple blueprint to launch nginx as a "service component"
+  Specify a location  (need to set up a multi-site configuration)
+
+imports:
+  - https://www.getcloudify.org/spec/cloudify/4.5.5/types.yaml
+  - plugin:k8splugin?version=3.0.0
+
+node_templates:
+  web_server:
+    type: dcae.nodes.ContainerizedServiceComponent
+    properties:
+        service_component_type: 'nginx-web'
+        location_id: gallus
+        image: nginx
+        docker_config:
+            healthcheck:
+                type: "http"
+                endpoint: "/"
+            policy:
+                trigger_type: "docker"
+                script_path: "/notify.sh"
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        start:
+          inputs:
+            ports:
+              - '80:0'

@@ -1,0 +1,36 @@
+tosca_definitions_version: cloudify_dsl_1_3
+
+description: >
+  Simple blueprint to launch nginx as a "service component"
+  Create MR topic and set up component as subscriber
+
+imports:
+  - https://www.getcloudify.org/spec/cloudify/4.5.5/types.yaml
+  - plugin:k8splugin?version=3.0.0
+  - plugin:dmaap?version=1.5.0
+
+node_templates:
+  topic00:
+    type: dcaegen2.nodes.Topic
+    properties:
+      topic_name: topic-002
+
+  web_server:
+    type: dcae.nodes.ContainerizedServiceComponentUsingDmaap
+    properties:
+      service_component_type: 'nginx-web'
+      image: nginx
+      docker_config:
+        healthcheck:
+          type: "http"
+          endpoint: "/"
+        ports:
+          - '80:0'
+      streams_publishes:
+        - name: topic00
+          location: san-francisco
+          client_role: org.onap.dmaap.mr.topic-002.publisher
+
+    relationships:
+      - type: dcaegen2.relationships.publish_events
+        target: topic00
