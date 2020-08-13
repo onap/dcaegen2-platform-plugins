@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cbe3cbd3_6c740a25",
+        "filename": "k8s/ChangeLog.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-08-13T19:20:45Z",
+      "side": 0,
+      "message": "old change log should be removed",
+      "revId": "43f0c2c84a1d1c0e9dd49e41c748f56b5820760b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
