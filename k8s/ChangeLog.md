@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 * DCAEGEN2-2252 - Add support to request certificates from CMPv2 server in DCAE cloudify blueprints
   - handle incorrect blueprint
 * DCAEGEN2-2380 - K8splugin should not create cert-service-client init container by default
+* DCAEGEN2-2309 - Adapt with K8S 1.17 version of APIs
 
 ## [3.2.0]
 * DCAEGEN2-2309 - Adapt with K8S 1.17 version of APIs
