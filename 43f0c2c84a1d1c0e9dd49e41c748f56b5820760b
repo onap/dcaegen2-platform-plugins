@@ -34,6 +34,24 @@
       "revId": "43f0c2c84a1d1c0e9dd49e41c748f56b5820760b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ffbc539b_328dc3d6",
+        "filename": "k8s/ChangeLog.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2020-08-17T16:41:35Z",
+      "side": 0,
+      "message": "Sorry for the typo - meant old change log should NOT be removed.",
+      "parentUuid": "f9e01249_2187e185",
+      "revId": "43f0c2c84a1d1c0e9dd49e41c748f56b5820760b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
