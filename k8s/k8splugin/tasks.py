@@ -269,6 +269,9 @@ def _create_and_start_container(container_name, image, **kwargs):
                 "use_external_tls": true or false,
                 "ca_name": "ca-name-value",
                 "cert_type": "P12" or "JKS" or "PEM",
+                "truststores": "comma separated list of truststores",
+                "truststores_password": "comma separated list of passwords",
+                "trust_merger_image_tag": "docker image name with tag",
                 "external_certificate_parameters":
                     "common_name": "common-name-value",
                     "sans": "sans-value"}

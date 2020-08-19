@@ -67,6 +67,9 @@ The configuration is provided as JSON object with the following properties:
             - `state`: State name, for which certificate will be created
             - `organizational_unit`: Organizational unit name, for which certificate will be created
             - `location`: Location name, for which certificate will be created
+            - `truststores`: comma separated list of truststores
+            - `truststores_password`: comma separated list of passwords
+            - `trust_merger_image_tag`: docker image name with tag
 
 
 #### Kubernetes access information
