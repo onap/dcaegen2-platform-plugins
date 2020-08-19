@@ -50,6 +50,8 @@ EXT_TLS_LOCATION = "San-Francisco"
 EXT_TLS_KEYSTORE_PASSWORD = "secret"
 EXT_TLS_TRUSTSTORE_PASSWORD = "secret"
 
+TRUST_STORE_MERGER_IMAGE = "nexus3.onap.org:10001/onap/org.onap.aaf.certservice.truststore-merger:1.0.0"
+
 CBS_BASE_URL = "https://config-binding-service:10443/service_component_all"
 
 def _set_defaults():
@@ -84,6 +86,9 @@ def _set_defaults():
             "location" : EXT_TLS_LOCATION,                        # Location name, for which certificate will be created
             "keystore_password" : EXT_TLS_KEYSTORE_PASSWORD,      # Password to keystore file
             "truststore_password" : EXT_TLS_TRUSTSTORE_PASSWORD   # Password to truststore file
+        },
+        "truststore_merger": {
+            "image_tag": TRUST_STORE_MERGER_IMAGE
         },
         "cbs": {
             "base_url" : CBS_BASE_URL                   # URL prefix for accessing config binding service
