@@ -25,6 +25,7 @@ import pytest
 from common import do_deploy
 from common import do_deploy_ext
 from common import verify_external_cert
+from common import verify_truststore_merger
 
 def test_deploy_full_tls(mockk8sapi):
     ''' Deploy component with a full TLS configuration, to act as a server '''
@@ -67,3 +68,6 @@ def test_deploy_external_cert(mockk8sapi):
 
     # Make sure all of the external init container parameters are correct
     verify_external_cert(dep)
+    verify_truststore_merger(dep)
+
+
