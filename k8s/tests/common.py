@@ -48,6 +48,9 @@ def _set_k8s_configuration():
             "keystore_password" : "secret1",
             "truststore_password" : "secret2"
         },
+        "truststore_merger": {
+            "image_tag": "repo/aaf-truststore-merger:1.2.3"
+        },
         "cbs": {
             "base_url": "https://config-binding-service:10443/service_component_all/test-component"
         }
