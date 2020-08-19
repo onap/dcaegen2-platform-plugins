@@ -48,6 +48,9 @@ def _set_k8s_configuration():
             "keystore_password" : "secret1",
             "truststore_password" : "secret2"
         },
+        "truststore_merger": {
+            "image_tag": "repo/aaf-truststore-merger:1.2.3"
+        },
         "cbs": {
             "base_url": "https://config-binding-service:10443/service_component_all/test-component"
         }
@@ -172,7 +175,7 @@ def do_deploy(tls_info=None):
     if tls_info:
         kwargs["tls_info"] = tls_info
 
-    dep, deployment_description = k8sclient.k8sclient.deploy("k8stest", "testcomponent", "example.com/testcomponent:1.4.3", 1, False, k8s_test_config, **kwargs)
+    dep, deployment_description = k8sclient.k8sclient.deploy(k8s_ctx(), "k8stest", "testcomponent", "example.com/testcomponent:1.4.3", 1, False, k8s_test_config, **kwargs)
 
     # Make sure all of the basic k8s parameters are correct
     verify_common(dep, deployment_description)
@@ -190,9 +193,18 @@ def do_deploy_ext(ext_tls_info):
     kwargs['resources'] = _set_resources()
     kwargs["external_cert"] = ext_tls_info
 
-    dep, deployment_description = k8sclient.k8sclient.deploy("k8stest", "testcomponent", "example.com/testcomponent:1.4.3", 1, False, k8s_test_config, **kwargs)
+    dep, deployment_description = k8sclient.k8sclient.deploy(k8s_ctx(), "k8stest", "testcomponent", "example.com/testcomponent:1.4.3", 1, False, k8s_test_config, **kwargs)
 
     # Make sure all of the basic k8s parameters are correct
     verify_common(dep, deployment_description)
 
     return dep, deployment_description
+
+class k8x_logger:
+    def info(self, text):
+        print(text)
+
+class k8s_ctx:
+    logger = k8x_logger()
+
+

@@ -48,6 +48,8 @@ KEYSTORE_PATH = MOUNT_PATH + "certServiceClient-keystore.jks"
 TRUSTSTORE_PATH = MOUNT_PATH + "truststore.jks"
 CERT_SECRET_NAME = "aaf-cert-service-client-tls-secret"
 
+# Constants for external_cert
+
 def _create_deployment_name(component_name):
     return "dep-{0}".format(component_name)[:63]
 
@@ -304,7 +306,7 @@ def _add_elk_logging_sidecar(containers, volumes, volume_mounts, component_name,
     # Finally create the container for the sidecar
     containers.append(_create_container_object("filebeat", filebeat["image"], False, volume_mounts=sidecar_volume_mounts))
 
-def _add_tls_init_container(init_containers, volumes, volume_mounts, tls_info, tls_config):
+def _add_tls_init_container(ctx, init_containers, volumes, volume_mounts, tls_info, tls_config):
     #   Adds an InitContainer to the pod to set up TLS certificate information.  For components that act as a
     #   server(tls_info["use_tls"] is True), the InitContainer will populate a directory with server and CA certificate
     #   materials in various formats.   For other components (tls_info["use_tls"] is False, or tls_info is not specified),
@@ -312,6 +314,8 @@ def _add_tls_init_container(init_containers, volumes, volume_mounts, tls_info, t
     #   In either case, the certificate directory is mounted onto the component container filesystem at the location
     #   specified by tls_info["component_cert_dir"], if present, otherwise at the configured default mount point
     #   (tls_config["component_cert_dir"]).
+    image = tls_config["image"]
+    ctx.logger.info("Creating init container: TLS \n  * [" + image + "]")
 
     cert_directory = tls_info.get("cert_directory") or tls_config.get("component_cert_dir")
     env = {}
@@ -323,9 +327,13 @@ def _add_tls_init_container(init_containers, volumes, volume_mounts, tls_info, t
     init_volume_mounts = [client.V1VolumeMount(name="tls-info", mount_path=tls_config["cert_path"])]
 
     # Create the init container
-    init_containers.append(_create_container_object("init-tls", tls_config["image"], False, volume_mounts=init_volume_mounts, env=env))
+    init_containers.append(_create_container_object("init-tls", image, False, volume_mounts=init_volume_mounts, env=env))
 
-def _add_external_tls_init_container(init_containers, volumes, external_cert, external_tls_config):
+def _add_external_tls_init_container(ctx, init_containers, volumes, external_cert, external_tls_config):
+    # Adds an InitContainer to the pod which will generate external TLS certificates.
+    image = external_tls_config["image_tag"]
+    ctx.logger.info("Creating init container: external TLS \n  * [" + image + "]")
+
     env = {}
     output_path = external_cert.get("external_cert_directory")
     if not output_path.endswith('/'):
@@ -355,7 +363,50 @@ def _add_external_tls_init_container(init_containers, volumes, external_cert, ex
                           client.V1VolumeMount(name="tls-volume", mount_path=MOUNT_PATH)]
 
     # Create the init container
-    init_containers.append(_create_container_object("cert-service-client", external_tls_config["image_tag"], False, volume_mounts=init_volume_mounts, env=env))
+    init_containers.append(_create_container_object("cert-service-client", image, False, volume_mounts=init_volume_mounts, env=env))
+
+
+def _add_truststore_merger_init_container(ctx, init_containers, volumes, tls_info, tls_config, external_cert, external_tls_config, truststore_merger_config):
+    # Adds an InitContainer to the pod to merge TLS and external TLS truststore into single file.
+    image = truststore_merger_config["image_tag"]
+    ctx.logger.info("Creating init container: truststore merger \n  * [" + image + "]")
+
+    tls_cert_dir = tls_info.get("cert_directory") or tls_config.get("component_cert_dir")
+    tls_cert_file_path = tls_cert_dir + "trust.jks"
+    tls_cert_file_pass = tls_cert_dir + "trust.pass"
+
+    ext_cert_dir = tls_cert_dir + "external/"
+    #    ext_cert_dir = external_cert.get("external_cert_directory")
+    #    if not ext_cert_dir.endswith('/'):
+    #        ext_cert_dir += '/'
+    #    ext_cert_dir += "external/"
+
+    output_type = (external_cert.get("cert_type") or 'p12').lower()
+    ext_truststore_path = ext_cert_dir + "truststore." + _get_file_extension(output_type)
+    ext_truststore_pass = ''
+    if output_type != 'pem':
+        ext_truststore_pass = ext_cert_dir + "truststore.pass"
+
+    env = {}
+    env["TRUSTSTORES"] = tls_cert_file_path + ":" + ext_truststore_path
+    env["TRUSTSTORES_PASSWORD"] = tls_cert_file_pass + ":" + ext_truststore_pass
+
+    ctx.logger.info("TRUSTSTORES:            " + env["TRUSTSTORES"])
+    ctx.logger.info("TRUSTSTORES_PASSWORD:   " + env["TRUSTSTORES_PASSWORD"])
+
+    # Create the volumes and volume mounts
+    init_volume_mounts = [client.V1VolumeMount(name="tls-info", mount_path=external_cert.get("external_cert_directory")),
+                          client.V1VolumeMount(name="tls-volume", mount_path=MOUNT_PATH)]
+
+    # Create the init container
+    init_containers.append(_create_container_object("truststore-merger", image, False, volume_mounts=init_volume_mounts, env=env))
+
+def _get_file_extension(output_type):
+    return {
+        'p12': 'p12',
+        'pem': 'pem',
+        'jks': 'jks',
+    }[output_type]
 
 def _process_port_map(port_map):
     service_ports = []      # Ports exposed internally on the k8s network
@@ -448,7 +499,7 @@ def _execute_command_in_pod(location, namespace, pod_name, command):
 
     return {"pod" : pod_name, "output" : output}
 
-def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, **kwargs):
+def deploy(ctx, namespace, component_name, image, replicas, always_pull, k8sconfig, **kwargs):
     '''
     This will create a k8s Deployment and, if needed, one or two k8s Services.
     (We are being opinionated in our use of k8s... this code decides what k8s abstractions and features to use.
@@ -491,6 +542,9 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
                 "use_external_tls": true or false,
                 "ca_name": "ca-name-value",
                 "cert_type": "P12" or "JKS" or "PEM",
+                "truststores": "comma separated list of truststores",
+                "truststores_password": "comma separated list of passwords",
+                "trust_merger_image_tag": "docker image name with tag",
                 "external_certificate_parameters":
                     "common_name": "common-name-value",
                     "sans": "sans-value"}
@@ -545,12 +599,13 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
         _add_elk_logging_sidecar(containers, volumes, volume_mounts, component_name, kwargs.get("log_info"), k8sconfig.get("filebeat"))
 
         # Set up TLS information
-        _add_tls_init_container(init_containers, volumes, volume_mounts, kwargs.get("tls_info") or {}, k8sconfig.get("tls"))
+        _add_tls_init_container(ctx, init_containers, volumes, volume_mounts, kwargs.get("tls_info") or {}, k8sconfig.get("tls"))
 
         # Set up external TLS information
         external_cert = kwargs.get("external_cert")
         if external_cert and external_cert.get("use_external_tls"):
-            _add_external_tls_init_container(init_containers, volumes, external_cert, k8sconfig.get("external_cert"))
+            _add_external_tls_init_container(ctx, init_containers, volumes, external_cert, k8sconfig.get("external_cert"))
+            _add_truststore_merger_init_container(ctx, init_containers, volumes, kwargs.get("tls_info") or {}, k8sconfig.get("tls"), external_cert, k8sconfig.get("external_cert"), k8sconfig.get("truststore_merger"))
 
         # Create the container for the component
         # Make it the first container in the pod
