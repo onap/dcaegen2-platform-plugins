@@ -79,3 +79,26 @@ target/
 # tox output
 xunit-results*
 htmlcov
+
+# Idea IntelliJ project files
+/.idea/*
+*.iml
+
+# Output files
+/k8splugin-*.tgz
+/k8splugin-*.zip
+/pgaas-*.tgz
+/pgaas-*.zip
+/clamppolicyplugin-*.tgz
+/clamppolicyplugin-*.zip
+/dcaepolicyplugin-*.tgz
+/dcaepolicyplugin-*.zip
+/dmaap-*.tgz
+/dmaap-*.zip
+/helm-*.tgz
+/helm-*.zip
+/relationshipplugin-*.tgz
+/relationshipplugin-*.zip
+/sshkeyshare-*.tgz
+/sshkeyshare-*.zip
+/k8s/k8splugin-*.zip
