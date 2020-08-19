@@ -79,3 +79,33 @@ target/
 # tox output
 xunit-results*
 htmlcov
+
+# Idea IntelliJ project files
+/.idea/*
+/clamp-policy/clamp-policy.iml
+/dcae-policy/dcae-policy.iml
+/dmaap/dmaap.iml
+/helm/helm.iml
+/k8s/k8s.iml
+/pgaas/pgaas.iml
+/plugins.iml
+/relationships/relationships.iml
+/sshkeyshare/sshkeyshare.iml
+
+# Output files
+/k8splugin-3.3.0.tgz
+/k8splugin-3.3.0.zip
+/pgaas-1.3.0.tgz
+/pgaas-1.3.0.zip
+/clamppolicyplugin-1.1.0.tgz
+/clamppolicyplugin-1.1.0.zip
+/dcaepolicyplugin-2.4.0.tgz
+/dcaepolicyplugin-2.4.0.zip
+/dmaap-1.5.0.tgz
+/dmaap-1.5.0.zip
+/helm-4.2.0.tgz
+/helm-4.2.0.zip
+/relationshipplugin-1.1.0.tgz
+/relationshipplugin-1.1.0.zip
+/sshkeyshare-1.2.0.tgz
+/sshkeyshare-1.2.0.zip
