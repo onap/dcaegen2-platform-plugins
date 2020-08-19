@@ -357,6 +357,20 @@ def _add_external_tls_init_container(init_containers, volumes, external_cert, ex
     # Create the init container
     init_containers.append(_create_container_object("cert-service-client", external_tls_config["image_tag"], False, volume_mounts=init_volume_mounts, env=env))
 
+def _add_truststore_merger_init_container(init_containers, volumes, external_cert, external_tls_config):
+    env = {}
+    env["TRUSTSTORES"] = external_tls_config.get("truststores")
+    env["TRUSTSTORES_PASSWORD"] = external_tls_config.get("truststores_password")
+
+    # Create the volumes and volume mounts
+    sec = client.V1SecretVolumeSource(secret_name=CERT_SECRET_NAME)
+    volumes.append(client.V1Volume(name="tls-volume", secret=sec))
+    init_volume_mounts = [client.V1VolumeMount(name="tls-info", mount_path=external_cert.get("external_cert_directory")),
+                          client.V1VolumeMount(name="tls-volume", mount_path=MOUNT_PATH)]
+
+    # Create the init container
+    init_containers.append(_create_container_object("cert-service-client", external_tls_config["trust_merger_image_tag"], False, volume_mounts=init_volume_mounts, env=env))
+
 def _process_port_map(port_map):
     service_ports = []      # Ports exposed internally on the k8s network
     exposed_ports = []      # Ports to be mapped to ports on the k8s nodes via NodePort
@@ -491,6 +505,9 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
                 "use_external_tls": true or false,
                 "ca_name": "ca-name-value",
                 "cert_type": "P12" or "JKS" or "PEM",
+                "truststores": "comma separated list of truststores",
+                "truststores_password": "comma separated list of passwords",
+                "trust_merger_image_tag": "docker image name with tag",
                 "external_certificate_parameters":
                     "common_name": "common-name-value",
                     "sans": "sans-value"}
@@ -551,6 +568,7 @@ def deploy(namespace, component_name, image, replicas, always_pull, k8sconfig, *
         external_cert = kwargs.get("external_cert")
         if external_cert and external_cert.get("use_external_tls"):
             _add_external_tls_init_container(init_containers, volumes, external_cert, k8sconfig.get("external_cert"))
+            _add_truststore_merger_init_container(init_containers, volumes, external_cert, k8sconfig.get("external_cert"))
 
         # Create the container for the component
         # Make it the first container in the pod

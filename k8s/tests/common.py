@@ -46,7 +46,10 @@ def _set_k8s_configuration():
             "organizational_unit" : "ONAP",
             "location" : "San-Francisco",
             "keystore_password" : "secret1",
-            "truststore_password" : "secret2"
+            "truststore_password" : "secret2",
+            "truststores": "",
+            "truststores_password": "",
+            "trust_merger_image_tag": "repo/truststore-merger:1.2.3"
         },
         "cbs": {
             "base_url": "https://config-binding-service:10443/service_component_all/test-component"
