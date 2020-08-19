@@ -48,6 +48,9 @@ def _set_k8s_configuration():
             "keystore_password" : "secret1",
             "truststore_password" : "secret2"
         },
+        "truststore_merger": {
+            "image_tag": "repo/oom-truststore-merger:1.2.3"
+        },
         "cbs": {
             "base_url": "https://config-binding-service:10443/service_component_all/test-component"
         }
@@ -160,6 +163,25 @@ def verify_external_cert(dep):
     for k in expected_envs:
         assert (k in envs and expected_envs[k] == envs[k])
 
+def verify_truststore_merger(dep):
+    cert_container = dep.spec.template.spec.init_containers[2]
+    print(cert_container)
+    assert cert_container.image == "repo/oom-truststore-merger:1.2.3"
+    assert cert_container.name == "truststore-merger"
+    assert len(cert_container.volume_mounts) == 1
+    assert cert_container.volume_mounts[0].name == "tls-info"
+    assert cert_container.volume_mounts[0].mount_path == "/opt/dcae/cacert/"
+
+    expected_envs = {
+        "TRUSTSTORES_PATHS": "/opt/dcae/cacert/trust.jks:/opt/dcae/cacert/external/truststore.p12",
+        "TRUSTSTORES_PASSWORDS_PATHS": "/opt/dcae/cacert/trust.pass:/opt/dcae/cacert/external/truststore.pass",
+    }
+
+    envs = {k.name: k.value for k in cert_container.env}
+    for k in expected_envs:
+        assert (k in envs and expected_envs[k] == envs[k])
+
+
 def do_deploy(tls_info=None):
     ''' Common deployment operations '''
     import k8sclient.k8sclient
@@ -172,7 +194,7 @@ def do_deploy(tls_info=None):
     if tls_info:
         kwargs["tls_info"] = tls_info
 
-    dep, deployment_description = k8sclient.k8sclient.deploy("k8stest", "testcomponent", "example.com/testcomponent:1.4.3", 1, False, k8s_test_config, **kwargs)
+    dep, deployment_description = k8sclient.k8sclient.deploy(k8s_ctx(), "k8stest", "testcomponent", "example.com/testcomponent:1.4.3", 1, False, k8s_test_config, **kwargs)
 
     # Make sure all of the basic k8s parameters are correct
     verify_common(dep, deployment_description)
@@ -190,9 +212,18 @@ def do_deploy_ext(ext_tls_info):
     kwargs['resources'] = _set_resources()
     kwargs["external_cert"] = ext_tls_info
 
-    dep, deployment_description = k8sclient.k8sclient.deploy("k8stest", "testcomponent", "example.com/testcomponent:1.4.3", 1, False, k8s_test_config, **kwargs)
+    dep, deployment_description = k8sclient.k8sclient.deploy(k8s_ctx(), "k8stest", "testcomponent", "example.com/testcomponent:1.4.3", 1, False, k8s_test_config, **kwargs)
 
     # Make sure all of the basic k8s parameters are correct
     verify_common(dep, deployment_description)
 
     return dep, deployment_description
+
+class k8x_logger:
+    def info(self, text):
+        print(text)
+
+class k8s_ctx:
+    logger = k8x_logger()
+
+
