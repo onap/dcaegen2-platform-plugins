@@ -68,7 +68,6 @@ The configuration is provided as JSON object with the following properties:
             - `organizational_unit`: Organizational unit name, for which certificate will be created
             - `location`: Location name, for which certificate will be created
 
-
 #### Kubernetes access information
 The plugin accesses a Kubernetes cluster.  The information and credentials for accessing a cluster are stored in a "kubeconfig"
 file.  The plugin expects to find such a file at `/etc/cloudify/.kube/config`.
