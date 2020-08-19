@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.4.0]
+* DCAEGEN2-2253 - Add support to truststore merger init container
+
 ## [3.3.0]
 * DCAEGEN2-2252 - Add support to request certificates from CMPv2 server in DCAE cloudify blueprints
   - handle incorrect blueprint

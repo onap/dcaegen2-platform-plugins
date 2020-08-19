@@ -292,7 +292,9 @@ def _create_and_start_container(container_name, image, **kwargs):
     ctx.logger.info("Passing k8sconfig: {}".format(plugin_conf))
     replicas = kwargs.get("replicas", 1)
     resource_config = _get_resources(**kwargs)
-    _, dep = k8sclient.deploy(DCAE_NAMESPACE,
+    _, dep = k8sclient.deploy(
+                     ctx,
+                     DCAE_NAMESPACE,
                      container_name,
                      image,
                      replicas=replicas,
