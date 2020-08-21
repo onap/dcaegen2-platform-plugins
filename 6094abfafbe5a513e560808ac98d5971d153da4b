@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "72d35314_f126c4dd",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-08-21T15:03:48Z",
+      "side": 1,
+      "message": "at a minimum, please add comments on all new classes and methods (javadoc)",
+      "revId": "6094abfafbe5a513e560808ac98d5971d153da4b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
