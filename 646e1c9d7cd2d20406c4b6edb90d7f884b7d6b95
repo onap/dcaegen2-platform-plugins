@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ed1c0679_6c2d4b71",
+        "filename": ".gitignore",
+        "patchSetId": 17
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-08-27T09:01:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0219553f_a579680f",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 28
+      },
+      "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba15a2a4_43af8179",
         "filename": "k8s/centos.wagon-builder.dockerfile",
         "patchSetId": 17
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "7a350e1c_d6f72a61",
+        "filename": "k8s/centos.wagon-builder.dockerfile",
+        "patchSetId": 17
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-08-27T09:01:55Z",
+      "side": 1,
+      "message": "I will leave it but write a better comment",
+      "parentUuid": "ba15a2a4_43af8179",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 17
+      },
+      "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "29c07cf9_421c9a61",
         "filename": "k8s/configure/configure.py",
         "patchSetId": 17
@@ -59,6 +107,30 @@
       "writtenOn": "2020-08-27T07:35:09Z",
       "side": 1,
       "message": "I think it should be image provided by nexus.",
+      "range": {
+        "startLine": 53,
+        "startChar": 28,
+        "endLine": 53,
+        "endChar": 95
+      },
+      "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4f7acd9c_e8c78ec0",
+        "filename": "k8s/configure/configure.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-08-27T09:01:55Z",
+      "side": 1,
+      "message": "You think or you are sure?",
+      "parentUuid": "29c07cf9_421c9a61",
       "range": {
         "startLine": 53,
         "startChar": 28,
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "87146645_a28d2abe",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-08-27T09:01:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b5749c8_eb8361ed",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 1
+      },
+      "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "34f0594a_f4d58f6d",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 17
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "addbb687_cd790e1f",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-08-27T09:01:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "34f0594a_f4d58f6d",
+      "range": {
+        "startLine": 318,
+        "startChar": 4,
+        "endLine": 318,
+        "endChar": 9
+      },
+      "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6b330430_43d716d0",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 17
@@ -137,6 +257,30 @@
       "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1a06cf36_4ac59771",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-08-27T09:01:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b330430_43d716d0",
+      "range": {
+        "startLine": 335,
+        "startChar": 4,
+        "endLine": 335,
+        "endChar": 9
+      },
+      "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -180,6 +324,48 @@
     },
     {
       "key": {
+        "uuid": "75ca4f2c_8e633764",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-08-27T09:01:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39dbd101_47ab713b",
+      "range": {
+        "startLine": 370,
+        "startChar": 64,
+        "endLine": 370,
+        "endChar": 71
+      },
+      "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ecea8f2a_2788131b",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-08-27T09:01:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2342a6b6_18c32b91",
+      "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "37f5d8b9_281181e6",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 17
@@ -200,6 +386,30 @@
       "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "30b04582_756ea074",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-08-27T09:01:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37f5d8b9_281181e6",
+      "range": {
+        "startLine": 372,
+        "startChar": 4,
+        "endLine": 372,
+        "endChar": 9
+      },
+      "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -226,6 +436,30 @@
     },
     {
       "key": {
+        "uuid": "53232ce3_db7e1642",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-08-27T09:01:55Z",
+      "side": 1,
+      "message": "I think it\u0027s well readable.",
+      "parentUuid": "419fccb0_1534fc8d",
+      "range": {
+        "startLine": 403,
+        "startChar": 5,
+        "endLine": 403,
+        "endChar": 23
+      },
+      "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6993c94f_7ff7765a",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 17
@@ -246,6 +480,30 @@
       "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b8ee40cf_eacdf859",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-08-27T09:01:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6993c94f_7ff7765a",
+      "range": {
+        "startLine": 544,
+        "startChar": 0,
+        "endLine": 546,
+        "endChar": 71
+      },
+      "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -295,6 +553,54 @@
     },
     {
       "key": {
+        "uuid": "98ff6eb9_bfb1a853",
+        "filename": "k8s/tests/common.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-08-27T09:01:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e01f77f_6f3ed9c4",
+      "range": {
+        "startLine": 52,
+        "startChar": 31,
+        "endLine": 52,
+        "endChar": 34
+      },
+      "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "98fdfff5_6545554e",
+        "filename": "k8s/tests/common.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-08-27T09:01:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "742bfcbf_600490a8",
+      "range": {
+        "startLine": 52,
+        "startChar": 31,
+        "endLine": 52,
+        "endChar": 34
+      },
+      "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "404db43c_c9e2907e",
         "filename": "k8s/tests/common.py",
         "patchSetId": 17
@@ -338,6 +644,54 @@
       "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "40508ba2_e38ce11d",
+        "filename": "k8s/tests/common.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-08-27T09:01:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c99b0722_b1b50d5e",
+      "range": {
+        "startLine": 169,
+        "startChar": 41,
+        "endLine": 169,
+        "endChar": 44
+      },
+      "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "955925d4_6fd96b48",
+        "filename": "k8s/tests/common.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2020-08-27T09:01:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "404db43c_c9e2907e",
+      "range": {
+        "startLine": 169,
+        "startChar": 41,
+        "endLine": 169,
+        "endChar": 44
+      },
+      "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
