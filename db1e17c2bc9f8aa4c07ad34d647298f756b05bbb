@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6467966c_9b3b3e49",
+        "filename": ".gitignore",
+        "patchSetId": 20
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-08-27T14:05:57Z",
+      "side": 1,
+      "message": "Good job! 😊",
+      "revId": "db1e17c2bc9f8aa4c07ad34d647298f756b05bbb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9b8ac597_46496158",
+        "filename": "k8s/Makefile",
+        "patchSetId": 20
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-08-27T14:05:57Z",
+      "side": 1,
+      "message": "to",
+      "range": {
+        "startLine": 11,
+        "startChar": 46,
+        "endLine": 11,
+        "endChar": 48
+      },
+      "revId": "db1e17c2bc9f8aa4c07ad34d647298f756b05bbb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "accac301_2d03e584",
+        "filename": "k8s/README.md",
+        "patchSetId": 20
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-08-27T14:05:57Z",
+      "side": 1,
+      "message": "Add description here.",
+      "revId": "db1e17c2bc9f8aa4c07ad34d647298f756b05bbb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e53853de_ee9c607d",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-08-27T14:05:57Z",
+      "side": 1,
+      "message": "I think we need here similar description for truststore_merger.",
+      "revId": "db1e17c2bc9f8aa4c07ad34d647298f756b05bbb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4aa0f15f_f35794c4",
+        "filename": "k8s/tests/common.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-08-27T14:05:57Z",
+      "side": 1,
+      "message": "typo?",
+      "range": {
+        "startLine": 222,
+        "startChar": 8,
+        "endLine": 222,
+        "endChar": 9
+      },
+      "revId": "db1e17c2bc9f8aa4c07ad34d647298f756b05bbb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
