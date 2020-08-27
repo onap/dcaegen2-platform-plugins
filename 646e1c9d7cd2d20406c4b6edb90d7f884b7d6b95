@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0219553f_a579680f",
+        "filename": ".gitignore",
+        "patchSetId": 17
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-08-27T07:26:21Z",
+      "side": 1,
+      "message": "Consider: *.iml",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 28
+      },
+      "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6993c94f_7ff7765a",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-08-27T07:26:21Z",
+      "side": 1,
+      "message": "Don\u0027t think this part belongs here. This looks like example structure of configuration that comes from blueprint.",
+      "range": {
+        "startLine": 544,
+        "startChar": 0,
+        "endLine": 546,
+        "endChar": 71
+      },
+      "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e01f77f_6f3ed9c4",
+        "filename": "k8s/tests/common.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-08-27T07:26:21Z",
+      "side": 1,
+      "message": "oom",
+      "range": {
+        "startLine": 52,
+        "startChar": 31,
+        "endLine": 52,
+        "endChar": 34
+      },
+      "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "404db43c_c9e2907e",
+        "filename": "k8s/tests/common.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-08-27T07:26:21Z",
+      "side": 1,
+      "message": "oom",
+      "range": {
+        "startLine": 169,
+        "startChar": 41,
+        "endLine": 169,
+        "endChar": 44
+      },
+      "revId": "646e1c9d7cd2d20406c4b6edb90d7f884b7d6b95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
