@@ -119,6 +119,24 @@
     },
     {
       "key": {
+        "uuid": "762fbb5d_fdecd697",
+        "filename": "k8s/README.md",
+        "patchSetId": 20
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-08-28T05:23:21Z",
+      "side": 1,
+      "message": "Actually this is a description of configuration of k8splugin, so there should be info about truststore merger.",
+      "parentUuid": "2086deeb_fe6f9840",
+      "revId": "db1e17c2bc9f8aa4c07ad34d647298f756b05bbb",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e53853de_ee9c607d",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 20
