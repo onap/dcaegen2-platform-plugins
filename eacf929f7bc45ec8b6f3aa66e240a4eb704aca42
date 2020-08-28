@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d91b546f_b99602ab",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-08-28T06:33:52Z",
+      "side": 1,
+      "message": "docker",
+      "range": {
+        "startLine": 528,
+        "startChar": 25,
+        "endLine": 528,
+        "endChar": 30
+      },
+      "revId": "eacf929f7bc45ec8b6f3aa66e240a4eb704aca42",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
