@@ -47,6 +47,7 @@ EXT_TLS_ORGANIZATION = "Linux-Foundation"
 EXT_TLS_STATE = "California"
 EXT_TLS_ORGANIZATIONAL_UNIT = "ONAP"
 EXT_TLS_LOCATION = "San-Francisco"
+EXT_TLS_CERT_SECRET_NAME = "aaf-cert-service-client-tls-secret"
 EXT_TLS_KEYSTORE_PASSWORD = "secret"
 EXT_TLS_TRUSTSTORE_PASSWORD = "secret"
 
@@ -83,6 +84,7 @@ def _set_defaults():
             "state" : EXT_TLS_STATE,                              # State name, for which certificate will be created
             "organizational_unit" : EXT_TLS_ORGANIZATIONAL_UNIT,  # Organizational unit name, for which certificate will be created
             "location" : EXT_TLS_LOCATION,                        # Location name, for which certificate will be created
+            "cert_secret_name": EXT_TLS_CERT_SECRET_NAME,         # Name of secret containing keystore and truststore for secure communication of Cert Service Client and Cert Service
             "keystore_password" : EXT_TLS_KEYSTORE_PASSWORD,      # Password to keystore file
             "truststore_password" : EXT_TLS_TRUSTSTORE_PASSWORD   # Password to truststore file
         },

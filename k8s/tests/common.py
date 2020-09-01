@@ -175,6 +175,8 @@ def verify_truststore_merger(dep):
     expected_envs = {
         "TRUSTSTORES_PATHS": "/opt/dcae/cacert/trust.jks:/opt/dcae/cacert/external/truststore.p12",
         "TRUSTSTORES_PASSWORDS_PATHS": "/opt/dcae/cacert/trust.pass:/opt/dcae/cacert/external/truststore.pass",
+        "KEYSTORE_SOURCE_PATHS": "/opt/dcae/cacert/external/keystore.p12:/opt/dcae/cacert/external/keystore.pass",
+        "KEYSTORE_DESTINATION_PATHS":  "/opt/dcae/cacert/cert.p12:/opt/dcae/cacert/p12.pass"
     }
 
     envs = {k.name: k.value for k in cert_container.env}
