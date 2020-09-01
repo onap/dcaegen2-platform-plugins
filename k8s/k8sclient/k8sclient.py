@@ -47,7 +47,7 @@ PORTS = re.compile("^([0-9]+)(/(udp|UDP|tcp|TCP))?:([0-9]+)$")
 MOUNT_PATH = "/etc/onap/aaf/certservice/certs/"
 KEYSTORE_PATH = MOUNT_PATH + "certServiceClient-keystore.jks"
 TRUSTSTORE_PATH = MOUNT_PATH + "truststore.jks"
-CERT_SECRET_NAME = "aaf-cert-service-client-tls-secret"
+DEFAULT_CERT_TYPE = "p12"
 
 def _create_deployment_name(component_name):
     return "dep-{0}".format(component_name)[:63]
@@ -356,7 +356,7 @@ def _add_external_tls_init_container(ctx, init_containers, volumes, external_cer
     env["TRUSTSTORE_PASSWORD"] = external_tls_config.get("truststore_password")
 
     # Create the volumes and volume mounts
-    sec = client.V1SecretVolumeSource(secret_name=CERT_SECRET_NAME)
+    sec = client.V1SecretVolumeSource(secret_name=external_tls_config.get("cert_secret_name"))
     volumes.append(client.V1Volume(name="tls-volume", secret=sec))
     init_volume_mounts = [client.V1VolumeMount(name="tls-info", mount_path=external_cert.get("external_cert_directory")),
                           client.V1VolumeMount(name="tls-volume", mount_path=MOUNT_PATH)]
@@ -379,7 +379,7 @@ def _add_truststore_merger_init_container(ctx, init_containers, tls_info, tls_co
 
     ext_cert_dir = tls_cert_dir + "external/"
 
-    output_type = (external_cert.get("cert_type") or 'p12').lower()
+    output_type = (external_cert.get("cert_type") or DEFAULT_CERT_TYPE).lower()
     ext_truststore_path = ext_cert_dir + "truststore." + _get_file_extension(output_type)
     ext_truststore_pass = ''
     if output_type != 'pem':
@@ -388,9 +388,13 @@ def _add_truststore_merger_init_container(ctx, init_containers, tls_info, tls_co
     env = {}
     env["TRUSTSTORES_PATHS"] = tls_cert_file_path + ":" + ext_truststore_path
     env["TRUSTSTORES_PASSWORDS_PATHS"] = tls_cert_file_pass + ":" + ext_truststore_pass
+    env["KEYSTORE_SOURCE_PATHS"] = _get_keystore_source_paths(output_type, ext_cert_dir)
+    env["KEYSTORE_DESTINATION_PATHS"] = _get_keystore_destination_paths(output_type, tls_cert_dir)
 
     ctx.logger.info("TRUSTSTORES_PATHS:            " + env["TRUSTSTORES_PATHS"])
     ctx.logger.info("TRUSTSTORES_PASSWORDS_PATHS:  " + env["TRUSTSTORES_PASSWORDS_PATHS"])
+    ctx.logger.info("KEYSTORE_SOURCE_PATHS:        " + env["KEYSTORE_SOURCE_PATHS"])
+    ctx.logger.info("KEYSTORE_DESTINATION_PATHS:   " + env["KEYSTORE_DESTINATION_PATHS"])
 
     # Create the volumes and volume mounts
     init_volume_mounts = [client.V1VolumeMount(name="tls-info", mount_path=tls_cert_dir)]
@@ -398,12 +402,29 @@ def _add_truststore_merger_init_container(ctx, init_containers, tls_info, tls_co
     # Create the init container
     init_containers.append(_create_container_object("truststore-merger", docker_image, False, volume_mounts=init_volume_mounts, env=env))
 
+
 def _get_file_extension(output_type):
     return {
         'p12': 'p12',
         'pem': 'pem',
         'jks': 'jks',
     }[output_type]
+
+def _get_keystore_source_paths(output_type, ext_cert_dir):
+    source_paths_template = {
+        'p12': "{0}keystore.p12:{0}keystore.pass",
+        'jks': "{0}keystore.jks:{0}keystore.pass",
+        'pem': "{0}keystore.pem:{0}key.pem",
+    }[output_type]
+    return source_paths_template.format(ext_cert_dir)
+
+def _get_keystore_destination_paths(output_type, tls_cert_dir):
+    destination_paths_template = {
+        'p12': "{0}cert.p12:{0}p12.pass",
+        'jks': "{0}cert.jks:{0}jks.pass",
+        'pem': "{0}cert.pem:{0}key.pem",
+    }[output_type]
+    return destination_paths_template.format(tls_cert_dir)
 
 def _process_port_map(port_map):
     service_ports = []      # Ports exposed internally on the k8s network
