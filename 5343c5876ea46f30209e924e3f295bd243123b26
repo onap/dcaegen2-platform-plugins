@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "adec0d81_d292c406",
+        "filename": "k8s/configure/configure.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2020-09-02T12:02:00Z",
+      "side": 1,
+      "message": "Consider to use oom-cert-service-client-tls-secret",
+      "range": {
+        "startLine": 50,
+        "startChar": 28,
+        "endLine": 50,
+        "endChar": 31
+      },
+      "revId": "5343c5876ea46f30209e924e3f295bd243123b26",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
