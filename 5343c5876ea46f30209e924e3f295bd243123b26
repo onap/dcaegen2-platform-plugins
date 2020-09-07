@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "d89c5d59_8e7a6ec2",
+        "filename": "k8s/configure/configure.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2020-09-07T05:41:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "103cebe9_7c4166e5",
+      "range": {
+        "startLine": 50,
+        "startChar": 28,
+        "endLine": 50,
+        "endChar": 31
+      },
+      "revId": "5343c5876ea46f30209e924e3f295bd243123b26",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "82a02125_9d8753d3",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 2
