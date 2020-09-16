@@ -4,6 +4,7 @@
 # Copyright (c) 2019-2020 AT&T Intellectual Property. All rights reserved.
 # Copyright (c) 2020 Pantheon.tech. All rights reserved.
 # Copyright (c) 2020 Nokia. All rights reserved.
+# Modifications copyright (c) 2020 J. F. Lucas.  All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -216,7 +217,7 @@ def _create_deployment_object(component_name,
     deployment = client.V1Deployment(
         api_version="apps/v1",
         kind="Deployment",
-        metadata=client.V1ObjectMeta(name=deployment_name),
+        metadata=client.V1ObjectMeta(name=deployment_name, labels=labels),
         spec=spec
     )
 
