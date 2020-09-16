@@ -7,7 +7,7 @@ description: >
 imports:
   - https://www.getcloudify.org/spec/cloudify/4.5.5/types.yaml
   - plugin:dmaap?version=1.5.0
-  - plugin:k8splugin?version=3.0.0
+  - plugin:k8splugin?version=>=3.0.0,<4.0.0
 node_templates:
   feed00:
     type: dcaegen2.nodes.Feed
