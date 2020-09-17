@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab421a31_439750cf",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-09-17T06:53:05Z",
+      "side": 1,
+      "message": "Is this correct copyright notice format? According to https://wiki.onap.org/display/DW/DCAE+Committer+Guidelines it should say:\n\u0027Copyright (c) 2020 J. F. Lucas.  All rights reserved.\u0027",
+      "range": {
+        "startLine": 7,
+        "startChar": 2,
+        "endLine": 7,
+        "endChar": 69
+      },
+      "revId": "9bae1b783922df5501ff84c175de215c55986050",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "96e8a5b1_8ca31c87",
+        "filename": "k8s/plugin_testing_blueprints/blueprints/nginx-svc.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-09-17T06:53:05Z",
+      "side": 1,
+      "message": "How does that work?\nWhen i try to upload this blueprint i get:\nAn error occurred on the server: 400: Invalid blueprint - Plugin k8splugin (query: {\u0027package_version\u0027: [\u0027\u003e\u003d3.0.0,\u003c4.0.0\u0027], \u0027package_name\u0027: \u0027k8splugin\u0027}) not found\n\nUsing cm-container version 3.1.0",
+      "range": {
+        "startLine": 8,
+        "startChar": 29,
+        "endLine": 8,
+        "endChar": 43
+      },
+      "revId": "9bae1b783922df5501ff84c175de215c55986050",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
