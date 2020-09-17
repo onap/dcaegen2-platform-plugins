@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "b2608f65_ba07d651",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2020-09-17T16:46:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73c36cda_29d83ca3",
+      "range": {
+        "startLine": 7,
+        "startChar": 2,
+        "endLine": 7,
+        "endChar": 69
+      },
+      "revId": "9bae1b783922df5501ff84c175de215c55986050",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6ab1bbb6_b8eeeebb",
         "filename": "k8s/k8splugin_types.yaml",
         "patchSetId": 2
@@ -66,6 +90,24 @@
     },
     {
       "key": {
+        "uuid": "c7f5a922_d611b805",
+        "filename": "k8s/k8splugin_types.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2020-09-17T16:46:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ab1bbb6_b8eeeebb",
+      "revId": "9bae1b783922df5501ff84c175de215c55986050",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "96e8a5b1_8ca31c87",
         "filename": "k8s/plugin_testing_blueprints/blueprints/nginx-svc.yaml",
         "patchSetId": 2
@@ -77,6 +119,30 @@
       "writtenOn": "2020-09-17T06:53:05Z",
       "side": 1,
       "message": "How does that work?\nWhen i try to upload this blueprint i get:\nAn error occurred on the server: 400: Invalid blueprint - Plugin k8splugin (query: {\u0027package_version\u0027: [\u0027\u003e\u003d3.0.0,\u003c4.0.0\u0027], \u0027package_name\u0027: \u0027k8splugin\u0027}) not found\n\nUsing cm-container version 3.1.0",
+      "range": {
+        "startLine": 8,
+        "startChar": 29,
+        "endLine": 8,
+        "endChar": 43
+      },
+      "revId": "9bae1b783922df5501ff84c175de215c55986050",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "687e64ad_f0191b87",
+        "filename": "k8s/plugin_testing_blueprints/blueprints/nginx-svc.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2020-09-17T16:46:50Z",
+      "side": 1,
+      "message": "cm-container 3.1.0 was based on Cloudify Manager 19.01.24, which does not support the use of a range of versions.  Starting with cm-container 3.2.0, we are based on Cloudify Manager 20.03.03, which does support this syntax.  (The latest released version of cm-container is 3.3.1.)",
+      "parentUuid": "96e8a5b1_8ca31c87",
       "range": {
         "startLine": 8,
         "startChar": 29,
@@ -106,6 +172,24 @@
     },
     {
       "key": {
+        "uuid": "bccce959_482b3134",
+        "filename": "k8s/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2020-09-17T16:46:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e749cc6_94687ac8",
+      "revId": "9bae1b783922df5501ff84c175de215c55986050",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ea498e66_c76682c5",
         "filename": "k8s/setup.py",
         "patchSetId": 2
@@ -120,6 +204,24 @@
       "revId": "9bae1b783922df5501ff84c175de215c55986050",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16f57847_fab78f7b",
+        "filename": "k8s/setup.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2020-09-17T16:46:50Z",
+      "side": 1,
+      "message": "Done but the # is needed I think.",
+      "parentUuid": "ea498e66_c76682c5",
+      "revId": "9bae1b783922df5501ff84c175de215c55986050",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
