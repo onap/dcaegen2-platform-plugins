@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "73c36cda_29d83ca3",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-09-17T16:17:20Z",
+      "side": 1,
+      "message": "agreed that Jack\u0027s line should be added",
+      "parentUuid": "ab421a31_439750cf",
+      "range": {
+        "startLine": 7,
+        "startChar": 2,
+        "endLine": 7,
+        "endChar": 69
+      },
+      "revId": "9bae1b783922df5501ff84c175de215c55986050",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6ab1bbb6_b8eeeebb",
         "filename": "k8s/k8splugin_types.yaml",
         "patchSetId": 2
