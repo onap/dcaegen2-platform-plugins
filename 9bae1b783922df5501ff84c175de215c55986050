@@ -25,6 +25,23 @@
     },
     {
       "key": {
+        "uuid": "6ab1bbb6_b8eeeebb",
+        "filename": "k8s/k8splugin_types.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-09-17T16:16:03Z",
+      "side": 1,
+      "message": "The word modifications is not needed",
+      "revId": "9bae1b783922df5501ff84c175de215c55986050",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "96e8a5b1_8ca31c87",
         "filename": "k8s/plugin_testing_blueprints/blueprints/nginx-svc.yaml",
         "patchSetId": 2
@@ -42,6 +59,40 @@
         "endLine": 8,
         "endChar": 43
       },
+      "revId": "9bae1b783922df5501ff84c175de215c55986050",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0e749cc6_94687ac8",
+        "filename": "k8s/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-09-17T16:16:03Z",
+      "side": 1,
+      "message": "The word modifications is not needed\nand remove the #",
+      "revId": "9bae1b783922df5501ff84c175de215c55986050",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ea498e66_c76682c5",
+        "filename": "k8s/setup.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2020-09-17T16:16:03Z",
+      "side": 1,
+      "message": "The word modifications is not needed\nand remove the #",
       "revId": "9bae1b783922df5501ff84c175de215c55986050",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
