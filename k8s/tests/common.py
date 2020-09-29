@@ -37,7 +37,7 @@ def _set_k8s_configuration():
             "component_cert_dir": "/opt/dcae/cacert"
         },
         "external_cert": {
-            "image_tag": "repo/aaf-certservice-client:1.2.3",
+            "image_tag": "repo/oom-certservice-client:1.2.3",
             "request_url" : "https://request:1010/url",
             "timeout" : "30000",
             "country" : "US",
@@ -48,8 +48,8 @@ def _set_k8s_configuration():
             "keystore_password" : "secret1",
             "truststore_password" : "secret2"
         },
-        "truststore_merger": {
-            "image_tag": "repo/oom-truststore-merger:1.2.3"
+        "cert_post_processor": {
+            "image_tag": "repo/oom-cert-post-processor:1.2.3"
         },
         "cbs": {
             "base_url": "https://config-binding-service:10443/service_component_all/test-component"
@@ -133,13 +133,13 @@ def verify_common(dep, deployment_description):
 def verify_external_cert(dep):
     cert_container = dep.spec.template.spec.init_containers[1]
     print(cert_container)
-    assert cert_container.image == "repo/aaf-certservice-client:1.2.3"
+    assert cert_container.image == "repo/oom-certservice-client:1.2.3"
     assert cert_container.name == "cert-service-client"
     assert len(cert_container.volume_mounts) == 2
     assert cert_container.volume_mounts[0].name == "tls-info"
     assert cert_container.volume_mounts[0].mount_path == "/path/to/container/cert/directory/"
     assert cert_container.volume_mounts[1].name == "tls-volume"
-    assert cert_container.volume_mounts[1].mount_path == "/etc/onap/aaf/certservice/certs/"
+    assert cert_container.volume_mounts[1].mount_path == "/etc/onap/oom/certservice/certs/"
 
     expected_envs = {
             "REQUEST_URL": "https://request:1010/url",
@@ -154,20 +154,20 @@ def verify_external_cert(dep):
             "STATE": "California",
             "COUNTRY": "US",
             "SANS": "mysans",
-            "KEYSTORE_PATH": "/etc/onap/aaf/certservice/certs/certServiceClient-keystore.jks",
+            "KEYSTORE_PATH": "/etc/onap/oom/certservice/certs/certServiceClient-keystore.jks",
             "KEYSTORE_PASSWORD": "secret1",
-            "TRUSTSTORE_PATH": "/etc/onap/aaf/certservice/certs/truststore.jks",
+            "TRUSTSTORE_PATH": "/etc/onap/oom/certservice/certs/truststore.jks",
             "TRUSTSTORE_PASSWORD": "secret2"}
 
     envs = {k.name: k.value for k in cert_container.env}
     for k in expected_envs:
         assert (k in envs and expected_envs[k] == envs[k])
 
-def verify_truststore_merger(dep):
+def verify_cert_post_processor(dep):
     cert_container = dep.spec.template.spec.init_containers[2]
     print(cert_container)
-    assert cert_container.image == "repo/oom-truststore-merger:1.2.3"
-    assert cert_container.name == "truststore-merger"
+    assert cert_container.image == "repo/oom-cert-post-processor:1.2.3"
+    assert cert_container.name == "cert-post-processor"
     assert len(cert_container.volume_mounts) == 1
     assert cert_container.volume_mounts[0].name == "tls-info"
     assert cert_container.volume_mounts[0].mount_path == "/opt/dcae/cacert/"

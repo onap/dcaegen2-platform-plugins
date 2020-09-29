@@ -24,8 +24,8 @@ from setuptools import setup
 setup(
     name='k8splugin',
     description='Cloudify plugin for containerized components deployed using Kubernetes',
-    version="3.4.2",
-    author='J. F. Lucas, Michael Hwang, Tommy Carpenter, Joanna Jeremicz, Sylwia Jakubek, Jan Malkiewicz, Remigiusz Janeczek',
+    version="3.4.3",
+    author='J. F. Lucas, Michael Hwang, Tommy Carpenter, Joanna Jeremicz, Sylwia Jakubek, Jan Malkiewicz, Remigiusz Janeczek, Piotr Marcinkiewicz',
     packages=['k8splugin','k8sclient','configure'],
     zip_safe=False,
     install_requires=[
