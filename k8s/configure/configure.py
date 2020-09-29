@@ -39,19 +39,19 @@ TLS_IMAGE = "nexus3.onap.org:10001/onap/org.onap.dcaegen2.deployments.tls-init-c
 TLS_COMP_CERT_PATH = "/opt/dcae/cacert"
 TLS_CA_CONFIGMAP = "dcae-cacert-configmap"
 
-EXT_TLS_IMAGE = "nexus3.onap.org:10001/onap/org.onap.aaf.certservice.aaf-certservice-client:1.2.0"
-EXT_TLS_REQUEST_URL = "https://aaf-cert-service:8443/v1/certificate/"
+EXT_TLS_IMAGE = "nexus3.onap.org:10001/onap/org.onap.oom.platform.cert-service.oom-certservice-client:2.0.0"
+EXT_TLS_REQUEST_URL = "https://oom-cert-service:8443/v1/certificate/"
 EXT_TLS_TIMEOUT = "30000"
 EXT_TLS_COUNTRY = "US"
 EXT_TLS_ORGANIZATION = "Linux-Foundation"
 EXT_TLS_STATE = "California"
 EXT_TLS_ORGANIZATIONAL_UNIT = "ONAP"
 EXT_TLS_LOCATION = "San-Francisco"
-EXT_TLS_CERT_SECRET_NAME = "aaf-cert-service-client-tls-secret"
+EXT_TLS_CERT_SECRET_NAME = "oom-cert-service-client-tls-secret"
 EXT_TLS_KEYSTORE_PASSWORD = "secret"
 EXT_TLS_TRUSTSTORE_PASSWORD = "secret"
 
-TRUST_STORE_MERGER_IMAGE = "nexus3.onap.org:10001/onap/org.onap.dcae.truststore-merger:1.2.0"
+CERT_POST_PROCESSOR_IMAGE = "nexus3.onap.org:10001/onap/org.onap.oom.platform.cert-service.oom-certservice-post-processor:2.1.0"
 CBS_BASE_URL = "https://config-binding-service:10443/service_component_all"
 
 def _set_defaults():
@@ -88,8 +88,8 @@ def _set_defaults():
             "keystore_password" : EXT_TLS_KEYSTORE_PASSWORD,      # Password to keystore file
             "truststore_password" : EXT_TLS_TRUSTSTORE_PASSWORD   # Password to truststore file
         },
-        "truststore_merger": {
-            "image_tag": TRUST_STORE_MERGER_IMAGE
+        "cert_post_processor": {
+            "image_tag": CERT_POST_PROCESSOR_IMAGE      # Docker image to use for cert post processor init container
         },
         "cbs": {
             "base_url" : CBS_BASE_URL                   # URL prefix for accessing config binding service

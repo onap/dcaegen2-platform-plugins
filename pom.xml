@@ -31,14 +31,14 @@ limitations under the License.
   <url>http://maven.apache.org</url>
   <packaging>pom</packaging>
   <modules>
-     <module>pgaas</module>
-     <module>clamp-policy</module>
-     <module>dcae-policy</module>
-     <module>dmaap</module>
-     <module>helm</module>
+<!--     <module>pgaas</module>-->
+<!--     <module>clamp-policy</module>-->
+<!--     <module>dcae-policy</module>-->
+<!--     <module>dmaap</module>-->
+<!--     <module>helm</module>-->
      <module>k8s</module>
-     <module>relationships</module>
-     <module>sshkeyshare</module>
+<!--     <module>relationships</module>-->
+<!--     <module>sshkeyshare</module>-->
   </modules>
   <properties>
     <onap.nexus.url>https://nexus.onap.org</onap.nexus.url>
