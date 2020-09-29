@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.4.3]
+* OOM-2526 - Replace AAF CertService with OOM CertService
+* Rename truststore merger init container to cert post processor
+
 ## [3.4.1]
 * DCAEGEN2-2253 - Add support to move CMPv2 keystore in place of AAF CertMan keystore
 * Make secret for cert-service-client container configurable
