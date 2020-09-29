@@ -45,7 +45,7 @@ FACTORS = {None: 1, "s": 1, "m": 60, "h": 3600}
 PORTS = re.compile("^([0-9]+)(/(udp|UDP|tcp|TCP))?:([0-9]+)$")
 
 # Constants for external_cert
-MOUNT_PATH = "/etc/onap/aaf/certservice/certs/"
+MOUNT_PATH = "/etc/onap/oom/certservice/certs/"
 KEYSTORE_PATH = MOUNT_PATH + "certServiceClient-keystore.jks"
 TRUSTSTORE_PATH = MOUNT_PATH + "truststore.jks"
 DEFAULT_CERT_TYPE = "p12"
@@ -366,10 +366,10 @@ def _add_external_tls_init_container(ctx, init_containers, volumes, external_cer
     init_containers.append(_create_container_object("cert-service-client", docker_image, False, volume_mounts=init_volume_mounts, env=env))
 
 
-def _add_truststore_merger_init_container(ctx, init_containers, tls_info, tls_config, external_cert, truststore_merger_config):
+def _add_cert_post_processor_init_container(ctx, init_containers, tls_info, tls_config, external_cert, cert_post_processor_config):
     # Adds an InitContainer to the pod to merge TLS and external TLS truststore into single file.
-    docker_image = truststore_merger_config["image_tag"]
-    ctx.logger.info("Creating init container: truststore merger \n  * [" + docker_image + "]")
+    docker_image = cert_post_processor_config["image_tag"]
+    ctx.logger.info("Creating init container: cert post processor \n  * [" + docker_image + "]")
 
     tls_cert_dir = tls_info.get("cert_directory") or tls_config.get("component_cert_dir")
     if not tls_cert_dir.endswith('/'):
@@ -401,7 +401,7 @@ def _add_truststore_merger_init_container(ctx, init_containers, tls_info, tls_co
     init_volume_mounts = [client.V1VolumeMount(name="tls-info", mount_path=tls_cert_dir)]
 
     # Create the init container
-    init_containers.append(_create_container_object("truststore-merger", docker_image, False, volume_mounts=init_volume_mounts, env=env))
+    init_containers.append(_create_container_object("cert-post-processor", docker_image, False, volume_mounts=init_volume_mounts, env=env))
 
 
 def _get_file_extension(output_type):
@@ -546,8 +546,8 @@ def deploy(ctx, namespace, component_name, image, replicas, always_pull, k8sconf
             "cert_path": mount point for certificate volume in init container
             "image": Docker image to use for TLS init container
             "component_cert_dir" : default mount point for certs
-        - truststore-merger: a dictionary of trustore-merger information:
-            "image_tag": docker image to use for truststore-merger init container
+        - cert_post_processor: a dictionary of cert_post_processor information:
+            "image_tag": docker image to use for cert-post-processor init container
     kwargs may have:
         - volumes:  array of volume objects, where a volume object is:
             {"host":{"path": "/path/on/host"}, "container":{"bind":"/path/on/container","mode":"rw_or_ro"}
@@ -623,7 +623,7 @@ def deploy(ctx, namespace, component_name, image, replicas, always_pull, k8sconf
         external_cert = kwargs.get("external_cert")
         if external_cert and external_cert.get("use_external_tls"):
             _add_external_tls_init_container(ctx, init_containers, volumes, external_cert, k8sconfig.get("external_cert"))
-            _add_truststore_merger_init_container(ctx, init_containers, kwargs.get("tls_info") or {}, k8sconfig.get("tls"), external_cert, k8sconfig.get("truststore_merger"))
+            _add_cert_post_processor_init_container(ctx, init_containers, kwargs.get("tls_info") or {}, k8sconfig.get("tls"), external_cert, k8sconfig.get("cert_post_processor"))
 
         # Create the container for the component
         # Make it the first container in the pod
