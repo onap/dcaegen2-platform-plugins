@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bdc9f693_0fb272e4",
+        "filename": "k8s/configure/configure.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2020-09-30T08:14:22Z",
+      "side": 1,
+      "message": "It should be 2.1.0",
+      "range": {
+        "startLine": 42,
+        "startChar": 102,
+        "endLine": 42,
+        "endChar": 107
+      },
+      "revId": "fdf41893e0c5671aa04c72c3fdf3089930089c3b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
