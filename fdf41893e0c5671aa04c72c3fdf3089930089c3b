@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "ec23486a_c1e05e89",
+        "filename": "k8s/ChangeLog.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-09-30T09:04:07Z",
+      "side": 1,
+      "message": "add concrete jira",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 2
+      },
+      "revId": "fdf41893e0c5671aa04c72c3fdf3089930089c3b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bdc9f693_0fb272e4",
         "filename": "k8s/configure/configure.py",
         "patchSetId": 2
@@ -46,6 +69,29 @@
       "revId": "fdf41893e0c5671aa04c72c3fdf3089930089c3b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c9397f59_4ff6af0b",
+        "filename": "k8s/setup.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 2837
+      },
+      "writtenOn": "2020-09-30T09:04:07Z",
+      "side": 1,
+      "message": "You can add your self.",
+      "range": {
+        "startLine": 28,
+        "startChar": 124,
+        "endLine": 28,
+        "endChar": 126
+      },
+      "revId": "fdf41893e0c5671aa04c72c3fdf3089930089c3b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
