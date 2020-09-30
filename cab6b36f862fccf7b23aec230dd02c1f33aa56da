@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "294ed006_f4d04634",
+        "filename": "k8s/tests/common.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2020-09-30T09:37:32Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we change version to 2.1.0?",
+      "revId": "cab6b36f862fccf7b23aec230dd02c1f33aa56da",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2fff9bff_87143d90",
+        "filename": "k8s/tests/common.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2020-09-30T09:37:32Z",
+      "side": 1,
+      "message": "And also here?",
+      "revId": "cab6b36f862fccf7b23aec230dd02c1f33aa56da",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
