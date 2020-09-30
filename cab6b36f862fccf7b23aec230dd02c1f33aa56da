@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1ce14867_335fb864",
+        "filename": "k8s/tests/common.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 6592
+      },
+      "writtenOn": "2020-09-30T10:21:06Z",
+      "side": 1,
+      "message": "If I understand it correctly, here we set exemplary config to tests, but tests don\u0027t run container, so this image will not be pulled and run. Tests only create container with provided config. Then in verify functions (eg. verify_external_cert) we check if created container has been applied with provided config, for example image_tag, so I think it is better to set here different version than in production code and then check if container was created with provided image_tag, but if you want I can change to 2.1.0.",
+      "parentUuid": "294ed006_f4d04634",
+      "revId": "cab6b36f862fccf7b23aec230dd02c1f33aa56da",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2fff9bff_87143d90",
         "filename": "k8s/tests/common.py",
         "patchSetId": 4
