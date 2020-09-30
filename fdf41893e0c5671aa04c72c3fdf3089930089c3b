@@ -22,6 +22,30 @@
       "revId": "fdf41893e0c5671aa04c72c3fdf3089930089c3b",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "701ac48b_a7ab8b24",
+        "filename": "k8s/configure/configure.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 6592
+      },
+      "writtenOn": "2020-09-30T08:35:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bdc9f693_0fb272e4",
+      "range": {
+        "startLine": 42,
+        "startChar": 102,
+        "endLine": 42,
+        "endChar": 107
+      },
+      "revId": "fdf41893e0c5671aa04c72c3fdf3089930089c3b",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
