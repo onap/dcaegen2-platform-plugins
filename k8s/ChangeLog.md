@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.5.0]
+* DCAEGEN2-2388 - Extend DCAE CFY K8S plugin to support IPv6 services.
+* Update kubernetes python plugin to version 12.0.1 
 ## [3.4.3]
 * OOM-2526 - Replace AAF CertService with OOM CertService
 * Rename truststore merger init container to cert post processor
