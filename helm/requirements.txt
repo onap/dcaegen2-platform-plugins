@@ -14,4 +14,4 @@ pyyaml>=3.12
 # When such a version is released, the single requirement should suffice.
 # The install_requires in setup.py may also be uncommented then.
 cloudify-common>=5.0.5,<5.1.0; python_version<"3"
-cloudify-common @ git+https://github.com/cloudify-cosmo/cloudify-common@cy-1374-python3#egg=cloudify-common==5.0.5; python_version>="3"
+cloudify-common>=5.1.0; python_version>="3"

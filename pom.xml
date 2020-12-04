@@ -35,7 +35,6 @@ limitations under the License.
      <module>clamp-policy</module>
      <module>dcae-policy</module>
      <module>dmaap</module>
-     <module>helm</module>
      <module>k8s</module>
      <module>relationships</module>
      <module>sshkeyshare</module>

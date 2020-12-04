@@ -60,6 +60,7 @@ package)
   echo "==> package phase script"
   build_archives_for_wagons
   build_wagons
+  build_py3_wagons
   ;;
 install)
   echo "==> install phase script"

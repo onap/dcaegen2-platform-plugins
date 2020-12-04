@@ -269,9 +269,39 @@ build_wagons()
   rm -rf venv-pkg
 }
 
+build_py3_wagons()
+{
+  rm -rf ./*.wgn venv3-pkg
+  SETUPFILES=$(find . -name "setup.py")
+
+  virtualenv -p python3 ./venv3-pkg
+  source ./venv3-pkg/bin/activate
+  pip install --upgrade pip
+  pip install wagon
+
+  CURDIR=$(pwd)
+  for SETUPFILE in $SETUPFILES; do
+    PLUGIN_DIR=$(dirname "$SETUPFILE")
+    PLUGIN_NAME=$(grep 'name[[:space:]]*=' "$SETUPFILE" | cut -f2 -d'=' | sed 's/[^0-9a-zA-Z\.]*//g')
+    PLUGIN_VERSION=$(grep 'version[[:space:]]*=' "$SETUPFILE" | cut -f2 -d'=' | sed 's/[^0-9\.]*//g')
+
+    echo "In $PLUGIN_DIR, build plugin $PLUGIN_NAME, version $PLUGIN_VERSION"
+
+    wagon create -r "${PLUGIN_DIR}/requirements.txt" --format tar.gz "${PLUGIN_DIR}"
+
+    PKG_FILE_NAMES=( "${PLUGIN_NAME}-${PLUGIN_VERSION}"*.wgn )
+    echo Built package: "${PKG_FILE_NAMES[@]}"
+    cd "$CURDIR"
+  done
+
+  deactivate
+  rm -rf venv3-pkg
+}
+
+
 build_archives_for_wagons()
 {
-  rm -rf ./*.tgz ./*.zip venv-pkg
+  rm -rf ./*.tgz ./*.zip venv-pkg venv3-pkg
 
   SETUPFILES=$(find "$(pwd)" -name "setup.py")
   CURDIR=$(pwd)
