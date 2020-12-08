@@ -242,7 +242,7 @@ run_tox_test()
 
 build_wagons()
 {
-  rm -rf ./*.wgn venv-pkg
+  rm -rf ./*py27*.wgn venv-pkg
   SETUPFILES=$(find . -name "setup.py")
 
   virtualenv ./venv-pkg
@@ -271,7 +271,7 @@ build_wagons()
 
 build_py3_wagons()
 {
-  rm -rf ./*.wgn venv3-pkg
+  rm -rf ./*py36*.wgn venv3-pkg
   SETUPFILES=$(find . -name "setup.py")
 
   virtualenv -p python3 ./venv3-pkg
@@ -432,7 +432,8 @@ upload_wagons_and_type_yamls()
     fi
 
     TYPEFILE_PACKAGE_VERSION=$(grep 'package_version[[:space:]]*:' "$TYPEFILE_NAME" |cut -f2 -d ':' |sed -r 's/\s+//g')
-    WAGONFILE_NAME=$(ls -1 "${PLUGIN_NAME}"-"${TYPEFILE_PACKAGE_VERSION}"-*.wgn)
+    WAGONFILE_NAME=$(ls -1 "${PLUGIN_NAME}"-"${TYPEFILE_PACKAGE_VERSION}"-py27*.wgn)
+
     if [ -z "$WAGONFILE_NAME" ]; then
       echo "!!! No wagonfile found with matching package name and version as required in typefile: "
       echo "    $TYPEFILE_NAME plugin $PLUGIN_NAME package version ${TYPEFILE_PACKAGE_VERSION}"
@@ -443,6 +444,14 @@ upload_wagons_and_type_yamls()
     upload_raw_file "${WAGONFILE_NAME}" "${PLUGIN_NAME}/${PLUGIN_VERSION}"
 
     rm -r "$WAGONFILE_NAME"
+
+    # Upload py3 wagon
+    PY3WAGONFILE_NAME=$(ls -1 "${PLUGIN_NAME}"-"${TYPEFILE_PACKAGE_VERSION}"-py36*.wgn)
+    if [ "$PY3WAGONFILE_NAME" ]; then
+      upload_raw_file "${PY3WAGONFILE_NAME}" "${PLUGIN_NAME}/${PLUGIN_VERSION}"
+      rm -r "$PY3WAGONFILE_NAME"
+    fi
+
     if [ "$TYPEFILE_NAME" != "$NEWFILENAME" ]; then
       rm -f "$NEWFILENAME"
     fi
