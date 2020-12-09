@@ -1,0 +1,257 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b1d5bb97_4d3c44e9",
+        "filename": "k8s/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-09T19:44:42Z",
+      "side": 1,
+      "message": "Not real example",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 1
+      },
+      "revId": "bb6756a020f10fb4c06fc7d24878067b57273273",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d6644894_4a87927f",
+        "filename": "k8s/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-09T19:44:42Z",
+      "side": 1,
+      "message": "why not just use boolean?",
+      "range": {
+        "startLine": 147,
+        "startChar": 4,
+        "endLine": 147,
+        "endChar": 13
+      },
+      "revId": "bb6756a020f10fb4c06fc7d24878067b57273273",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "21c667bc_43875b34",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-09T19:44:42Z",
+      "side": 1,
+      "message": "Why is ctx passed here?",
+      "range": {
+        "startLine": 230,
+        "startChar": 107,
+        "endLine": 230,
+        "endChar": 110
+      },
+      "revId": "bb6756a020f10fb4c06fc7d24878067b57273273",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "08eec26e_8b5fe686",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-09T19:44:42Z",
+      "side": 1,
+      "message": "Wouldn\u0027t:\n if \"ipv6\" in p\n\nwork?",
+      "range": {
+        "startLine": 260,
+        "startChar": 12,
+        "endLine": 260,
+        "endChar": 37
+      },
+      "revId": "bb6756a020f10fb4c06fc7d24878067b57273273",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "babfe2fa_b342a85e",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-09T19:44:42Z",
+      "side": 1,
+      "message": "Consider using \n p \u003d \"\".join(p[\u0027concat\u0027])",
+      "range": {
+        "startLine": 262,
+        "startChar": 0,
+        "endLine": 265,
+        "endChar": 17
+      },
+      "revId": "bb6756a020f10fb4c06fc7d24878067b57273273",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "08da079c_2c766b2d",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-09T19:44:42Z",
+      "side": 1,
+      "message": "Same as above.",
+      "range": {
+        "startLine": 275,
+        "startChar": 35,
+        "endLine": 275,
+        "endChar": 47
+      },
+      "revId": "bb6756a020f10fb4c06fc7d24878067b57273273",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "faeacf5f_73e9f6a9",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-09T19:44:42Z",
+      "side": 1,
+      "message": "Please unify the naming.",
+      "range": {
+        "startLine": 451,
+        "startChar": 23,
+        "endLine": 451,
+        "endChar": 26
+      },
+      "revId": "bb6756a020f10fb4c06fc7d24878067b57273273",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f04c9237_90833c16",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-09T19:44:42Z",
+      "side": 1,
+      "message": "Consider using \"in\"",
+      "range": {
+        "startLine": 456,
+        "startChar": 29,
+        "endLine": 456,
+        "endChar": 41
+      },
+      "revId": "bb6756a020f10fb4c06fc7d24878067b57273273",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c39b62a3_c1a0b2e9",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 674,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-09T19:44:42Z",
+      "side": 1,
+      "message": "Just to be sure - we don\u0027t want a second ClusterIP service with IPv6?",
+      "range": {
+        "startLine": 673,
+        "startChar": 0,
+        "endLine": 674,
+        "endChar": 78
+      },
+      "revId": "bb6756a020f10fb4c06fc7d24878067b57273273",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e730128b_f0faf0a6",
+        "filename": "k8s/plugin_testing_blueprints/blueprints/nginx-svc-nodeport-ipv6.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-09T19:44:42Z",
+      "side": 1,
+      "message": "doesn\u0027t",
+      "range": {
+        "startLine": 6,
+        "startChar": 16,
+        "endLine": 6,
+        "endChar": 21
+      },
+      "revId": "bb6756a020f10fb4c06fc7d24878067b57273273",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b98f6c3c_7a43a2ea",
+        "filename": "k8s/plugin_testing_blueprints/blueprints/nginx-svc-nodeport-ipv6.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2020-12-09T19:44:42Z",
+      "side": 1,
+      "message": "How is that ensured? From docs it seems like it would produce some error - \nhttps://github.com/kubernetes-client/python/blob/release-12.0/kubernetes/docs/V1ServiceSpec.md",
+      "range": {
+        "startLine": 6,
+        "startChar": 33,
+        "endLine": 6,
+        "endChar": 54
+      },
+      "revId": "bb6756a020f10fb4c06fc7d24878067b57273273",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
