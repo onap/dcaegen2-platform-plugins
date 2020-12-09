@@ -59,6 +59,9 @@ def _create_service_name(component_name):
 def _create_exposed_service_name(component_name):
     return ("x{0}".format(component_name))[:63]
 
+def _create_exposed_v6_service_name(component_name):
+    return ("x{0}-ipv6".format(component_name))[:63]
+
 def _configure_api(location=None):
     # Look for a kubernetes config file
     if os.path.exists(K8S_CONFIG_PATH):
@@ -223,11 +226,13 @@ def _create_deployment_object(component_name,
 
     return deployment
 
-def _create_service_object(service_name, component_name, service_ports, annotations, labels, service_type):
+
+def _create_service_object(service_name, component_name, service_ports, annotations, labels, service_type, ctx, ip_family):
     service_spec = client.V1ServiceSpec(
         ports=service_ports,
-        selector={"app" : component_name},
-        type=service_type
+        selector={"app": component_name},
+        type=service_type,
+        ip_family=ip_family
     )
     if annotations:
         metadata = client.V1ObjectMeta(name=_create_service_name(service_name), labels=labels, annotations=annotations)
@@ -250,6 +255,14 @@ def parse_ports(port_list):
     container_ports = []
     port_map = {}
     for p in port_list:
+        ipv6 = "N"
+        if type(p) is dict:
+            if p.__contains__("ipv6"):
+                ipv6 = p['ipv6'].upper()
+            u = ""
+            for i in p['concat']:
+                u = u + str(i)
+            p = u
         m = PORTS.match(p.strip())
         if m:
             cport = int(m.group(1))
@@ -258,12 +271,15 @@ def parse_ports(port_list):
                 proto = (m.group(3)).upper()
             else:
                 proto = "TCP"
-            container_ports.append((cport, proto))
-            port_map[(cport, proto)] = hport
+            port = (cport, proto)
+            if not container_ports.__contains__(port):
+                container_ports.append(port)
+            port_map[(cport, proto, ipv6)] = hport
         else:
             raise ValueError("Bad port specification: {0}".format(p))
 
     return container_ports, port_map
+
 
 def _parse_volumes(volume_list):
     volumes = []
@@ -427,17 +443,24 @@ def _get_keystore_destination_paths(output_type, tls_cert_dir):
     }[output_type]
     return destination_paths_template.format(tls_cert_dir)
 
+
 def _process_port_map(port_map):
-    service_ports = []      # Ports exposed internally on the k8s network
-    exposed_ports = []      # Ports to be mapped to ports on the k8s nodes via NodePort
-    for (cport, proto), hport in port_map.items():
+    service_ports = []  # Ports exposed internally on the k8s network
+    exposed_ports = []  # Ports to be mapped to ports on the k8s nodes via NodePort
+    exposed_ports_ipv6 = []
+    for (cport, proto, ip6_port), hport in port_map.items():
         name = "xport-{0}-{1}".format(proto[0].lower(), cport)
         cport = int(cport)
         hport = int(hport)
-        service_ports.append(client.V1ServicePort(port=cport, protocol=proto, name=name[1:]))
+        port = client.V1ServicePort(port=cport, protocol=proto, name=name[1:])
+        if not service_ports.__contains__(port):
+            service_ports.append(port)
         if hport != 0:
-            exposed_ports.append(client.V1ServicePort(port=cport, protocol=proto, node_port=hport, name=name))
-    return service_ports, exposed_ports
+            if ip6_port == "Y":
+                exposed_ports_ipv6.append(client.V1ServicePort(port=cport, protocol=proto, node_port=hport, name=name))
+            else:
+                exposed_ports.append(client.V1ServicePort(port=cport, protocol=proto, node_port=hport, name=name))
+    return service_ports, exposed_ports, exposed_ports_ipv6
 
 def _service_exists(location, namespace, component_name):
     exists = False
@@ -644,10 +667,11 @@ def deploy(ctx, namespace, component_name, image, replicas, always_pull, k8sconf
 
         # Create service(s), if a port mapping is specified
         if port_map:
-            service_ports, exposed_ports = _process_port_map(port_map)
+            service_ports, exposed_ports, exposed_ports_ipv6 = _process_port_map(port_map)
 
             # Create a ClusterIP service for access via the k8s network
-            service = _create_service_object(_create_service_name(component_name), component_name, service_ports, None, labels, "ClusterIP")
+            service = _create_service_object(_create_service_name(component_name), component_name, service_ports, None,
+                                             labels, "ClusterIP", ctx, "IPv4")
             core.create_namespaced_service(namespace, service)
             cip_service_created = True
             deployment_description["services"].append(_create_service_name(component_name))
@@ -655,9 +679,17 @@ def deploy(ctx, namespace, component_name, image, replicas, always_pull, k8sconf
             # If there are ports to be exposed on the k8s nodes, create a "NodePort" service
             if exposed_ports:
                 exposed_service = \
-                    _create_service_object(_create_exposed_service_name(component_name), component_name, exposed_ports, '', labels, "NodePort")
+                    _create_service_object(_create_exposed_service_name(component_name), component_name, exposed_ports,
+                                           '', labels, "NodePort", ctx, "IPv4")
                 core.create_namespaced_service(namespace, exposed_service)
                 deployment_description["services"].append(_create_exposed_service_name(component_name))
+
+            if exposed_ports_ipv6:
+                exposed_service_ipv6 = \
+                    _create_service_object(_create_exposed_v6_service_name(component_name), component_name,
+                                           exposed_ports_ipv6, '', labels, "NodePort", ctx, "IPv6")
+                core.create_namespaced_service(namespace, exposed_service_ipv6)
+                deployment_description["services"].append(_create_exposed_v6_service_name(component_name))
 
     except Exception as e:
         # If the ClusterIP service was created, delete the service:

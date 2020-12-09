@@ -149,15 +149,15 @@ def test_enhance_docker_params(mockconfig):
 
     # Good - Test just docker config ports and volumes
 
-    test_kwargs = { "docker_config": { "ports": ["1:1", "2:2"],
+    test_kwargs = { "docker_config": { "ports": [{u'concat': [u'8080', u':', 0], u'ipv6': u'Y'}, "1:1"],
         "volumes": [{"container": "somewhere", "host": "somewhere else"}] },
         "service_id": None }
     actual = tasks._enhance_docker_params(**test_kwargs)
 
-    assert actual == {'envs': {}, 'docker_config': {'ports': ['1:1', '2:2'],
+    assert actual == {'envs': {}, 'docker_config': {'ports': [{u'concat': [u'8080', u':', 0], u'ipv6': u'Y'},"1:1"],
         'volumes': [{'host': 'somewhere else', 'container': 'somewhere'}]},
-        'ports': ['1:1', '2:2'], 'volumes': [{'host': 'somewhere else',
-            'container': 'somewhere'}], "service_id": None}
+        'ports': [{u'concat': [u'8080', u':', 0], u'ipv6': u'Y'}, "1:1"], 'volumes': [{'host': 'somewhere else',
+        'container': 'somewhere'}], "service_id": None}
 
     # Good - Test just docker config ports and volumes with overrrides
 
