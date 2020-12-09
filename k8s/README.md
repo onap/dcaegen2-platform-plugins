@@ -136,6 +136,17 @@ setting the `<host port>` to 0 will expose the `<container port>` to other compo
 ports on the Kubernetes host's external interface.    Setting `<host port>` to a non-zero value will expose that port on the external interfaces
 of every Kubernetes host in the cluster.  (This uses the Kubernetes `NodePort` service type.)
 
+In dualstack Kubernetes environment, adding parameter ipv6 or ipv4, specify which ip family will be used. 
+If ipv6 will be set in only ipv4 Kubernetes cluster, service will use ipv4 instead of declared ipv6.  
+
+```yaml
+ports:
+  - concat: ['8000:31000']
+    ipv6: false
+  - concat: ['8000:31001']
+    ipv6: true
+```
+
 #### `max_wait`
 
 Integer - seconds to wait for component to become ready before throwing a `NonRecoverableError`. For example:

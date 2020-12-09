@@ -93,16 +93,18 @@ def test_parse_ports():
 
     good_ports = [{"in": input, "ex": expected}
         for (input, expected) in [
-            ("9101:0", (9101, 0, "TCP")),
-            ("9101/TCP:0", (9101, 0, "TCP")),
-            ("9101/tcp:0", (9101, 0, "TCP")),
-            ("9101/UDP:0", (9101, 0, "UDP")),
-            ("9101/udp:0", (9101, 0, "UDP")),
-            ("9101:31043", (9101, 31043, "TCP")),
-            ("9101/TCP:31043", (9101, 31043, "TCP")),
-            ("9101/tcp:31043", (9101, 31043, "TCP")),
-            ("9101/UDP:31043", (9101, 31043, "UDP")),
-            ("9101/udp:31043", (9101, 31043, "UDP"))
+            ({u'concat': [u'9101', u':', 0], u'ipv6': True}, (9101, 0, True, "TCP")),
+            ({u'concat': [u'9102', u':', 0], u'ipv6': False}, (9102, 0, False, "TCP")),
+            ({u'concat': [u'9103', u':', 36000], u'ipv6': True}, (9103, 36000, True, "TCP")),
+            ("9101/TCP:0", (9101, 0, False, "TCP")),
+            ("9101/tcp:0", (9101, 0, False, "TCP")),
+            ("9101/UDP:0", (9101, 0, False, "UDP")),
+            ("9101/udp:0", (9101, 0, False, "UDP")),
+            ("9101:31043", (9101, 31043, False, "TCP")),
+            ("9101/TCP:31043", (9101, 31043, False, "TCP")),
+            ("9101/tcp:31043", (9101, 31043, False, "TCP")),
+            ("9101/UDP:31043", (9101, 31043, False, "UDP")),
+            ("9101/udp:31043", (9101, 31043, False, "UDP"))
         ]
     ]
 
@@ -118,7 +120,9 @@ def test_parse_ports():
     ]
 
     port_list = [
-        "9101:0",
+        {u'concat': [u'9101', u':', 3023], u'ipv6': True},
+        {u'concat': [u'9102', u':', 0], u'ipv6': True},
+        {u'concat': [u'9103', u':', 0], u'ipv6': False},
         "5053/tcp:5053",
         "5053/udp:5053",
         "9661:19661",
@@ -127,19 +131,21 @@ def test_parse_ports():
     ]
 
     expected_port_map = {
-        (9101,"TCP") : 0,
-        (5053,"TCP") : 5053,
-        (5053,"UDP") : 5053,
-        (9661,"TCP") : 19661,
-        (9661,"UDP") : 19661,
-        (8080,"TCP") : 8080
+        (9101, "TCP", True): 3023,
+        (9102, "TCP", True): 0,
+        (9103, "TCP", False): 0,
+        (5053, "TCP", False): 5053,
+        (5053, "UDP", False): 5053,
+        (9661, "TCP", False): 19661,
+        (9661, "UDP", False): 19661,
+        (8080, "TCP", False): 8080
     }
 
     for test_case in good_ports:
         container_ports, port_map = parse_ports([test_case["in"]])
-        (cport, hport, proto) = test_case["ex"]
+        (cport, hport, ipv6, proto) = test_case["ex"]
         assert container_ports == [(cport, proto)]
-        assert port_map == {(cport, proto) : hport}
+        assert port_map == {(cport, proto, ipv6): hport}
 
     for port in bad_ports:
         with pytest.raises(ValueError):
