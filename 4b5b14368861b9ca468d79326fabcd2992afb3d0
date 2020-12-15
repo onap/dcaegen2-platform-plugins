@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "49f00882_fb061399",
+        "filename": "k8s/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2020-12-15T15:30:09Z",
+      "side": 1,
+      "message": "What is the reason for using this \"concat\" syntax instead of the \u003ccontainer_port\u003e:\u003chost_port\u003e used for IPv4?  With this syntax, how do I specify a protocol(UDP or TCP)?",
+      "revId": "4b5b14368861b9ca468d79326fabcd2992afb3d0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
