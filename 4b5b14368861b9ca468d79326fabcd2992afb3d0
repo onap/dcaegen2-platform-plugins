@@ -16,6 +16,24 @@
       "revId": "4b5b14368861b9ca468d79326fabcd2992afb3d0",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5603b96_a0207bc8",
+        "filename": "k8s/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 6729
+      },
+      "writtenOn": "2020-12-16T07:57:28Z",
+      "side": 1,
+      "message": "We are using concat here to use similar syntax that are used in onap blueprints, for example, in ves blueprint we have:\nports:\n              - concat: [{get_input: internal_port},\":\",{get_input: external_port}]\n              - concat: [{get_input: internal_port_tls},\":\",{get_input: external_port_tls}]\n\nWe can specify a protocol, the same way as previously: \n    - concat: [\u00278000/udp:31000\u0027]\n      ipv6: true",
+      "parentUuid": "49f00882_fb061399",
+      "revId": "4b5b14368861b9ca468d79326fabcd2992afb3d0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
