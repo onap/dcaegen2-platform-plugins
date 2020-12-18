@@ -34,6 +34,24 @@
       "revId": "4b5b14368861b9ca468d79326fabcd2992afb3d0",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "13873e90_45d82d64",
+        "filename": "k8s/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2020-12-18T15:26:07Z",
+      "side": 1,
+      "message": "These are two very different cases.  \n\nIn the ves blueprint example, you are using \"concat\" to invoke the intrinsic function called \"concat\".  When Cloudify Manager processes the blueprint, it will invoke the \"concat\" function to create a simple string.  (It will also invoke the \"get_input\" intrinsic function twice.\"  The k8splugin will see a simple string.\n\nIn the second case, you are using \"concat\" as a property name in a YAML object (which will be turned into a Python dict, with \"concat\" as a key).  You do not want the intrinsic function to be invoked.  You want the plugin to see a Python dict with a key called \"concat\" and another key called \"ipv6\".   (See line 261 in k8sclient/k8sclient.py, where the code is looking for a key called \"concat\".)  I am not sure how you are preventing the intrinsic function from being invoked, but if it is invoked, you will not get the result you expect.\n\nI would have given the property a meaningful name, like \"port_mapping\", instead of \"concat\".  Then it would be clearer to the blueprint writer what this property means, and there would be no risk of confusion with the intrinsic function called \"concat\".",
+      "parentUuid": "d5603b96_a0207bc8",
+      "revId": "4b5b14368861b9ca468d79326fabcd2992afb3d0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
