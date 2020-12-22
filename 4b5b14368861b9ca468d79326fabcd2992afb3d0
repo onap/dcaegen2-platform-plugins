@@ -52,6 +52,24 @@
       "revId": "4b5b14368861b9ca468d79326fabcd2992afb3d0",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "69caca46_76aa8ad4",
+        "filename": "k8s/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 5597
+      },
+      "writtenOn": "2020-12-22T11:52:03Z",
+      "side": 1,
+      "message": "All right, I actually thought, that concat there is used as  YAML key rather than a function.\nNow, what we wanted to avoid is to introduce some backwards compatibility issues.\n\nIf we`d change the concat --\u003e port_mapping, then we`d probably have to update the blueprints to use that new property, which would break backwards compatibility...\n\n...unless, we`d be fine to use concat as an intrinsic function, if the \"ipv6\" property is not used, and if we`d intend to use that one, we`d use as well port_mapping instead of \"concat\".\n\nAnyway, this might be tricky to explain to people interested in using that IPv6 approach.\nLooking at the backwards compatibility issue, what would You recommend:\n- we keep using \"concat\" as the YAML key (as we do today)\n- we change \"concat\" to \"port_mapping\" and we use \"port_mapping\" everywhere, in a plugin version 4.0.0 (this would be a breaking change from my perspective)\n- when we use no ipv6 property, we keep using concat, and if we`d intend to use IPv6, we move to use \"port_mapping\"\n\nIn this backwards compatibility context, the current behavior doesn`t look that bad to me...",
+      "parentUuid": "13873e90_45d82d64",
+      "revId": "4b5b14368861b9ca468d79326fabcd2992afb3d0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
