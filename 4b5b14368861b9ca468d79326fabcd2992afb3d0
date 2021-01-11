@@ -70,6 +70,24 @@
       "revId": "4b5b14368861b9ca468d79326fabcd2992afb3d0",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3994fc16_3af25a18",
+        "filename": "k8s/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2021-01-11T18:51:21Z",
+      "side": 1,
+      "message": "For the IPv6 support, I think it would be wise to change \"concat\" to \"port_mapping\" for components using IPv6.\nWe would not need to make the change for any of the existing blueprints that use IPv4.  \nThe problem here is that \"concat\" is the name of an intrinsic function that provides string concatenation.  The blueprints that are currently using it are using it for string concatenation.\nIn a production environment, I think you will probably want to use inputs and string concatenation for IPv6, so that you can change the port mapping at deployment time.  For example:\n\nports:\n  - port_mapping: concat [{get_input: internal_port},\":\",{get_input: external_port}]\n    ipv6: {get_input: use_ipv6}",
+      "parentUuid": "69caca46_76aa8ad4",
+      "revId": "4b5b14368861b9ca468d79326fabcd2992afb3d0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
