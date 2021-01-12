@@ -88,6 +88,24 @@
       "revId": "4b5b14368861b9ca468d79326fabcd2992afb3d0",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ca6c42c3_0bc7c6f2",
+        "filename": "k8s/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2021-01-12T21:31:25Z",
+      "side": 1,
+      "message": "Lets discuss this on meeting tomorrow and decide if we need to revert this patch or submit new update; Jerzy Szachniewicz/Damian - Hope u can join.",
+      "parentUuid": "3994fc16_3af25a18",
+      "revId": "4b5b14368861b9ca468d79326fabcd2992afb3d0",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
