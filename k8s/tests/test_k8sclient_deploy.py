@@ -23,45 +23,50 @@
 
 import pytest
 from common import do_deploy
-from common import do_deploy_ext
+# from common import do_deploy_ext
 from common import verify_external_cert
 from common import verify_cert_post_processor
 
-def test_deploy_full_tls(mockk8sapi):
-    ''' Deploy component with a full TLS configuration, to act as a server '''
 
-    dep, deployment_description = do_deploy({"use_tls": True, "cert_directory": "/path/to/container/cert/directory" })
+def test_deploy_full_tls(mockk8sapi):
+    """ Deploy component with a full TLS configuration, to act as a server """
+
+    dep, deployment_description = do_deploy(tls_info={"use_tls": True, "cert_directory": "/path/to/container/cert/directory"})
 
     app_container = dep.spec.template.spec.containers[0]
     assert app_container.volume_mounts[2].mount_path == "/path/to/container/cert/directory"
+
 
 def test_deploy_tls_off(mockk8sapi):
-    ''' TLS client only, but with cert directory configured '''
+    """ TLS client only, but with cert directory configured """
 
-    dep, deployment_description = do_deploy({"use_tls": False, "cert_directory": "/path/to/container/cert/directory" })
+    dep, deployment_description = do_deploy(tls_info={"use_tls": False, "cert_directory": "/path/to/container/cert/directory"})
 
     app_container = dep.spec.template.spec.containers[0]
     assert app_container.volume_mounts[2].mount_path == "/path/to/container/cert/directory"
 
+
 def test_deploy_no_tls_info(mockk8sapi):
-    ''' TLS client only, but with cert directory configured '''
+    """ TLS client only, but with cert directory configured """
 
     dep, deployment_description = do_deploy()
 
     app_container = dep.spec.template.spec.containers[0]
     assert app_container.volume_mounts[2].mount_path == "/opt/dcae/cacert"
 
-def test_deploy_external_cert(mockk8sapi):
-    ''' Deploy component with external TLS configuration '''
 
-    dep, deployment_description = do_deploy_ext({"external_cert_directory": "/path/to/container/cert/directory/",
-                                                 "use_external_tls": True,
-                                                 "cert_type": "P12",
-                                                 "ca_name": "myname",
-                                                 "external_certificate_parameters": {
-                                                     "common_name": "mycommonname",
-                                                     "sans": "mysans"}
-                                                 })
+def test_deploy_external_cert(mockk8sapi):
+    """ Deploy component with external TLS configuration """
+
+    dep, deployment_description = do_deploy(
+        ext_tls_info={"external_cert_directory": "/path/to/container/cert/directory/",
+                      "use_external_tls": True,
+                      "cert_type": "P12",
+                      "ca_name": "myname",
+                      "external_certificate_parameters": {
+                          "common_name": "mycommonname",
+                          "sans": "mysans"}
+                      })
 
     app_container = dep.spec.template.spec.containers[0]
     assert app_container.volume_mounts[2].mount_path == "/opt/dcae/cacert"
@@ -70,4 +75,9 @@ def test_deploy_external_cert(mockk8sapi):
     verify_external_cert(dep)
     verify_cert_post_processor(dep)
 
+def test_deploy_config_map(mockk8sapi):
+    """ Deploy component with configMap in volumes """
+    dep, deployment_description = do_deploy(useConfigMap=True)
 
+    app_container = dep.spec.template.spec.containers[0]
+    assert app_container.volume_mounts[1].mount_path == "/path/to/configMap"
