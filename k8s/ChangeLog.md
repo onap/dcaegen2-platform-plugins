@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
+
+
+## [3.5.2]
+* DCAEGEN2-2546 - Add support for config_volume in k8s_client
+
 ## [3.5.1]
 * DCAEGEN2-2388 - Extend DCAE CFY K8S plugin to support IPv6 services.
 * Add properties to ports list to support IPv6 services

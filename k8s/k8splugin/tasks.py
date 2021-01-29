@@ -3,7 +3,7 @@
 # ================================================================================
 # Copyright (c) 2017-2020 AT&T Intellectual Property. All rights reserved.
 # Copyright (c) 2020 Pantheon.tech. All rights reserved.
-# Copyright (c) 2020 Nokia. All rights reserved.
+# Copyright (c) 2020-2021 Nokia. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -254,6 +254,7 @@ def _create_and_start_container(container_name, image, **kwargs):
     kwargs may have:
         - volumes:  array of volume objects, where a volume object is:
             {"host":{"path": "/path/on/host"}, "container":{"bind":"/path/on/container","mode":"rw_or_ro"}
+            {'config_volume': {'name': 'myConfigMap'}, 'container': {'bind': '/path/on/config.yaml', 'mode': 'ro'}
         - ports: array of strings in the form "container_port:host_port"
         - envs: map of name-value pairs ( {name0: value0, name1: value1...} )
         - always_pull: boolean.  If true, sets image pull policy to "Always"
