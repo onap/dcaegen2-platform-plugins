@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2de510a6_07ac7e28",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 5098
+      },
+      "writtenOn": "2021-02-02T14:15:36Z",
+      "side": 1,
+      "message": "I believe this change is not needed, after it, program should work similar to previous implementation with \"labels\u003d{}\" and \"pull_secrets\u003d[]\" as default. Only if this method is called with explicit None, this none checking would make sense.",
+      "range": {
+        "startLine": 202,
+        "startChar": 0,
+        "endLine": 205,
+        "endChar": 25
+      },
+      "revId": "f0d67ef528c52aa94e2503254cb6fff3199999b7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
