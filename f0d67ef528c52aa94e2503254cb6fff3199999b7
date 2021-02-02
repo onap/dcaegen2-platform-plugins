@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "a9a5f489_2e1f9916",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-02T14:22:21Z",
+      "side": 1,
+      "message": "2020-2021",
+      "range": {
+        "startLine": 6,
+        "startChar": 16,
+        "endLine": 6,
+        "endChar": 20
+      },
+      "revId": "f0d67ef528c52aa94e2503254cb6fff3199999b7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2de510a6_07ac7e28",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 4
@@ -18,6 +41,98 @@
         "startChar": 0,
         "endLine": 205,
         "endChar": 25
+      },
+      "revId": "f0d67ef528c52aa94e2503254cb6fff3199999b7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69d34df4_c4261e60",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-02T14:22:21Z",
+      "side": 1,
+      "message": "I think this should be removed\n\nimport of logging probably also not needed.",
+      "range": {
+        "startLine": 647,
+        "startChar": 0,
+        "endLine": 647,
+        "endChar": 1
+      },
+      "revId": "f0d67ef528c52aa94e2503254cb6fff3199999b7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ce210a8_62321fee",
+        "filename": "k8s/k8splugin/tasks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-02T14:22:21Z",
+      "side": 1,
+      "message": "2020-2021",
+      "range": {
+        "startLine": 6,
+        "startChar": 16,
+        "endLine": 6,
+        "endChar": 20
+      },
+      "revId": "f0d67ef528c52aa94e2503254cb6fff3199999b7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "19ac4bbb_3b68a978",
+        "filename": "k8s/tests/common.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-02T14:22:21Z",
+      "side": 1,
+      "message": "2020-2021",
+      "range": {
+        "startLine": 6,
+        "startChar": 16,
+        "endLine": 6,
+        "endChar": 20
+      },
+      "revId": "f0d67ef528c52aa94e2503254cb6fff3199999b7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2e4ac475_1f92f57b",
+        "filename": "k8s/tox.ini",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-02T14:22:21Z",
+      "side": 1,
+      "message": "Not sure if py38 should be removed.",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 3
       },
       "revId": "f0d67ef528c52aa94e2503254cb6fff3199999b7",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
