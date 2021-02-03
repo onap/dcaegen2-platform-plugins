@@ -71,11 +71,10 @@ def _set_resources():
     }
 
 
-def _set_common_kwargs():
+def _set_common_kwargs(useConfigMap=False):
     ''' Set kwargs common to all test cases '''
-    return {
+    common_kwargs = {
         "volumes": [
-            {"config_volume": {"name": "myConfigMap"}, "container": {"bind": "/path/to/container", "mode": "ro"}},
             {"host": {"path": "/path/on/host"}, "container": {"bind": "/path/on/container", "mode": "rw"}}
 
         ],
@@ -84,6 +83,10 @@ def _set_common_kwargs():
         "log_info": {"log_directory": "/path/to/container/log/directory"},
         "readiness": {"type": "http", "endpoint": "/ready"}
     }
+    if useConfigMap:
+        common_kwargs["volumes"].append(
+            {"config_volume": {"name": "myConfigMap"}, "container": {"bind": "/path/to/configMap", "mode": "ro"}})
+    return common_kwargs
 
 
 def _get_item_by_name(list, name):
@@ -115,10 +118,9 @@ def verify_common(dep, deployment_description):
     assert app_container.ports[1].container_port == 443
     assert app_container.readiness_probe.http_get.path == "/ready"
     assert app_container.readiness_probe.http_get.scheme == "HTTP"
-    assert len(app_container.volume_mounts) == 4
-    assert app_container.volume_mounts[0].mount_path == "/path/to/container"
-    assert app_container.volume_mounts[1].mount_path == "/path/on/container"
-    assert app_container.volume_mounts[2].mount_path == "/path/to/container/log/directory"
+    assert len(app_container.volume_mounts) >= 2
+    assert app_container.volume_mounts[0].mount_path == "/path/on/container"
+    assert app_container.volume_mounts[-2].mount_path == "/path/to/container/log/directory"
 
     # Check environment variables
     env = app_container.env
@@ -194,37 +196,19 @@ def verify_cert_post_processor(dep):
         assert (k in envs and expected_envs[k] == envs[k])
 
 
-def do_deploy(tls_info=None):
+def do_deploy(useConfigMap=False, tls_info=None, ext_tls_info=None):
     """ Common deployment operations """
     import k8sclient.k8sclient
 
     k8s_test_config = _set_k8s_configuration()
 
-    kwargs = _set_common_kwargs()
+    kwargs = _set_common_kwargs(useConfigMap)
     kwargs['resources'] = _set_resources()
 
     if tls_info:
         kwargs["tls_info"] = tls_info
-
-    dep, deployment_description = k8sclient.k8sclient.deploy(k8s_ctx(), "k8stest", "testcomponent",
-                                                             "example.com/testcomponent:1.4.3", 1, False,
-                                                             k8s_test_config, **kwargs)
-
-    # Make sure all of the basic k8s parameters are correct
-    verify_common(dep, deployment_description)
-
-    return dep, deployment_description
-
-
-def do_deploy_ext(ext_tls_info):
-    """ Common deployment operations """
-    import k8sclient.k8sclient
-
-    k8s_test_config = _set_k8s_configuration()
-
-    kwargs = _set_common_kwargs()
-    kwargs['resources'] = _set_resources()
-    kwargs["external_cert"] = ext_tls_info
+    if ext_tls_info:
+        kwargs["external_cert"] = ext_tls_info
 
     dep, deployment_description = k8sclient.k8sclient.deploy(k8s_ctx(), "k8stest", "testcomponent",
                                                              "example.com/testcomponent:1.4.3", 1, False,
