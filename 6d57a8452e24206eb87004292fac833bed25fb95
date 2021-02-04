@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0d24a538_594de79d",
+        "filename": "k8s/tests/common.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2021-02-04T06:42:17Z",
+      "side": 1,
+      "message": "logic should not be controlled by boolean. Pls pass configuration as parameter in do_deploy method",
+      "revId": "6d57a8452e24206eb87004292fac833bed25fb95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "574a8e6d_c20c96c4",
+        "filename": "k8s/tests/test_k8sclient_deploy.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 3433
+      },
+      "writtenOn": "2021-02-04T06:42:17Z",
+      "side": 1,
+      "message": "pls remove it",
+      "revId": "6d57a8452e24206eb87004292fac833bed25fb95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
