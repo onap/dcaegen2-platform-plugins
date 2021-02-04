@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "70520af4_60685d0a",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-04T12:10:04Z",
+      "side": 1,
+      "message": "Could You restore previous formatting of this comment block? It was nicely readable.",
+      "range": {
+        "startLine": 576,
+        "startChar": 4,
+        "endLine": 576,
+        "endChar": 7
+      },
+      "revId": "bcd9806c502e58a5eda6ab88ad6d87a83049d8d7",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
