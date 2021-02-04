@@ -19,6 +19,29 @@
     },
     {
       "key": {
+        "uuid": "78ef01f7_ddada1c0",
+        "filename": "k8s/tests/common.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 3793
+      },
+      "writtenOn": "2021-02-04T07:58:32Z",
+      "side": 1,
+      "message": "I feel it would be better if this method would be generic and just accepted a dict and just merge it with kwargs. ConfigMap costruction should be done in test",
+      "range": {
+        "startLine": 199,
+        "startChar": 14,
+        "endLine": 199,
+        "endChar": 66
+      },
+      "revId": "6d57a8452e24206eb87004292fac833bed25fb95",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "574a8e6d_c20c96c4",
         "filename": "k8s/tests/test_k8sclient_deploy.py",
         "patchSetId": 8
