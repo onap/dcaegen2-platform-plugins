@@ -22,6 +22,30 @@
       "revId": "cd9e680ae63be96dc9ed051bc9970c17e7dd2cc4",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e1cebe6f_c290651a",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 6482
+      },
+      "writtenOn": "2021-02-05T08:16:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "74a748a8_073c33cc",
+      "range": {
+        "startLine": 301,
+        "startChar": 26,
+        "endLine": 301,
+        "endChar": 30
+      },
+      "revId": "cd9e680ae63be96dc9ed051bc9970c17e7dd2cc4",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
