@@ -298,10 +298,10 @@ def _parse_volumes(volume_list):
         vname = str(uuid.uuid4())
         vcontainer = v['container']['bind']
         vro = (v['container'].get('mode') == 'ro')
-        if 'host' in v:
+        if 'host' in v & 'name' in v['host']:
             vhost = v['host']['path']
             volumes.append(client.V1Volume(name=vname, host_path=client.V1HostPathVolumeSource(path=vhost)))
-        if 'config_volume' in v:
+        if 'config_volume' in v & 'name' in v['config_volume']:
             vconfig_volume = v['config_volume']['name']
             volumes.append(client.V1Volume(name=vname, config_map=client.V1ConfigMapVolumeSource(default_mode="0644",
                                                                                                  name=vconfig_volume,
