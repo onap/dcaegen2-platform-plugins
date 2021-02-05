@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "c5438211_97d997f5",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 6482
+      },
+      "writtenOn": "2021-02-05T08:03:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5525d6d6_4a8364cf",
+      "revId": "33ceba14ce95a4bef877744cb364b8c10ed50136",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c8462ed6_30b19ad2",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 7
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "7c1be18c_6888b527",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 6482
+      },
+      "writtenOn": "2021-02-05T08:03:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8462ed6_30b19ad2",
+      "revId": "33ceba14ce95a4bef877744cb364b8c10ed50136",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0044e1be_79ce9418",
         "filename": "k8s/tests/test_k8sclient_deploy.py",
         "patchSetId": 7
@@ -50,6 +86,24 @@
       "revId": "33ceba14ce95a4bef877744cb364b8c10ed50136",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6d96ad14_0db5dca6",
+        "filename": "k8s/tests/test_k8sclient_deploy.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 6482
+      },
+      "writtenOn": "2021-02-05T08:03:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0044e1be_79ce9418",
+      "revId": "33ceba14ce95a4bef877744cb364b8c10ed50136",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
