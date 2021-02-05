@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5525d6d6_4a8364cf",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-02-05T03:21:32Z",
+      "side": 1,
+      "message": "should you add:\nand \u0027path\u0027 in v[\u0027host\u0027]\n?",
+      "revId": "33ceba14ce95a4bef877744cb364b8c10ed50136",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c8462ed6_30b19ad2",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-02-05T03:21:32Z",
+      "side": 1,
+      "message": "should you add:\nand \u0027name\u0027 in v[\u0027config_volume\u0027]\n?",
+      "revId": "33ceba14ce95a4bef877744cb364b8c10ed50136",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0044e1be_79ce9418",
+        "filename": "k8s/tests/test_k8sclient_deploy.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-02-05T03:21:32Z",
+      "side": 1,
+      "message": "add 2021",
+      "revId": "33ceba14ce95a4bef877744cb364b8c10ed50136",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
