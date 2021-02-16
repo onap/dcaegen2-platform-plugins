@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1dd05de1_a869dd63",
+        "filename": "k8s/tests/common.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-16T10:52:56Z",
+      "side": 1,
+      "message": "Should the verifies be commented out?\n\nverify_common seems to not do anything now.",
+      "revId": "79b048a6339a3435b5eb536e3b3244aee9d74968",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "861e56bd_8d28360b",
+        "filename": "k8s/tests/common.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-16T10:52:56Z",
+      "side": 1,
+      "message": "Should that be commented out?",
+      "range": {
+        "startLine": 170,
+        "startChar": 4,
+        "endLine": 170,
+        "endChar": 5
+      },
+      "revId": "79b048a6339a3435b5eb536e3b3244aee9d74968",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
