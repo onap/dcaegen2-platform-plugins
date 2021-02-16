@@ -17,75 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ============LICENSE_END=========================================================
-
-# Common functions for unit testing
-def _set_k8s_configuration():
-    ''' Set up the basic k8s configuration '''
-    return {
-        "image_pull_secrets": ["secret0", "secret1"],
-        "filebeat": {
-            "log_path": "/var/log/onap",
-            "data_path": "/usr/share/filebeat/data",
-            "config_path": "/usr/share/filebeat/filebeat.yml",
-            "config_subpath": "filebeat.yml",
-            "image": "filebeat-repo/filebeat:latest",
-            "config_map": "dcae-filebeat-configmap"
-        },
-        "tls": {
-            "cert_path": "/opt/certs",
-            "image": "tlsrepo/tls-init-container:1.2.3",
-            "component_cert_dir": "/opt/dcae/cacert"
-        },
-        "external_cert": {
-            "image_tag": "repo/oom-certservice-client:2.1.0",
-            "request_url": "https://request:1010/url",
-            "timeout": "30000",
-            "country": "US",
-            "organization": "Linux-Foundation",
-            "state": "California",
-            "organizational_unit": "ONAP",
-            "location": "San-Francisco",
-            "keystore_password": "secret1",
-            "truststore_password": "secret2"
-        },
-        "cert_post_processor": {
-            "image_tag": "repo/oom-cert-post-processor:2.1.0"
-        },
-        "cbs": {
-            "base_url": "https://config-binding-service:10443/service_component_all/test-component"
-        }
-    }
-
-
-def _set_resources():
-    ''' Set resources '''
-    return {
-        "limits": {
-            "cpu": 0.5,
-            "memory": "2Gi"
-        },
-        "requests": {
-            "cpu": 0.5,
-            "memory": "2Gi"
-        }
-    }
-
-
-def _set_common_kwargs(config_map=None):
-    ''' Set kwargs common to all test cases '''
-    common_kwargs = {
-        "volumes": [
-            {"host": {"path": "/path/on/host"}, "container": {"bind": "/path/on/container", "mode": "rw"}}
-
-        ],
-        "ports": ["80:0", "443:0"],
-        "env": {"NAME0": "value0", "NAME1": "value1"},
-        "log_info": {"log_directory": "/path/to/container/log/directory"},
-        "readiness": {"type": "http", "endpoint": "/ready"}
-    }
-    if config_map is not None:
-        common_kwargs["volumes"].append(config_map)
-    return common_kwargs
+import pytest
 
 
 def _get_item_by_name(list, name):
@@ -101,33 +33,23 @@ def check_env_var(env_list, name, value):
     assert e and e.value == value
 
 
-def verify_common(dep, deployment_description):
-    """ Check results common to all test cases """
+def verify_label(dep):
+    assert dep.spec.template.metadata.labels["app"] == "testcomponent"
+
+
+def verify_deployment_desc(deployment_description):
     assert deployment_description["deployment"] == "dep-testcomponent"
     assert deployment_description["namespace"] == "k8stest"
     assert deployment_description["services"][0] == "testcomponent"
 
-    # For unit test purposes, we want to make sure that the deployment object
-    # we're passing to the k8s API is correct
-    app_container = dep.spec.template.spec.containers[0]
-    assert app_container.image == "example.com/testcomponent:1.4.3"
-    assert app_container.image_pull_policy == "IfNotPresent"
-    assert len(app_container.ports) == 2
-    assert app_container.ports[0].container_port == 80
-    assert app_container.ports[1].container_port == 443
-    assert app_container.readiness_probe.http_get.path == "/ready"
-    assert app_container.readiness_probe.http_get.scheme == "HTTP"
-    assert len(app_container.volume_mounts) >= 2
-    assert app_container.volume_mounts[0].mount_path == "/path/on/container"
-    assert app_container.volume_mounts[-2].mount_path == "/path/to/container/log/directory"
 
-    # Check environment variables
+def verify_env_variables(app_container):
     env = app_container.env
     check_env_var(env, "NAME0", "value0")
     check_env_var(env, "NAME1", "value1")
 
-    # Should have a log container with volume mounts
-    log_container = dep.spec.template.spec.containers[1]
+
+def verify_logs(log_container):
     assert log_container.image == "filebeat-repo/filebeat:latest"
     assert log_container.volume_mounts[0].mount_path == "/var/log/onap/testcomponent"
     assert log_container.volume_mounts[0].name == "component-log"
@@ -136,8 +58,27 @@ def verify_common(dep, deployment_description):
     assert log_container.volume_mounts[2].mount_path == "/usr/share/filebeat/filebeat.yml"
     assert log_container.volume_mounts[2].name == "filebeat-conf"
 
-    # Needs to be correctly labeled so that the Service can find it
-    assert dep.spec.template.metadata.labels["app"] == "testcomponent"
+
+def verify_volumes(app_container):
+    assert len(app_container.volume_mounts) >= 2
+    assert app_container.volume_mounts[0].mount_path == "/path/on/container"
+    assert app_container.volume_mounts[-2].mount_path == "/path/to/container/log/directory"
+
+
+def verify_rediness_probe(app_container):
+    assert app_container.readiness_probe.http_get.path == "/ready"
+    assert app_container.readiness_probe.http_get.scheme == "HTTP"
+
+
+def verify_image(app_container):
+    assert app_container.image == "example.com/testcomponent:1.4.3"
+    assert app_container.image_pull_policy == "IfNotPresent"
+
+
+def verify_ports(app_container):
+    assert len(app_container.ports) == 2
+    assert app_container.ports[0].container_port == 80
+    assert app_container.ports[1].container_port == 443
 
 
 def verify_external_cert(dep):
@@ -195,26 +136,12 @@ def verify_cert_post_processor(dep):
         assert (k in envs and expected_envs[k] == envs[k])
 
 
-def do_deploy(config_map=None, tls_info=None, ext_tls_info=None):
+def do_deploy(k8s_test_config, kwargs):
     """ Common deployment operations """
     import k8sclient.k8sclient
-
-    k8s_test_config = _set_k8s_configuration()
-
-    kwargs = _set_common_kwargs(config_map)
-    kwargs['resources'] = _set_resources()
-
-    if tls_info:
-        kwargs["tls_info"] = tls_info
-    if ext_tls_info:
-        kwargs["external_cert"] = ext_tls_info
-
     dep, deployment_description = k8sclient.k8sclient.deploy(k8s_ctx(), "k8stest", "testcomponent",
                                                              "example.com/testcomponent:1.4.3", 1, False,
                                                              k8s_test_config, **kwargs)
-
-    # Make sure all of the basic k8s parameters are correct
-    verify_common(dep, deployment_description)
 
     return dep, deployment_description
 
