@@ -1,0 +1,10 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Bartosz Gardziejewski <bartosz.gardziejewski@nokia.com>
+Code-Review+1: Bogumil Zebek <bogumil.zebek@nokia.com>
+Code-Review+1: Tomasz Pietruszkiewicz <tomasz.pietruszkiewicz@nokia.com>
+Code-Review+2: Tony Hansen <tony@att.com>
+Submitted-by: Tony Hansen <tony@att.com>
+Submitted-at: Wed, 17 Feb 2021 18:12:04 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/dcaegen2/platform/plugins/+/117879
+Project: dcaegen2/platform/plugins
+Branch: refs/heads/master
