@@ -303,7 +303,7 @@ def _parse_volumes(volume_list):
             volumes.append(client.V1Volume(name=vname, host_path=client.V1HostPathVolumeSource(path=vhost)))
         if ('config_volume' in v) and ('name' in v['config_volume']):
             vconfig_volume = v['config_volume']['name']
-            volumes.append(client.V1Volume(name=vname, config_map=client.V1ConfigMapVolumeSource(default_mode="0644",
+            volumes.append(client.V1Volume(name=vname, config_map=client.V1ConfigMapVolumeSource(default_mode=0o0644,
                                                                                                  name=vconfig_volume,
                                                                                                  optional=True)))
         volume_mounts.append(client.V1VolumeMount(name=vname, mount_path=vcontainer, read_only=vro))

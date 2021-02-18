@@ -5,7 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-
+## [3.5.3]
+* Fix bug with default mode format in ConfigMapVolumeSource
 ## [3.5.2]
 * DCAEGEN2-2546 - Add support for config_volume in k8s_client
 
