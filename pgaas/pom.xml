@@ -30,7 +30,7 @@ limitations under the License.
   <artifactId>pgaas</artifactId>
   <name>pgaas</name>
 
-  <version>1.3.0-SNAPSHOT</version>
+  <version>1.2.0-SNAPSHOT</version>
   <url>http://maven.apache.org</url>
   <properties>
     <!-- vvvvvvvvvvvvvvvv not in relationships -->

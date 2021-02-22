@@ -3,7 +3,7 @@
 # ================================================================================
 # Copyright (c) 2018-2020 AT&T Intellectual Property. All rights reserved.
 # Copyright (c) 2019 Pantheon.tech. All rights reserved.
-# Copyright (c) 2020 Nokia. All rights reserved.
+# Copyright (c) 2020-2021 Nokia. All rights reserved.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -54,6 +54,9 @@ EXT_TLS_TRUSTSTORE_PASSWORD = "secret"
 CERT_POST_PROCESSOR_IMAGE = "nexus3.onap.org:10001/onap/org.onap.oom.platform.cert-service.oom-certservice-post-processor:2.1.0"
 CBS_BASE_URL = "https://config-binding-service:10443/service_component_all"
 
+CMPV2_ISSUER_ENABLED = "false"
+CMPV2_ISSUER_NAME = "cmpv2-issuer-onap"
+
 def _set_defaults():
     """ Set default configuration parameters """
     return {
@@ -93,8 +96,11 @@ def _set_defaults():
         },
         "cbs": {
             "base_url" : CBS_BASE_URL                   # URL prefix for accessing config binding service
+        },
+        "cmpv2_issuer": {
+            "enabled": CMPV2_ISSUER_ENABLED,
+            "name":    CMPV2_ISSUER_NAME
         }
-
     }
 
 def configure(config_path=_CONFIG_PATH, key = _CONSUL_KEY):
