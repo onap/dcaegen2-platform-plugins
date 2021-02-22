@@ -28,8 +28,8 @@ limitations under the License.
   </parent>
   <groupId>org.onap.dcaegen2.platform.plugins</groupId>
   <artifactId>k8s</artifactId>
-  <name>k8s-plugin</name>
-  <version>3.5.3-SNAPSHOT</version>
+  <name>kugin</name>
+  <version>3.6.0-SNAPSHOT</version>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
