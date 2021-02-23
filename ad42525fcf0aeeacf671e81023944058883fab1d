@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ed361151_83245f06",
+        "filename": "k8s/configure/configure.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-02-23T02:33:25Z",
+      "side": 1,
+      "message": "2020-2021",
+      "revId": "ad42525fcf0aeeacf671e81023944058883fab1d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
