@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ac1f4718_2d0d3032",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2021-02-24T11:16:24Z",
+      "side": 1,
+      "message": "Please use other library to password generation, to avoid using not allowed characters in password. See cert service password generator. \nhttps://gerrit.onap.org/r/gitweb?p\u003doom/platform/cert-service.git;a\u003dblob;f\u003dcertServiceClient/src/main/java/org/onap/oom/certservice/client/certification/conversion/RandomPasswordGenerator.java;h\u003dc65aa21d62b07131b0c0c78718409f8ee35a24d5;hb\u003dHEAD",
+      "range": {
+        "startLine": 287,
+        "startChar": 11,
+        "endLine": 287,
+        "endChar": 29
+      },
+      "revId": "56f25871c2ee7f33799a3985ec5e1215b196f3dd",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
