@@ -22,7 +22,9 @@
 import os
 import re
 import uuid
+import base64
 
+from binascii import hexlify
 from kubernetes import config, client, stream
 
 # Default values for readiness probe
@@ -259,6 +261,47 @@ def _create_service_object(service_name, component_name, service_ports, annotati
         spec=service_spec
     )
     return service
+
+
+def _create_k8s_secret(namespace, metadata, data, secret_type):
+    config.load_kube_config()
+
+    api_version = 'v1'
+    kind = 'Secret'
+    body = client.V1Secret(api_version, data, kind, metadata, type=secret_type)
+
+    response = client.CoreV1Api().create_namespaced_secret(namespace, body)
+    return response
+
+
+def _generate_password(length):
+    rand = os.urandom(length)
+    password = hexlify(rand)
+    return password.decode("ascii");
+
+
+def _encode_base64(value):
+    value_bytes = value.encode("ascii")
+    base64_encoded_bytes = base64.b64encode(value_bytes)
+    encoded_value = base64_encoded_bytes.decode("ascii")
+    return encoded_value
+
+
+def create_secret(namespace, secret_prefix, password_length):
+    """
+    Create K8s secret object with a generated password.
+    Example usage:
+     * create_secret('onap', 'dcae-keystore-password-', 128)
+    """
+    password = _generate_password(password_length)
+    password_base64 = _encode_base64(password)
+
+    metadata = {'generateName': secret_prefix, 'namespace': namespace}
+    data = {'data': password_base64}
+
+    response = _create_k8s_secret(namespace, metadata, data, 'Opaque')
+    secret_name = response.metadata.name
+    return secret_name
 
 
 def parse_ports(port_list):
@@ -864,3 +907,7 @@ def execute_command_in_deployment(deployment_description, command):
     # Execute command in the running pods
     return [_execute_command_in_pod(location, namespace, pod_name, command)
             for pod_name in pod_names]
+
+
+
+
