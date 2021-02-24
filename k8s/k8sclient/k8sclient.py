@@ -23,6 +23,7 @@ import os
 import re
 import uuid
 import base64
+import time
 
 from binascii import hexlify
 from kubernetes import config, client, stream
@@ -274,8 +275,8 @@ def create_secret_with_password(namespace, secret_prefix, password_length):
     password = _generate_password(password_length)
     password_base64 = _encode_base64(password)
 
-    metadata = {'generateName': secret_prefix, 'namespace': namespace}
-    key = 'data'
+    metadata = {'name': secret_prefix, 'namespace': namespace}
+    key = 'password'
     data = {key: password_base64}
 
     response = _create_k8s_secret(namespace, metadata, data, 'Opaque')
@@ -451,7 +452,7 @@ def _add_external_tls_init_container(ctx, init_containers, volumes, external_cer
 
 
 def _add_cert_post_processor_init_container(ctx, init_containers, tls_info, tls_config, external_cert,
-                                            cert_post_processor_config):
+                                            cert_post_processor_config, isCertManagerIntegratio):
     # Adds an InitContainer to the pod to merge TLS and external TLS truststore into single file.
     docker_image = cert_post_processor_config["image_tag"]
     ctx.logger.info("Creating init container: cert post processor \n  * [" + docker_image + "]")
@@ -483,7 +484,9 @@ def _add_cert_post_processor_init_container(ctx, init_containers, tls_info, tls_
 
     # Create the volumes and volume mounts
     init_volume_mounts = [client.V1VolumeMount(name="tls-info", mount_path=tls_cert_dir)]
-
+    if isCertManagerIntegratio:
+        init_volume_mounts.append(client.V1VolumeMount(
+            name="certmanager-certs-volume", mount_path=ext_cert_dir))
     # Create the init container
     init_containers.append(
         _create_container_object("cert-post-processor", docker_image, False, volume_mounts=init_volume_mounts, env=env))
@@ -616,6 +619,147 @@ def _execute_command_in_pod(location, namespace, pod_name, command):
     return {"pod": pod_name, "output": output}
 
 
+def _create_certificate_subject(external_tls_config):
+    organization = external_tls_config.get("organization")
+    organization_unit = external_tls_config.get("organizational_unit")
+    country = external_tls_config.get("country")
+    location = external_tls_config.get("location")
+    state = external_tls_config.get("state")
+    subject = {
+        "organizations": [organization],
+        "countries": [country],
+        "localities": [location],
+        "provinces": [state],
+        "organizationalUnits": [organization_unit]
+    }
+    return subject
+
+
+def _create_keystores_object(type, password_secret):
+    return {type: {
+        "create": True,
+        "passwordSecretRef": {
+            "name": password_secret,
+            "key": "password"
+        }}}
+
+
+def _get_keystores_object_type(output_type):
+    return {
+        'p12': 'pkcs12',
+        'jks': 'jks',
+    }[output_type]
+
+
+def _create_projected_volume_with_password(cert_type, cert_secret_name, password_secret_name, password_secret_key):
+
+    extension = _get_file_extension(cert_type)
+    keystore_file_name = "keystore." + extension
+    truststore_file_name = "truststore." + extension
+    items = [client.V1KeyToPath(key=keystore_file_name, path=keystore_file_name),
+             client.V1KeyToPath(key=truststore_file_name, path=truststore_file_name)]
+    passwords = [client.V1KeyToPath(key=password_secret_key, path="keystore.pass"), client.V1KeyToPath(key=password_secret_key, path="truststore.pass")]
+
+    sec_projection = client.V1SecretProjection(name=cert_secret_name, items=items)
+    sec_passwords_projection = client.V1SecretProjection(name=password_secret_name, items=passwords)
+    sec_volume_projection = client.V1VolumeProjection(secret=sec_projection)
+    sec_passwords_volume_projection = client.V1VolumeProjection(secret=sec_passwords_projection)
+
+    return [sec_volume_projection, sec_passwords_volume_projection]
+
+
+def _create_pem_projected_volume(cert_secret_name):
+    items = [client.V1KeyToPath(key="tls.crt", path="keystore.pem"),
+             client.V1KeyToPath(key="ca.crt", path="truststore.pem"),
+             client.V1KeyToPath(key="tls.key", path="key.pem")]
+    sec_projection = client.V1SecretProjection(name=cert_secret_name, items=items)
+    return [client.V1VolumeProjection(secret=sec_projection)]
+
+
+def create_certificate_object(ctx, cert_secret_name, external_cert_data, external_tls_config, component_name, issuer):
+    common_name = external_cert_data.get("external_certificate_parameters").get("common_name")
+    subject = _create_certificate_subject(external_tls_config)
+
+    custom_resource = {
+        "apiVersion": "cert-manager.io/v1",
+        "kind": "Certificate",
+        "metadata": {"name": component_name + "-cert"},
+        "spec": {
+            "secretName": cert_secret_name,
+            "commonName": common_name,
+            "issuerRef": {
+                "group": "certmanager.onap.org",
+                "kind": "CMPv2Issuer",
+                "name": issuer
+            }
+        }
+    }
+    custom_resource.get("spec")["subject"] = subject
+    from .sans_parser import SansParser
+    raw_sans = external_cert_data.get("external_certificate_parameters").get("sans")
+    ctx.logger.info("Raw SANS: " + str(raw_sans))
+    sans = SansParser().parse_sans(raw_sans)
+    ctx.logger.info("SANS: " + str(sans))
+
+    if len(sans["ips"]) > 0:
+        ctx.logger.info("ips: " + str(sans["ips"]))
+        custom_resource.get("spec")["ipAddresses"] = sans["ips"]
+    if len(sans["dnss"]) > 0:
+        ctx.logger.info("dnss: " + str(sans["dnss"]))
+        custom_resource.get("spec")["dnsNames"] = sans["dnss"]
+    if len(sans["emails"]) > 0:
+        ctx.logger.info("emails: " + str(sans["emails"]))
+        custom_resource.get("spec")["emailAddresses"] = sans["emails"]
+    if len(sans["uris"]) > 0:
+        ctx.logger.info("uris: " + str(sans["uris"]))
+        custom_resource.get("spec")["uris"] = sans["uris"]
+
+    return custom_resource
+
+
+def _create_certificate_custom_resoure(ctx, external_cert_data, external_tls_config, issuer, namespace, component_name, volumes, volume_mounts):
+    ctx.logger.info("Creating certificate custom resource")
+    ctx.logger.info("External cert data: " + str(external_cert_data))
+
+    cert_type = (external_cert_data.get("cert_type") or DEFAULT_CERT_TYPE).lower()
+
+    api = client.CustomObjectsApi()
+    cert_secret_name = component_name + "-secret"
+    cert_dir = external_cert_data.get("external_cert_directory") + "external/"
+    custom_resource = create_certificate_object(ctx, cert_secret_name,
+                                                external_cert_data,
+                                                external_tls_config,
+                                                component_name, issuer)
+    # Create the volumes
+    if cert_type != 'pem':
+        ctx.logger.info("Creating volume with passwords")
+        password_secret_name, password_secret_key = create_secret_with_password(namespace, component_name + "-cert-password", 30)
+        custom_resource.get("spec")["keystores"] = _create_keystores_object(_get_keystores_object_type(cert_type), password_secret_name)
+        projected_volume_sources = _create_projected_volume_with_password(
+            cert_type, cert_secret_name, password_secret_name, password_secret_key)
+    else:
+        ctx.logger.info("Creating PEM volume")
+        projected_volume_sources = _create_pem_projected_volume(cert_secret_name)
+
+    # Create the volume mounts
+    projected_volume = client.V1ProjectedVolumeSource(sources=projected_volume_sources)
+    volumes.append(client.V1Volume(name="certmanager-certs-volume", projected=projected_volume))
+    volume_mounts.append(client.V1VolumeMount(name="certmanager-certs-volume", mount_path=cert_dir))
+
+    #Create certificate custom resource
+    str_resource = str(custom_resource)
+    ctx.logger.info("Modified CRD: " + str_resource)
+    api.create_namespaced_custom_object(
+        group="cert-manager.io",
+        version="v1",
+        namespace=namespace,
+        plural="certificates",
+        body=custom_resource
+    )
+
+    ctx.logger.info("CRD created")
+
+
 def deploy(ctx, namespace, component_name, image, replicas, always_pull, k8sconfig, **kwargs):
     """
     This will create a k8s Deployment and, if needed, one or two k8s Services.
@@ -721,12 +865,34 @@ def deploy(ctx, namespace, component_name, image, replicas, always_pull, k8sconf
 
         # Set up external TLS information
         external_cert = kwargs.get("external_cert")
+        cmpv2_issuer_config = k8sconfig.get("cmpv2_issuer")
+        ctx.logger.info("CMPv2 Issuer properties: " + str(cmpv2_issuer_config))
+        # cert_manager_cpmv2_integration =
+        cpmv2_integration_enabled = cmpv2_issuer_config.get("enabled")
+        if cpmv2_integration_enabled:
+            ctx.logger.info("CMPv2 integration is enabled: " + str(cpmv2_integration_enabled))
+        else:
+            ctx.logger.info("CMPv2 integration is disabled: " + str(cpmv2_integration_enabled))
+        cert_manager_cpmv2_integration = True
+
         if external_cert and external_cert.get("use_external_tls"):
-            _add_external_tls_init_container(ctx, init_containers, volumes, external_cert,
-                                             k8sconfig.get("external_cert"))
-            _add_cert_post_processor_init_container(ctx, init_containers, kwargs.get("tls_info") or {},
-                                                    k8sconfig.get("tls"), external_cert,
-                                                    k8sconfig.get("cert_post_processor"))
+            if cert_manager_cpmv2_integration:
+                _create_certificate_custom_resoure(ctx, external_cert,
+                                                   k8sconfig.get("external_cert"),
+                                                   cmpv2_issuer_config.get("name"),
+                                                   namespace,
+                                                   component_name, volumes, volume_mounts)
+                _add_cert_post_processor_init_container(ctx, init_containers, kwargs.get("tls_info") or {},
+                                                        k8sconfig.get("tls"), external_cert,
+                                                        k8sconfig.get(
+                                                            "cert_post_processor"), True)
+            else:
+                _add_external_tls_init_container(ctx, init_containers, volumes, external_cert,
+                                                 k8sconfig.get("external_cert"))
+                _add_cert_post_processor_init_container(ctx, init_containers, kwargs.get("tls_info") or {},
+                                                        k8sconfig.get("tls"), external_cert,
+                                                        k8sconfig.get(
+                                                            "cert_post_processor"),False)
 
         # Create the container for the component
         # Make it the first container in the pod
