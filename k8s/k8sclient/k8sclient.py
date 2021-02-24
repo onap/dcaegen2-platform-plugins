@@ -572,6 +572,68 @@ def _execute_command_in_pod(location, namespace, pod_name, command):
     return {"pod": pod_name, "output": output}
 
 
+def _create_certificate_custom_resoure(ctx, external_cert_data,
+    external_tls_config, issuer,component_name, volumes, volume_mounts):
+    ctx.logger.info("Creating certificate custom resource")
+    str_external_data = str(external_cert_data)
+    ctx.logger.info("External cert data: " + str_external_data)
+    # k8s_apps_v1_api_client.
+    common_name = external_cert_data.get("external_certificate_parameters").get("common_name")
+    organization = external_tls_config.get("organization")
+    organization_unit = external_tls_config.get("organizational_unit")
+    country = external_tls_config.get("country")
+    location = external_tls_config.get("location")
+    state = external_tls_config.get("state")
+    #TODO SANS parsing
+    # sans =
+    #TODO Add map to cert type
+    cert_type = external_cert_data.get("cert_type")
+    api = client.CustomObjectsApi()
+    # api.get_namespaced_custom_object()
+    secret_name = component_name + "-secret"
+    cert_dir = external_cert_data.get("external_cert_directory") + "/external"
+    # ipS = get_ip ()
+    custom_resource = {
+        "apiVersion": "cert-manager.io/v1",
+        "kind": "Certificate",
+        "metadata": {"name": component_name + "-cert"},
+        "spec": {
+            "secretName": secret_name,
+            "commonName": common_name,
+            "subject": {
+                "organizations": [organization],
+                "countries": [country],
+                "localities": [location],
+                "provinces": [state],
+                "organizationalUnits": [organization_unit]
+            },
+            "dnsNames": ["localhost"],
+            "ipAddresses": ["127.0.0.2"],
+            "issuerRef": {
+                "group": "certmanager.onap.org",
+                "kind": "CMPv2Issuer",
+                "name": issuer
+            }
+        }
+    }
+    # api.list_cluster_custom_object(group="certmanager.onap.org",version="v1", plural="certificates")
+    # api.list_namespaced_custom_object(group="certmanager.onap.org",version="v1", namespace="onap", plural="certificates")
+    str_resource = str(custom_resource)
+    ctx.logger.info("CRD: " + str_resource)
+    api.create_namespaced_custom_object(
+        group="cert-manager.io",
+        version="v1",
+        namespace="onap",
+        plural="certificates",
+        body=custom_resource
+    )
+    # Create the volumes and volume mounts
+    sec = client.V1SecretVolumeSource(secret_name=secret_name)
+    volumes.append(client.V1Volume(name="certmanager-certs-volume", secret=sec))
+    volume_mounts.append(client.V1VolumeMount(name="certmanager-certs-volume", mount_path=cert_dir))
+    ctx.logger.info("CRD created")
+
+
 def deploy(ctx, namespace, component_name, image, replicas, always_pull, k8sconfig, **kwargs):
     """
     This will create a k8s Deployment and, if needed, one or two k8s Services.
@@ -677,12 +739,20 @@ def deploy(ctx, namespace, component_name, image, replicas, always_pull, k8sconf
 
         # Set up external TLS information
         external_cert = kwargs.get("external_cert")
+        cert_manager_cpmv2_integration = True
+
         if external_cert and external_cert.get("use_external_tls"):
-            _add_external_tls_init_container(ctx, init_containers, volumes, external_cert,
-                                             k8sconfig.get("external_cert"))
-            _add_cert_post_processor_init_container(ctx, init_containers, kwargs.get("tls_info") or {},
-                                                    k8sconfig.get("tls"), external_cert,
-                                                    k8sconfig.get("cert_post_processor"))
+            if cert_manager_cpmv2_integration:
+                _create_certificate_custom_resoure(ctx, external_cert,
+                                                   k8sconfig.get("external_cert"),
+                                                   "cmpv2-issuer-onap",
+                                                   component_name, volumes, volume_mounts)
+            else:
+                _add_external_tls_init_container(ctx, init_containers, volumes, external_cert,
+                                                 k8sconfig.get("external_cert"))
+                _add_cert_post_processor_init_container(ctx, init_containers, kwargs.get("tls_info") or {},
+                                                        k8sconfig.get("tls"), external_cert,
+                                                        k8sconfig.get("cert_post_processor"))
 
         # Create the container for the component
         # Make it the first container in the pod
