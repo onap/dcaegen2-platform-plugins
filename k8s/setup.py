@@ -33,5 +33,8 @@ setup(
         'onap-dcae-dcaepolicy-lib>=2.4.1',
         'kubernetes==12.0.1',
         'cloudify-common>=5.0.0',
+        'validators>=0.14.2',
+        'fqdn==1.5.0',
+        'uritools>=2.2.0',
     ]
 )
