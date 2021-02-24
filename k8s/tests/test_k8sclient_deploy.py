@@ -58,6 +58,10 @@ K8S_CONFIGURATION = {
     },
     "cbs": {
         "base_url": "https://config-binding-service:10443/service_component_all/test-component"
+    },
+    "cmpv2_issuer": {
+        "enabled": False,
+        "name":    "cmpv2-issuer-onap"
     }
 }
 

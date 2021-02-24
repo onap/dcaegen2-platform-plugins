@@ -1,4 +1,4 @@
-FROM centos/python-27-centos7:latest as cent
+FROM centos/python-36-centos7:latest as cent
 
 # Sometimes it's necessary to set a proxy (e.g. in case of local development).
 # To do it just uncomment those two env variables and set appriopriate values for them.
