@@ -6,7 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [3.6.0]
-* Add cmpv2 issuer integration
+* DCAEGEN2-2440  - Add integration with cert-manager. 
+* Enable creation of certificate custom resource instead cert-service-client container, 
+when flag "CMPv2CertManagerIntegration" is enabled
 
 ## [3.5.3]
 * Fix bug with default mode format in ConfigMapVolumeSource
