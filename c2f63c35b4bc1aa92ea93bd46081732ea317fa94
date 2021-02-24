@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a09108a4_c6524406",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-24T08:36:18Z",
+      "side": 1,
+      "message": "One more thing - shouldn\u0027t _configure_api with location be used here?",
+      "range": {
+        "startLine": 300,
+        "startChar": 4,
+        "endLine": 300,
+        "endChar": 29
+      },
+      "revId": "c2f63c35b4bc1aa92ea93bd46081732ea317fa94",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
