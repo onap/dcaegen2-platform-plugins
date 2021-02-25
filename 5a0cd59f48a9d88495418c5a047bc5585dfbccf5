@@ -1,0 +1,204 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bcb77fbb_402817aa",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-25T12:53:39Z",
+      "side": 1,
+      "message": "Is that needed?",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 2
+      },
+      "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "690f2764_b7503db4",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-25T12:53:39Z",
+      "side": 1,
+      "message": "Why was that changed? Is the component_name passed here already appended with some sort of ID?",
+      "range": {
+        "startLine": 278,
+        "startChar": 17,
+        "endLine": 278,
+        "endChar": 21
+      },
+      "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1253c8ec_1180942f",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-25T12:53:39Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 455,
+        "startChar": 72,
+        "endLine": 455,
+        "endChar": 95
+      },
+      "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "64622e1c_75812789",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-25T12:53:39Z",
+      "side": 1,
+      "message": "Consider extracting some parts of newly added code to separate file.\n\n+ consider adding some decriptions to them",
+      "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "623c0de0_3aed18c4",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-25T12:53:39Z",
+      "side": 1,
+      "message": "Is the array packaging needed here?",
+      "range": {
+        "startLine": 676,
+        "startChar": 11,
+        "endLine": 676,
+        "endChar": 61
+      },
+      "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5d1c8680_4ee4129e",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 870,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-25T12:53:39Z",
+      "side": 1,
+      "message": "Not deleted comment",
+      "range": {
+        "startLine": 870,
+        "startChar": 1,
+        "endLine": 870,
+        "endChar": 42
+      },
+      "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "034b0a08_664554d8",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 960,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-25T12:53:39Z",
+      "side": 1,
+      "message": "Created resources won\u0027t be deleted when undeploying.\nConsider storing them in deployment description and deleting them similar to how services are deleted.",
+      "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "136eb28d_e766cffa",
+        "filename": "k8s/k8sclient/sans_parser.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-25T12:53:39Z",
+      "side": 1,
+      "message": "Would be good to have unit tests.",
+      "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c47f5391_525f0c0a",
+        "filename": "k8s/k8sclient/sans_parser.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-25T12:53:39Z",
+      "side": 1,
+      "message": "Consider adding documentation here (for public method).",
+      "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d2fea50c_48cfc084",
+        "filename": "k8s/k8sclient/sans_parser.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-25T12:53:39Z",
+      "side": 1,
+      "message": "Consider marking methods below with leading underscore to mark that those are supposed to be \"private\". Example:\n _is_email",
+      "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
