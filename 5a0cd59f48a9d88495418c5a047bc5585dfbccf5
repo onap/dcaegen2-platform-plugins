@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "86d0cc55_f3b3d0a7",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 6714
+      },
+      "writtenOn": "2021-02-25T13:49:48Z",
+      "side": 1,
+      "message": "Right, we need that secret name is unique among all deployments - \u0027generateName\u0027 takes care about it automatically.",
+      "parentUuid": "690f2764_b7503db4",
+      "range": {
+        "startLine": 278,
+        "startChar": 17,
+        "endLine": 278,
+        "endChar": 21
+      },
+      "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1253c8ec_1180942f",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 7
