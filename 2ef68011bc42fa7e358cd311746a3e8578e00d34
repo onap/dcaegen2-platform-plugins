@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "4084c387_be075840",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2021-02-26T11:11:34Z",
+      "side": 1,
+      "message": "I have noticed that create_secret_with_password wasn\u0027t added by you, so this can mean that something else uses this method and MAY expect password under \u0027data\u0027 key, not \u0027password\u0027. If this method is exclusively used by CMPv2, it should be ok to change key value.",
+      "parentUuid": "541d34cc_0a49fe52",
+      "revId": "2ef68011bc42fa7e358cd311746a3e8578e00d34",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e2bb768b_3b6b2905",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 17
@@ -104,6 +122,24 @@
       "revId": "2ef68011bc42fa7e358cd311746a3e8578e00d34",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f36c6eb8_61fa3c68",
+        "filename": "k8s/k8sclient/sans_parser.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2021-02-26T11:11:34Z",
+      "side": 1,
+      "message": "I asked about split into types order. So in CertService client firstly we identify IPs, after that URIs, emails and at the end DNSes?",
+      "parentUuid": "a760695f_1d323c8d",
+      "revId": "2ef68011bc42fa7e358cd311746a3e8578e00d34",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     },
     {
       "key": {
