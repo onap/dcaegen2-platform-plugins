@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "541d34cc_0a49fe52",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2021-02-26T10:51:39Z",
+      "side": 1,
+      "message": "Key \"password\" is required for cert manager for recognize secret with password for jks/pkcs12 certificates. We mount this secret as volume with items , from DCAE component perspective (which used cert manager integration) it will be keystore.pass / truststore.pass file.",
+      "parentUuid": "8d610f5f_9fc5281f",
+      "revId": "2ef68011bc42fa7e358cd311746a3e8578e00d34",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e2bb768b_3b6b2905",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 17
@@ -30,6 +48,24 @@
       "writtenOn": "2021-02-26T10:20:37Z",
       "side": 1,
       "message": "This line can be extracted outside this IF statement and last boolean flag should be set to cmpv2_integration_enabled",
+      "revId": "2ef68011bc42fa7e358cd311746a3e8578e00d34",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cf84a82a_4bccef19",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 916,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2021-02-26T10:51:39Z",
+      "side": 1,
+      "message": "Ok,in progress..",
+      "parentUuid": "e2bb768b_3b6b2905",
       "revId": "2ef68011bc42fa7e358cd311746a3e8578e00d34",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "a760695f_1d323c8d",
+        "filename": "k8s/k8sclient/sans_parser.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2021-02-26T10:51:39Z",
+      "side": 1,
+      "message": "Yes, I checked it today. It expected IPv4 or IPv6 in format 2001:0db8:85a3:0000:0000:8a2e:0370:7334 (without braces[]) Cert Service client has same behavior.",
+      "parentUuid": "87ea2b4a_a391840f",
+      "revId": "2ef68011bc42fa7e358cd311746a3e8578e00d34",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d3999c52_ae5f78b3",
         "filename": "k8s/tests/test_k8sclient_deploy.py",
         "patchSetId": 17
@@ -67,6 +121,24 @@
       "revId": "2ef68011bc42fa7e358cd311746a3e8578e00d34",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5834405b_ba85e076",
+        "filename": "k8s/tests/test_k8sclient_deploy.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2021-02-26T10:51:39Z",
+      "side": 1,
+      "message": "Yes, see this [WIP] MR https://gerrit.onap.org/r/c/oom/+/118164",
+      "parentUuid": "d3999c52_ae5f78b3",
+      "revId": "2ef68011bc42fa7e358cd311746a3e8578e00d34",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
