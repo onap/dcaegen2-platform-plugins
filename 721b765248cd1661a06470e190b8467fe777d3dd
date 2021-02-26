@@ -1,0 +1,9 @@
+Code-Review+1: Joanna Jeremicz <joanna.jeremicz@nokia.com>
+Code-Review+1: Pawel Baniewski <pawel.baniewski@nokia.com>
+Code-Review+2: Remigiusz Janeczek <remigiusz.janeczek@nokia.com>
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Submitted-by: Remigiusz Janeczek <remigiusz.janeczek@nokia.com>
+Submitted-at: Fri, 26 Feb 2021 13:23:26 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/dcaegen2/platform/plugins/+/118373
+Project: dcaegen2/platform/plugins
+Branch: refs/heads/master
