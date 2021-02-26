@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "7e944dd8_39b467f6",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-26T11:19:16Z",
+      "side": 1,
+      "message": "It was added in earlier commit https://gerrit.onap.org/r/c/dcaegen2/platform/plugins/+/118343 specifically for cert manager use case.",
+      "parentUuid": "4084c387_be075840",
+      "revId": "2ef68011bc42fa7e358cd311746a3e8578e00d34",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e2bb768b_3b6b2905",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 17
