@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4575c2ad_48bca357",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 758,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-02-26T08:13:15Z",
+      "side": 1,
+      "message": "Isn\u0027t that secret managed by cert manager? Meaning that deleting certificate request should delete the secret?",
+      "range": {
+        "startLine": 758,
+        "startChar": 4,
+        "endLine": 758,
+        "endChar": 62
+      },
+      "revId": "2fa57cc40b640e9f6122f6c5028a644adbcf8068",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
