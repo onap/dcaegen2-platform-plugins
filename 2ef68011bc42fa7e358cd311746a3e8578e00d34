@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8d610f5f_9fc5281f",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2021-02-26T10:20:37Z",
+      "side": 1,
+      "message": "Just wonder if such method is not generic and changing key under which password is generated won\u0027t influence other DCAE uServices.",
+      "revId": "2ef68011bc42fa7e358cd311746a3e8578e00d34",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e2bb768b_3b6b2905",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 916,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2021-02-26T10:20:37Z",
+      "side": 1,
+      "message": "This line can be extracted outside this IF statement and last boolean flag should be set to cmpv2_integration_enabled",
+      "revId": "2ef68011bc42fa7e358cd311746a3e8578e00d34",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "87ea2b4a_a391840f",
+        "filename": "k8s/k8sclient/sans_parser.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2021-02-26T10:20:37Z",
+      "side": 1,
+      "message": "Is the order of splitting into types the same as in certService client?",
+      "revId": "2ef68011bc42fa7e358cd311746a3e8578e00d34",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d3999c52_ae5f78b3",
+        "filename": "k8s/tests/test_k8sclient_deploy.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5775
+      },
+      "writtenOn": "2021-02-26T10:20:37Z",
+      "side": 1,
+      "message": "This part will be overridden by helm values in OOM installation?",
+      "revId": "2ef68011bc42fa7e358cd311746a3e8578e00d34",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
