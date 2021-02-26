@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4a54aba0_35692b15",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 735,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2021-02-26T12:43:46Z",
+      "side": 1,
+      "message": "resource",
+      "range": {
+        "startLine": 735,
+        "startChar": 31,
+        "endLine": 735,
+        "endChar": 38
+      },
+      "revId": "a439bcddbcdf74ed1268a08f2b34ed8f27f231ba",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
