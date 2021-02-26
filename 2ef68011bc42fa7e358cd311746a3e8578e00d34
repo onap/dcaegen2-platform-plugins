@@ -73,6 +73,24 @@
     },
     {
       "key": {
+        "uuid": "17fc9e2e_3417a276",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2021-02-26T11:20:17Z",
+      "side": 1,
+      "message": "It was added by Jan according to DCAEGEN2-2440, so it hasn\u0027t impact. I will make it reusable.",
+      "parentUuid": "4084c387_be075840",
+      "revId": "2ef68011bc42fa7e358cd311746a3e8578e00d34",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e2bb768b_3b6b2905",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 17
@@ -155,6 +173,24 @@
       "side": 1,
       "message": "I asked about split into types order. So in CertService client firstly we identify IPs, after that URIs, emails and at the end DNSes?",
       "parentUuid": "a760695f_1d323c8d",
+      "revId": "2ef68011bc42fa7e358cd311746a3e8578e00d34",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be2e91cf_3ea5e2cf",
+        "filename": "k8s/k8sclient/sans_parser.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2021-02-26T11:20:17Z",
+      "side": 1,
+      "message": "Right, order in cert service: email -\u003e ips -\u003e dns -\u003e uri. In progress...",
+      "parentUuid": "f36c6eb8_61fa3c68",
       "revId": "2ef68011bc42fa7e358cd311746a3e8578e00d34",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
