@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "0012dee8_5a0eb247",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2021-02-26T09:11:19Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "bcb77fbb_402817aa",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 2
+      },
+      "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "690f2764_b7503db4",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 7
@@ -72,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "2d338a4f_6917b159",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2021-02-26T09:11:19Z",
+      "side": 1,
+      "message": "Back to generated name",
+      "parentUuid": "86d0cc55_f3b3d0a7",
+      "range": {
+        "startLine": 278,
+        "startChar": 17,
+        "endLine": 278,
+        "endChar": 21
+      },
+      "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1253c8ec_1180942f",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 7
@@ -95,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "eaadb349_f345d073",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2021-02-26T09:11:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1253c8ec_1180942f",
+      "range": {
+        "startLine": 455,
+        "startChar": 72,
+        "endLine": 455,
+        "endChar": 95
+      },
+      "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "64622e1c_75812789",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 7
@@ -109,6 +181,24 @@
       "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "65460cfd_9abe50d9",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2021-02-26T09:11:19Z",
+      "side": 1,
+      "message": "Separation of code is not simple. Locally works, but after deploy on lab it report that cannot find some modules",
+      "parentUuid": "64622e1c_75812789",
+      "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -135,6 +225,30 @@
     },
     {
       "key": {
+        "uuid": "5245de07_3f720e65",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2021-02-26T09:11:19Z",
+      "side": 1,
+      "message": "It is necessary for compatibility with password protected cert.",
+      "parentUuid": "623c0de0_3aed18c4",
+      "range": {
+        "startLine": 676,
+        "startChar": 11,
+        "endLine": 676,
+        "endChar": 61
+      },
+      "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5d1c8680_4ee4129e",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 7
@@ -158,6 +272,30 @@
     },
     {
       "key": {
+        "uuid": "05cd0971_03199436",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 870,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2021-02-26T09:11:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d1c8680_4ee4129e",
+      "range": {
+        "startLine": 870,
+        "startChar": 1,
+        "endLine": 870,
+        "endChar": 42
+      },
+      "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "034b0a08_664554d8",
         "filename": "k8s/k8sclient/k8sclient.py",
         "patchSetId": 7
@@ -172,6 +310,24 @@
       "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a71a7e2_485fd7ec",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 960,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2021-02-26T09:11:19Z",
+      "side": 1,
+      "message": "Added deleting",
+      "parentUuid": "034b0a08_664554d8",
+      "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     },
     {
       "key": {
@@ -192,6 +348,24 @@
     },
     {
       "key": {
+        "uuid": "3d7af69c_2ffa4861",
+        "filename": "k8s/k8sclient/sans_parser.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2021-02-26T09:11:19Z",
+      "side": 1,
+      "message": "Units added",
+      "parentUuid": "136eb28d_e766cffa",
+      "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c47f5391_525f0c0a",
         "filename": "k8s/k8sclient/sans_parser.py",
         "patchSetId": 7
@@ -209,6 +383,24 @@
     },
     {
       "key": {
+        "uuid": "7329d6cb_797396a8",
+        "filename": "k8s/k8sclient/sans_parser.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2021-02-26T09:11:19Z",
+      "side": 1,
+      "message": "Documentation added",
+      "parentUuid": "c47f5391_525f0c0a",
+      "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d2fea50c_48cfc084",
         "filename": "k8s/k8sclient/sans_parser.py",
         "patchSetId": 7
@@ -223,6 +415,24 @@
       "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2713aa67_b510f94b",
+        "filename": "k8s/k8sclient/sans_parser.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2021-02-26T09:11:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2fea50c_48cfc084",
+      "revId": "5a0cd59f48a9d88495418c5a047bc5585dfbccf5",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
