@@ -24,13 +24,13 @@ from setuptools import setup
 setup(
     name='k8splugin',
     description='Cloudify plugin for containerized components deployed using Kubernetes',
-    version="3.6.0",
+    version="3.7.0",
     author='J. F. Lucas, Michael Hwang, Tommy Carpenter, Joanna Jeremicz, Sylwia Jakubek, Jan Malkiewicz, Remigiusz Janeczek, Piotr Marcinkiewicz',
     packages=['k8splugin','k8sclient','configure'],
     zip_safe=False,
     install_requires=[
         'python-consul>=0.6.0',
-        'onap-dcae-dcaepolicy-lib>=2.4.1',
+        'onap-dcae-dcaepolicy-lib>=2.5.0',
         'kubernetes==12.0.1',
         'cloudify-common>=5.0.0',
         'validators>=0.14.2',
