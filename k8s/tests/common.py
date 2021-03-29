@@ -105,14 +105,24 @@ def verify_external_cert(dep):
         "STATE": "California",
         "COUNTRY": "US",
         "SANS": "mysans",
-        "KEYSTORE_PATH": "/etc/onap/oom/certservice/certs/certServiceClient-keystore.jks",
-        "KEYSTORE_PASSWORD": "secret1",
-        "TRUSTSTORE_PATH": "/etc/onap/oom/certservice/certs/truststore.jks",
-        "TRUSTSTORE_PASSWORD": "secret2"}
+        "KEYSTORE_PATH": "/etc/onap/oom/certservice/certs/keystore.jks",
+        "TRUSTSTORE_PATH": "/etc/onap/oom/certservice/certs/truststore.jks"}
+
 
     envs = {k.name: k.value for k in cert_container.env}
     for k in expected_envs:
+        if k not in expected_envs:
+            print("wrong: " + k)
+        if not expected_envs[k] == envs[k]:
+            print ("wrong2: " + k)
         assert (k in envs and expected_envs[k] == envs[k])
+
+    expected_secret_key_ref = {
+        "KEYSTORE_PASSWORD": "oom-cert-service-client-tls-secret-password",
+        "TRUSTSTORE_PASSWORD": "oom-cert-service-client-tls-secret-password"
+    }
+    for key, value in expected_secret_key_ref:
+        assert (key in envs and envs[key]["value_from"]["secret_key_ref"] == value)
 
 
 def verify_cert_post_processor(dep):
