@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.9.0]
+* OOM-2712 Add a configuration of certificates for communication between external-tls init container and CertService API
+
+## [3.8.0]
+* Update policy lib to 2.5.1
+
+## [3.7.0]
+* Update to python3 version of policy lib
+
 ## [3.6.0]
 * DCAEGEN2-2440  - Add integration with cert-manager. 
 * Enable creation of certificate custom resource instead cert-service-client container, 
