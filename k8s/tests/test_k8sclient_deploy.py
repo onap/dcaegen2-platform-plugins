@@ -50,8 +50,12 @@ K8S_CONFIGURATION = {
         "state": "California",
         "organizational_unit": "ONAP",
         "location": "San-Francisco",
-        "keystore_password": "secret1",
-        "truststore_password": "secret2"
+        "cert_secret_name": "oom-cert-service-client-tls-secret",
+        "keystore_secret_key" : "keystore.jks",
+        "truststore_secret_key" : "truststore.jks",
+        "password_secret_name": "oom-cert-service-client-tls-secret-password",
+        "keystore_password_secret_key" : "password",
+        "truststore_password_secret_key" : "password"
     },
     "cert_post_processor": {
         "image_tag": "repo/oom-cert-post-processor:2.1.0"
