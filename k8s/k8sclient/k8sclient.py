@@ -50,8 +50,6 @@ PORTS = re.compile("^([0-9]+)(/(udp|UDP|tcp|TCP))?:([0-9]+)$")
 
 # Constants for external_cert
 MOUNT_PATH = "/etc/onap/oom/certservice/certs/"
-KEYSTORE_PATH = MOUNT_PATH + "certServiceClient-keystore.jks"
-TRUSTSTORE_PATH = MOUNT_PATH + "truststore.jks"
 DEFAULT_CERT_TYPE = "p12"
 
 
@@ -162,9 +160,17 @@ def _create_container_object(name, image, always_pull, **kwargs):
     # Copy any passed in environment variables
     env = kwargs.get('env') or {}
     env_vars = [client.V1EnvVar(name=k, value=env[k]) for k in env]
+
     # Add POD_IP with the IP address of the pod running the container
     pod_ip = client.V1EnvVarSource(field_ref=client.V1ObjectFieldSelector(field_path="status.podIP"))
     env_vars.append(client.V1EnvVar(name="POD_IP", value_from=pod_ip))
+
+    # Add envs from Secret
+    if 'env_from_secret' in kwargs:
+        for env in kwargs.get('env_from_secret').values():
+            secret_key_selector = client.V1SecretKeySelector(key=env["secret_key"], name=env["secret_name"])
+            env_var_source = client.V1EnvVarSource(secret_key_ref=secret_key_selector)
+            env_vars.append(client.V1EnvVar(name=env["env_name"], value_from=env_var_source))
 
     # If a health check is specified, create a readiness/liveness probe
     # (For an HTTP-based check, we assume it's at the first container port)
@@ -413,15 +419,19 @@ def _add_tls_init_container(ctx, init_containers, volumes, volume_mounts, tls_in
         _create_container_object("init-tls", docker_image, False, volume_mounts=init_volume_mounts, env=env))
 
 
-def _add_external_tls_init_container(ctx, init_containers, volumes, external_cert, external_tls_config):
+def _add_external_tls_init_container(ctx, init_containers, volumes, external_cert, external_tls_config, namespace):
     # Adds an InitContainer to the pod which will generate external TLS certificates.
     docker_image = external_tls_config["image_tag"]
     ctx.logger.info("Creating init container: external TLS \n  * [" + docker_image + "]")
 
     env = {}
+    env_from_secret = {}
     output_path = external_cert.get("external_cert_directory")
     if not output_path.endswith('/'):
         output_path += '/'
+
+    keystore_secret_key = external_tls_config.get("keystore_secret_key")
+    truststore_secret_key = external_tls_config.get("truststore_secret_key")
 
     env["REQUEST_URL"] = external_tls_config.get("request_url")
     env["REQUEST_TIMEOUT"] = external_tls_config.get("timeout")
@@ -435,21 +445,39 @@ def _add_external_tls_init_container(ctx, init_containers, volumes, external_cer
     env["STATE"] = external_tls_config.get("state")
     env["COUNTRY"] = external_tls_config.get("country")
     env["SANS"] = external_cert.get("external_certificate_parameters").get("sans")
-    env["KEYSTORE_PATH"] = KEYSTORE_PATH
-    env["KEYSTORE_PASSWORD"] = external_tls_config.get("keystore_password")
-    env["TRUSTSTORE_PATH"] = TRUSTSTORE_PATH
-    env["TRUSTSTORE_PASSWORD"] = external_tls_config.get("truststore_password")
-
+    env["KEYSTORE_PATH"] = MOUNT_PATH + keystore_secret_key
+    env["TRUSTSTORE_PATH"] = MOUNT_PATH + truststore_secret_key
+    env_from_secret["KEYSTORE_PASSWORD"] = \
+        {"env_name": "KEYSTORE_PASSWORD",
+         "secret_name": external_tls_config.get("keystore_password_secret_name"),
+         "secret_key": external_tls_config.get("keystore_password_secret_key")}
+    env_from_secret["TRUSTSTORE_PASSWORD"] = \
+        {"env_name": "TRUSTSTORE_PASSWORD",
+         "secret_name": external_tls_config.get("truststore_password_secret_name"),
+         "secret_key": external_tls_config.get("truststore_password_secret_key")}
     # Create the volumes and volume mounts
-    sec = client.V1SecretVolumeSource(secret_name=external_tls_config.get("cert_secret_name"))
-    volumes.append(client.V1Volume(name="tls-volume", secret=sec))
+    projected_volume = _create_projected_tls_volume(external_tls_config.get("cert_secret_name"),
+                                                    keystore_secret_key,
+                                                    truststore_secret_key)
+
+    volumes.append(client.V1Volume(name="tls-volume", projected=projected_volume))
     init_volume_mounts = [
         client.V1VolumeMount(name="tls-info", mount_path=external_cert.get("external_cert_directory")),
         client.V1VolumeMount(name="tls-volume", mount_path=MOUNT_PATH)]
 
     # Create the init container
     init_containers.append(
-        _create_container_object("cert-service-client", docker_image, False, volume_mounts=init_volume_mounts, env=env))
+        _create_container_object("cert-service-client", docker_image, False, volume_mounts=init_volume_mounts, env=env, env_from_secret=env_from_secret))
+
+
+def _create_projected_tls_volume(secret_name, keystore_secret_key, truststore_secret_key):
+    items = [
+        client.V1KeyToPath(key=keystore_secret_key, path=keystore_secret_key),
+        client.V1KeyToPath(key=truststore_secret_key, path=truststore_secret_key)]
+    secret_projection = client.V1SecretProjection(name=secret_name, items=items)
+    volume_projection = [client.V1VolumeProjection(secret=secret_projection)]
+    projected_volume = client.V1ProjectedVolumeSource(sources=volume_projection)
+    return projected_volume
 
 
 def _add_cert_post_processor_init_container(ctx, init_containers, tls_info, tls_config, external_cert,
@@ -915,7 +943,7 @@ def deploy(ctx, namespace, component_name, image, replicas, always_pull, k8sconf
                                                    volume_mounts, deployment_description)
             else:
                 _add_external_tls_init_container(ctx, init_containers, volumes, external_cert,
-                                                 k8sconfig.get("external_cert"))
+                                                 k8sconfig.get("external_cert"), namespace)
             _add_cert_post_processor_init_container(ctx, init_containers, kwargs.get("tls_info") or {},
                                                         k8sconfig.get("tls"), external_cert,
                                                         k8sconfig.get(

@@ -48,8 +48,11 @@ EXT_TLS_STATE = "California"
 EXT_TLS_ORGANIZATIONAL_UNIT = "ONAP"
 EXT_TLS_LOCATION = "San-Francisco"
 EXT_TLS_CERT_SECRET_NAME = "oom-cert-service-client-tls-secret"
-EXT_TLS_KEYSTORE_PASSWORD = "secret"
-EXT_TLS_TRUSTSTORE_PASSWORD = "secret"
+EXT_TLS_PASSWORD_SECRET_NAME = "oom-cert-service-client-tls-secret-password"
+EXT_TLS_KEYSTORE_SECRET_KEY = "keystore.jks"
+EXT_TLS_TRUSTSTORE_SECRET_KEY = "truststore.jks"
+EXT_TLS_KEYSTORE_PASSWORD_SECRET_KEY = "password"
+EXT_TLS_TRUSTSTORE_PASSWORD_SECRET_KEY = "password"
 
 CERT_POST_PROCESSOR_IMAGE = "nexus3.onap.org:10001/onap/org.onap.oom.platform.cert-service.oom-certservice-post-processor:2.1.0"
 CBS_BASE_URL = "https://config-binding-service:10443/service_component_all"
@@ -88,8 +91,13 @@ def _set_defaults():
             "organizational_unit" : EXT_TLS_ORGANIZATIONAL_UNIT,  # Organizational unit name, for which certificate will be created
             "location" : EXT_TLS_LOCATION,                        # Location name, for which certificate will be created
             "cert_secret_name": EXT_TLS_CERT_SECRET_NAME,         # Name of secret containing keystore and truststore for secure communication of Cert Service Client and Cert Service
-            "keystore_password" : EXT_TLS_KEYSTORE_PASSWORD,      # Password to keystore file
-            "truststore_password" : EXT_TLS_TRUSTSTORE_PASSWORD   # Password to truststore file
+            "keystore_secret_key" : EXT_TLS_KEYSTORE_SECRET_KEY,  # Key for keystore value exists in secret (cert_secret_name)
+            "truststore_secret_key" : EXT_TLS_TRUSTSTORE_SECRET_KEY,   # Key for truststore value exists in secret (cert_secret_name)
+            "keystore_password_secret_name": EXT_TLS_PASSWORD_SECRET_NAME, # Name of secret containing passwrods for keystore for secure communication of Cert Service Client and Cert Service
+            "truststore_password_secret_name": EXT_TLS_PASSWORD_SECRET_NAME, # Name of secret containing passwrods for truststore for secure communication of Cert Service Client and Cert Service
+            "keystore_password_secret_key" : EXT_TLS_KEYSTORE_PASSWORD_SECRET_KEY,      # Key for keystore password value exists in secret (keystore_password_secret_name)
+            "truststore_password_secret_key" : EXT_TLS_TRUSTSTORE_PASSWORD_SECRET_KEY   # Key for truststore password value exists in secret (truststore_password_secret_name)
+
         },
         "cert_post_processor": {
             "image_tag": CERT_POST_PROCESSOR_IMAGE      # Docker image to use for cert post processor init container
