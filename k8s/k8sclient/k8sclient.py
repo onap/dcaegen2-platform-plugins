@@ -50,8 +50,8 @@ PORTS = re.compile("^([0-9]+)(/(udp|UDP|tcp|TCP))?:([0-9]+)$")
 
 # Constants for external_cert
 MOUNT_PATH = "/etc/onap/oom/certservice/certs/"
-KEYSTORE_PATH = MOUNT_PATH + "certServiceClient-keystore.jks"
-TRUSTSTORE_PATH = MOUNT_PATH + "truststore.jks"
+# KEYSTORE_PATH = MOUNT_PATH + "keystore.jks"
+# TRUSTSTORE_PATH = MOUNT_PATH + "truststore.jks"
 DEFAULT_CERT_TYPE = "p12"
 
 
@@ -413,7 +413,13 @@ def _add_tls_init_container(ctx, init_containers, volumes, volume_mounts, tls_in
         _create_container_object("init-tls", docker_image, False, volume_mounts=init_volume_mounts, env=env))
 
 
-def _add_external_tls_init_container(ctx, init_containers, volumes, external_cert, external_tls_config):
+def _read_passowrd_from_secret(secret_name, secret_key, namespace):
+    secret = client.CoreV1Api().read_namespaced_secret(name=secret_name, namespace=namespace)
+    password = base64.b64decode(secret.data[secret_key])
+    return password
+
+
+def _add_external_tls_init_container(ctx, init_containers, volumes, external_cert, external_tls_config, namespace):
     # Adds an InitContainer to the pod which will generate external TLS certificates.
     docker_image = external_tls_config["image_tag"]
     ctx.logger.info("Creating init container: external TLS \n  * [" + docker_image + "]")
@@ -423,6 +429,15 @@ def _add_external_tls_init_container(ctx, init_containers, volumes, external_cer
     if not output_path.endswith('/'):
         output_path += '/'
 
+    # KEYSTORE_PATH = MOUNT_PATH + external_tls_config.get("keystore_secret_key")
+    # TRUSTSTORE_PATH = MOUNT_PATH + external_tls_config.get("truststore_secret_key")
+    keystore_secret_key = external_tls_config.get("keystore_secret_key")
+    truststore_secret_key = external_tls_config.get("truststore_secret_key")
+    keystore_password = _read_passowrd_from_secret(external_tls_config.get("password_secret_name"), external_tls_config.get("keystore_password_secret_key"), namespace)
+    truststore_password = _read_passowrd_from_secret(external_tls_config.get("password_secret_name"), external_tls_config.get("truststore_password_secret_key"), namespace)
+
+    ctx.logger.info("read password: " + keystore_password.__str__())
+    ctx.logger.info("read password: " + truststore_password.__str__())
     env["REQUEST_URL"] = external_tls_config.get("request_url")
     env["REQUEST_TIMEOUT"] = external_tls_config.get("timeout")
     env["OUTPUT_PATH"] = output_path + "external"
@@ -435,14 +450,22 @@ def _add_external_tls_init_container(ctx, init_containers, volumes, external_cer
     env["STATE"] = external_tls_config.get("state")
     env["COUNTRY"] = external_tls_config.get("country")
     env["SANS"] = external_cert.get("external_certificate_parameters").get("sans")
-    env["KEYSTORE_PATH"] = KEYSTORE_PATH
+    env["KEYSTORE_PATH"] = MOUNT_PATH + keystore_secret_key
     env["KEYSTORE_PASSWORD"] = external_tls_config.get("keystore_password")
-    env["TRUSTSTORE_PATH"] = TRUSTSTORE_PATH
+    env["TRUSTSTORE_PATH"] = MOUNT_PATH + truststore_secret_key
     env["TRUSTSTORE_PASSWORD"] = external_tls_config.get("truststore_password")
 
     # Create the volumes and volume mounts
-    sec = client.V1SecretVolumeSource(secret_name=external_tls_config.get("cert_secret_name"))
-    volumes.append(client.V1Volume(name="tls-volume", secret=sec))
+    # sec = client.V1SecretVolumeSource(secret_name=external_tls_config.get("cert_secret_name"))
+
+    items = [client.V1KeyToPath(key=keystore_secret_key, path=keystore_secret_key),
+             client.V1KeyToPath(key=truststore_secret_key, path=truststore_secret_key)]
+
+    secret_projection = client.V1SecretProjection(name=external_tls_config.get("cert_secret_name"), items=items)
+    volume_projection = [client.V1VolumeProjection(secret=secret_projection)]
+    projected_volume = client.V1ProjectedVolumeSource(sources=volume_projection)
+
+    volumes.append(client.V1Volume(name="tls-volume", projected=projected_volume))
     init_volume_mounts = [
         client.V1VolumeMount(name="tls-info", mount_path=external_cert.get("external_cert_directory")),
         client.V1VolumeMount(name="tls-volume", mount_path=MOUNT_PATH)]
@@ -915,7 +938,7 @@ def deploy(ctx, namespace, component_name, image, replicas, always_pull, k8sconf
                                                    volume_mounts, deployment_description)
             else:
                 _add_external_tls_init_container(ctx, init_containers, volumes, external_cert,
-                                                 k8sconfig.get("external_cert"))
+                                                 k8sconfig.get("external_cert"), namespace)
             _add_cert_post_processor_init_container(ctx, init_containers, kwargs.get("tls_info") or {},
                                                         k8sconfig.get("tls"), external_cert,
                                                         k8sconfig.get(
