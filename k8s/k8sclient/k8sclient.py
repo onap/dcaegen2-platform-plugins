@@ -50,7 +50,7 @@ PORTS = re.compile("^([0-9]+)(/(udp|UDP|tcp|TCP))?:([0-9]+)$")
 
 # Constants for external_cert
 MOUNT_PATH = "/etc/onap/oom/certservice/certs/"
-KEYSTORE_PATH = MOUNT_PATH + "certServiceClient-keystore.jks"
+KEYSTORE_PATH = MOUNT_PATH + "keystore.jks"
 TRUSTSTORE_PATH = MOUNT_PATH + "truststore.jks"
 DEFAULT_CERT_TYPE = "p12"
 
