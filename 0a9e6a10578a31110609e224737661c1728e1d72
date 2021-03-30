@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4d1a2977_dd76b320",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-03-30T09:37:26Z",
+      "side": 1,
+      "message": "Remove instead of commenting.",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 49
+      },
+      "revId": "0a9e6a10578a31110609e224737661c1728e1d72",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7ba7de26_b1c83ce0",
+        "filename": "k8s/k8sclient/k8sclient.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 6044
+      },
+      "writtenOn": "2021-03-30T09:37:26Z",
+      "side": 1,
+      "message": "Wouldn\u0027t it be better to pass the secret source here instead of reading the secret (if \npossible)? It could also potentially fix test fails.\n\nhttps://github.com/kubernetes-client/python/blob/master/kubernetes/docs/V1EnvVarSource.md",
+      "range": {
+        "startLine": 448,
+        "startChar": 31,
+        "endLine": 448,
+        "endChar": 179
+      },
+      "revId": "0a9e6a10578a31110609e224737661c1728e1d72",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
