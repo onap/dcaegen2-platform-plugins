@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9d86c4fe_1fb326e5",
+        "filename": "k8s/configure/configure.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2021-04-09T11:06:28Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 97,
+        "startChar": 112,
+        "endLine": 97,
+        "endChar": 121
+      },
+      "revId": "43088af6d55ca481d2d03308c94457d0aef1625d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c89f3f8_10d9b5a9",
+        "filename": "k8s/configure/configure.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 3699
+      },
+      "writtenOn": "2021-04-09T11:06:28Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 98,
+        "startChar": 116,
+        "endLine": 98,
+        "endChar": 125
+      },
+      "revId": "43088af6d55ca481d2d03308c94457d0aef1625d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
