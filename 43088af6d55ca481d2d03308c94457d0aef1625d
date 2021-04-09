@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "2eb77496_a3c9788b",
+        "filename": "k8s/configure/configure.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2021-04-09T11:10:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d86c4fe_1fb326e5",
+      "range": {
+        "startLine": 97,
+        "startChar": 112,
+        "endLine": 97,
+        "endChar": 121
+      },
+      "revId": "43088af6d55ca481d2d03308c94457d0aef1625d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6c89f3f8_10d9b5a9",
         "filename": "k8s/configure/configure.py",
         "patchSetId": 12
@@ -45,6 +69,30 @@
       "revId": "43088af6d55ca481d2d03308c94457d0aef1625d",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "927658cd_a67e5088",
+        "filename": "k8s/configure/configure.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 6310
+      },
+      "writtenOn": "2021-04-09T11:10:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c89f3f8_10d9b5a9",
+      "range": {
+        "startLine": 98,
+        "startChar": 116,
+        "endLine": 98,
+        "endChar": 125
+      },
+      "revId": "43088af6d55ca481d2d03308c94457d0aef1625d",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
