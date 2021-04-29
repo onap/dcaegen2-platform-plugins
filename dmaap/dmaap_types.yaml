@@ -109,7 +109,7 @@ node_types:
       topic_description:
         type: string
         required: false
-      txenable:
+      tnxEnabled:
         type: boolean
         required: false
       replication_case:

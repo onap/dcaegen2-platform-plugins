@@ -31,7 +31,7 @@ limitations under the License.
   <artifactId>dmaap</artifactId>
   <name>dmaap</name>
 
-  <version>1.5.0-SNAPSHOT</version>
+  <version>1.5.1-SNAPSHOT</version>
   <url>http://maven.apache.org</url>
   <properties>
     <!-- name from the setup.py file -->

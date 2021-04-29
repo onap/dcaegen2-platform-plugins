@@ -82,10 +82,10 @@ def test_dmaapc (monkeypatch, mockconsul, mockdmaapbc):
         topic_description = "No description provided"
 
     # ..and the truly optional setting
-    if "txenable" in ctx.node.properties:
-        txenable = ctx.node.properties["txenable"]
+    if "tnxEnabled" in ctx.node.properties:
+        tnxEnabled = ctx.node.properties["tnxEnabled"]
     else:
-        txenable= False
+        tnxEnabled= False
 
     if "replication_case" in ctx.node.properties:
         replication_case = ctx.node.properties["replication_case"]
@@ -99,7 +99,7 @@ def test_dmaapc (monkeypatch, mockconsul, mockdmaapbc):
 
     dmc = DMaaPControllerHandle(DMAAP_API_URL, DMAAP_USER, DMAAP_PASS, ctx.logger)
     ctx.logger.info("Attempting to create topic name {0}".format(topic_name))
-    t = dmc.create_topic(topic_name, topic_description, txenable, DMAAP_OWNER, replication_case, global_mr_url)
+    t = dmc.create_topic(topic_name, topic_description, tnxEnabled, DMAAP_OWNER, replication_case, global_mr_url)
 
     # Capture important properties from the result
     topic = t.json()

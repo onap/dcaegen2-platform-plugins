@@ -201,18 +201,18 @@ class DMaaPControllerHandle(object):
         return self._delete_resource("{0}/{1}".format(self.subs_path, sub_id))
 
     # Message router topics
-    def create_topic(self, name, description = None, txenable = None, owner = None, replication_case = None, global_mr_url = None, useExisting = None):
+    def create_topic(self, name, description = None, tnxEnabled = None, owner = None, replication_case = None, global_mr_url = None, useExisting = None):
         '''
         Create a message router topic with the topic name 'name' and optionally the topic_description
-        'description', the 'txenable' flag, the 'useExisting' flag and the topic owner 'owner'.
+        'description', the 'tnxEnabled' flag, the 'useExisting' flag and the topic owner 'owner'.
         '''
         topic_definition = {'topicName' : name}
         if description:
             topic_definition['topicDescription'] = description
         if owner:
             topic_definition['owner'] = owner
-        if txenable != None:                            # It's a boolean!
-            topic_definition['txenable'] = txenable
+        if tnxEnabled != None:                            # It's a boolean!
+            topic_definition['tnxEnabled'] = tnxEnabled
         if replication_case:
             topic_definition['replicationCase'] = replication_case
         if global_mr_url:
