@@ -3,6 +3,7 @@
 # =============================================================================
 # Copyright (c) 2017-2020 AT&T Intellectual Property. All rights reserved.
 # Copyright (c) 2020 Pantheon.tech. All rights reserved.
+# Modifications Copyright (c) 2021 Nordix Foundation.
 # =============================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -201,24 +202,24 @@ class DMaaPControllerHandle(object):
         return self._delete_resource("{0}/{1}".format(self.subs_path, sub_id))
 
     # Message router topics
-    def create_topic(self, name, description = None, txenable = None, owner = None, replication_case = None, global_mr_url = None, useExisting = None):
+    def create_topic(self, name, description = None, tnx_enabled = None, owner = None, replication_case = None, global_mr_url = None, use_existing = None):
         '''
         Create a message router topic with the topic name 'name' and optionally the topic_description
-        'description', the 'txenable' flag, the 'useExisting' flag and the topic owner 'owner'.
+        'description', the 'tnxEnabled' flag, the 'useExisting' flag and the topic owner 'owner'.
         '''
         topic_definition = {'topicName' : name}
         if description:
             topic_definition['topicDescription'] = description
         if owner:
             topic_definition['owner'] = owner
-        if txenable != None:                            # It's a boolean!
-            topic_definition['txenable'] = txenable
+        if tnx_enabled is not None:                            # It's a boolean!
+            topic_definition['tnxEnabled'] = tnx_enabled
         if replication_case:
             topic_definition['replicationCase'] = replication_case
         if global_mr_url:
             topic_definition['globalMrURL'] = global_mr_url
         topics_path_query = self.topics_path
-        if useExisting == True:                         # It's a boolean!
+        if use_existing:                         # It's a boolean!
             topics_path_query += "?useExisting=true"
 
         return self._create_resource(topics_path_query, topic_definition)
