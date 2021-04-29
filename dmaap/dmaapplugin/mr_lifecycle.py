@@ -3,6 +3,7 @@
 # =============================================================================
 # Copyright (c) 2017-2020 AT&T Intellectual Property. All rights reserved.
 # Copyright (c) 2020 Pantheon.tech. All rights reserved.
+# Modifications Copyright © 2021 Nordix Foundation.
 # =============================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,11 +30,11 @@ from dmaapcontrollerif.dmaap_requests import DMaaPControllerHandle
 def create_topic(**kwargs):
     '''
     Creates a message router topic.
-    Allows 'topic_name', 'topic_description', 'txenable', 'replication_case', 'global_mr_url',
+    Allows 'topic_name', 'topic_description', 'tnxEnabled', 'replication_case', 'global_mr_url',
     and 'useExisting' as optional node properties.  If 'topic_name' is not set,
     generates a random one.
     Sets 'fqtn' in the instance runtime_properties.
-    Note that 'txenable' is a Message Router flag indicating whether transactions
+    Note that 'tnxEnabled' is a Message Router flag indicating whether transactions
     are enabled on the topic.
     Note that 'useExisting' is a flag indicating whether DBCL will use existing topic if
     the topic already exists.
@@ -54,10 +55,10 @@ def create_topic(**kwargs):
             topic_description = "No description provided"
 
         # ..and the truly optional setting
-        if "txenable" in ctx.node.properties:
-            txenable = ctx.node.properties["txenable"]
+        if "tnxEnabled" in ctx.node.properties:
+            tnxEnabled = ctx.node.properties["tnxEnabled"]
         else:
-            txenable= False
+            tnxEnabled= False
 
         if "replication_case" in ctx.node.properties:
             replication_case = ctx.node.properties["replication_case"]
@@ -77,7 +78,7 @@ def create_topic(**kwargs):
         # Make the request to the controller
         dmc = DMaaPControllerHandle(DMAAP_API_URL, DMAAP_USER, DMAAP_PASS, ctx.logger)
         ctx.logger.info("Attempting to create topic name {0}".format(topic_name))
-        t = dmc.create_topic(topic_name, topic_description, txenable, DMAAP_OWNER, replication_case, global_mr_url, useExisting)
+        t = dmc.create_topic(topic_name, topic_description, tnxEnabled, DMAAP_OWNER, replication_case, global_mr_url, useExisting)
         t.raise_for_status()
 
         # Capture important properties from the result
