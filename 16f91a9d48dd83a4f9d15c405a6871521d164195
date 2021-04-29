@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7c0b35fa_9e01a871",
+        "filename": "dmaap/dmaap_types.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2021-04-29T15:58:33Z",
+      "side": 1,
+      "message": "Missing header update",
+      "revId": "16f91a9d48dd83a4f9d15c405a6871521d164195",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "247dd3b9_390b1eaa",
+        "filename": "dmaap/dmaap_types.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 93
+      },
+      "writtenOn": "2021-04-29T15:58:33Z",
+      "side": 1,
+      "message": "1.5.1",
+      "range": {
+        "startLine": 28,
+        "startChar": 21,
+        "endLine": 28,
+        "endChar": 26
+      },
+      "revId": "16f91a9d48dd83a4f9d15c405a6871521d164195",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
