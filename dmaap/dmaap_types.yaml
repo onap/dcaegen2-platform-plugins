@@ -2,6 +2,7 @@
 # org.onap.dcaegen2
 # =============================================================================
 # Copyright (c) 2017-2020 AT&T Intellectual Property. All rights reserved.
+# Modifications Copyright © 2021 Nordix Foundation.
 # =============================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,7 +26,7 @@ plugins:
   dmaapplugin:
     executor: 'central_deployment_agent'
     package_name: dmaap
-    package_version: 1.5.0
+    package_version: 1.5.1
 
 
 node_types:
@@ -109,7 +110,7 @@ node_types:
       topic_description:
         type: string
         required: false
-      txenable:
+      tnxEnabled:
         type: boolean
         required: false
       replication_case:
