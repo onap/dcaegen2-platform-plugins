@@ -145,7 +145,7 @@ Property|Type|Required?|Description
 --------|----|---------|---------------------------------------
 topic_name|string|no|a name that uniquely identifies the feed (plugin will generate if absent or is empty string or contain only whitespace)
 topic_description|string|no|human-readable description of the feed
-txenable|boolean|no|flag indicating whether transactions are enabled for this topic
+tnx_enabled|boolean|no|flag indicating whether transactions are enabled for this topic
 replication_case|string|no|type of replication required for the topic (defaults to no replication)
 global_mr_url|string|no|Global MR host name for replication to a global MR instance
 

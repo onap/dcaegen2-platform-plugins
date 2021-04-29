@@ -3,6 +3,7 @@
 # ================================================================================
 # Copyright (c) 2017-2020 AT&T Intellectual Property. All rights reserved.
 # Copyright (c) 2020 Pantheon.tech. All rights reserved.
+# Modifications Copyright (c) 2021 Nordix Foundation.
 # ================================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -76,30 +77,18 @@ def test_dmaapc (monkeypatch, mockconsul, mockdmaapbc):
         topic_name = random_string(12)
 
     # Make sure there's a topic description
-    if "topic_description" in ctx.node.properties:
-        topic_description = ctx.node.properties["topic_description"]
-    else:
-        topic_description = "No description provided"
+    topic_description = ctx.node.properties.get("topic_description")
 
     # ..and the truly optional setting
-    if "txenable" in ctx.node.properties:
-        txenable = ctx.node.properties["txenable"]
-    else:
-        txenable= False
+    tnx_enabled = ctx.node.properties.get("tnxEnabled", False)
 
-    if "replication_case" in ctx.node.properties:
-        replication_case = ctx.node.properties["replication_case"]
-    else:
-        replication_case = None
+    replication_case = ctx.node.properties.get("replication_case")
 
-    if "global_mr_url" in ctx.node.properties:
-        global_mr_url = ctx.node.properties["global_mr_url"]
-    else:
-        global_mr_url = None
+    global_mr_url = ctx.node.properties.get("global_mr_url")
 
     dmc = DMaaPControllerHandle(DMAAP_API_URL, DMAAP_USER, DMAAP_PASS, ctx.logger)
     ctx.logger.info("Attempting to create topic name {0}".format(topic_name))
-    t = dmc.create_topic(topic_name, topic_description, txenable, DMAAP_OWNER, replication_case, global_mr_url)
+    t = dmc.create_topic(topic_name, topic_description, tnx_enabled, DMAAP_OWNER, replication_case, global_mr_url)
 
     # Capture important properties from the result
     topic = t.json()
