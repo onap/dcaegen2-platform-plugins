@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "0487540d_771f5141",
+        "filename": "dmaap/dmaap_types.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 4405
+      },
+      "writtenOn": "2021-05-17T09:31:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c0b35fa_9e01a871",
+      "revId": "16f91a9d48dd83a4f9d15c405a6871521d164195",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "247dd3b9_390b1eaa",
         "filename": "dmaap/dmaap_types.yaml",
         "patchSetId": 1
@@ -39,6 +57,30 @@
       "revId": "16f91a9d48dd83a4f9d15c405a6871521d164195",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b066dd3c_67fd3b3c",
+        "filename": "dmaap/dmaap_types.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 4405
+      },
+      "writtenOn": "2021-05-17T09:31:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "247dd3b9_390b1eaa",
+      "range": {
+        "startLine": 28,
+        "startChar": 21,
+        "endLine": 28,
+        "endChar": 26
+      },
+      "revId": "16f91a9d48dd83a4f9d15c405a6871521d164195",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
