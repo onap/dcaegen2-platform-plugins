@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da00778f_cc5b4da0",
+        "filename": "dmaap/dmaapcontrollerif/dmaap_requests.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-05-19T19:39:39Z",
+      "side": 1,
+      "message": "Coding standards say the variables tnxEnabled and useExisting should be named tnx_enabled.",
+      "revId": "9a0e7835e626f80e233a23315a3b5d94a6451c91",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e53dedaa_3e36edeb",
+        "filename": "dmaap/dmaapplugin/mr_lifecycle.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-05-19T19:39:39Z",
+      "side": 1,
+      "message": "Coding standards say the variable tnxEnabled should be named tnx_enabled.\n\nIt\u0027s unfortunate that the properties are not named in a consistent fashion.\n\n\nI won\u0027t block on the following:\nThis seems cleaner:\n\ntnx_enabled \u003d ctx.node.properties.get(\"tnxEnabled\", False)\n\nSimilarly for above and below.",
+      "revId": "9a0e7835e626f80e233a23315a3b5d94a6451c91",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1cc10a44_cece7b60",
+        "filename": "dmaap/tests/test_dmaapcontrollerif.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-05-19T19:39:39Z",
+      "side": 1,
+      "message": "Coding standards say the variable tnxEnabled should be named tnx_enabled.\n\nIt\u0027s unfortunate that the properties are not named in a consistent fashion.\n\n\nI won\u0027t block on the following:\nThis seems cleaner:\n\ntnx_enabled \u003d ctx.node.properties.get(\"tnxEnabled\", False)\n\nSimilarly for above and below.",
+      "revId": "9a0e7835e626f80e233a23315a3b5d94a6451c91",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
