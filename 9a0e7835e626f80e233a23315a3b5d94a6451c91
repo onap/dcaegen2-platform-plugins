@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "34968bb0_bc8955dc",
+        "filename": "dmaap/dmaapcontrollerif/dmaap_requests.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 4405
+      },
+      "writtenOn": "2021-05-20T09:29:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da00778f_cc5b4da0",
+      "revId": "9a0e7835e626f80e233a23315a3b5d94a6451c91",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e53dedaa_3e36edeb",
         "filename": "dmaap/dmaapplugin/mr_lifecycle.py",
         "patchSetId": 3
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "39de46af_ffbc941b",
+        "filename": "dmaap/dmaapplugin/mr_lifecycle.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 4405
+      },
+      "writtenOn": "2021-05-20T09:29:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e53dedaa_3e36edeb",
+      "revId": "9a0e7835e626f80e233a23315a3b5d94a6451c91",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1cc10a44_cece7b60",
         "filename": "dmaap/tests/test_dmaapcontrollerif.py",
         "patchSetId": 3
@@ -50,6 +86,24 @@
       "revId": "9a0e7835e626f80e233a23315a3b5d94a6451c91",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "517a9031_c19cde06",
+        "filename": "dmaap/tests/test_dmaapcontrollerif.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 4405
+      },
+      "writtenOn": "2021-05-20T09:29:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1cc10a44_cece7b60",
+      "revId": "9a0e7835e626f80e233a23315a3b5d94a6451c91",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
