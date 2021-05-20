@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fd4efdf5_b583f54b",
+        "filename": "dmaap/dmaapplugin/mr_lifecycle.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-05-20T18:30:08Z",
+      "side": 1,
+      "message": "Thank you for fixing the variable names. However, you misunderstood my comment on the code change though:\n\nThis set of lines:\n        if \"tnxEnabled\" in ctx.node.properties:\n            tnxEnabled \u003d ctx.node.properties[\"tnxEnabled\"]\n        else:\n            tnxEnabled\u003d False\ncan be replaced with the \u003e\u003esingle\u003c\u003c line:\n\n       tnx_enabled \u003d ctx.node.properties.get(\"tnxEnabled\", False)\n \nsimplifying the code and reducing the size.\n\nSimilar, for replication_case and the others, you get this (.get() already returns None if the value is not in the dictionary):\n\n        topic_description \u003d ctx.node.properties.get(\"topic_description\")\n        replication_case \u003d ctx.node.properties.get(\"replication_case\")\n        global_mr_url \u003d ctx.node.properties.get(\"global_mr_url\")\n        use_existing \u003d ctx.node.properties.get(\"useExisting\", False)",
+      "revId": "475135fa0c6e479d658b2a29f30b633106849484",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "33346358_4902a836",
+        "filename": "dmaap/tests/test_dmaapcontrollerif.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-05-20T18:30:08Z",
+      "side": 1,
+      "message": "see my comments in mr_lifecycle.py",
+      "revId": "475135fa0c6e479d658b2a29f30b633106849484",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
