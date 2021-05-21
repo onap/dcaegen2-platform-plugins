@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "f06c64dc_27cfebde",
+        "filename": "dmaap/dmaapplugin/mr_lifecycle.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 4405
+      },
+      "writtenOn": "2021-05-21T11:59:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd4efdf5_b583f54b",
+      "revId": "475135fa0c6e479d658b2a29f30b633106849484",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "33346358_4902a836",
         "filename": "dmaap/tests/test_dmaapcontrollerif.py",
         "patchSetId": 4
@@ -33,6 +51,24 @@
       "revId": "475135fa0c6e479d658b2a29f30b633106849484",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "da174f8d_6c2a101b",
+        "filename": "dmaap/tests/test_dmaapcontrollerif.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 4405
+      },
+      "writtenOn": "2021-05-21T11:59:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33346358_4902a836",
+      "revId": "475135fa0c6e479d658b2a29f30b633106849484",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
