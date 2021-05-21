@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "caed3387_23e7e737",
+        "filename": "dmaap/README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-05-21T12:23:07Z",
+      "side": 1,
+      "message": "Unless I\u0027m mistaken, this is describing the node properties in the cloudify context, so it DOES need to say \"tnxEnabled\"",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 11
+      },
+      "revId": "3863f98cae6562af8070a7631720c7a951014ea2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1631be7a_f374090e",
+        "filename": "dmaap/tests/test_dmaapcontrollerif.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 105
+      },
+      "writtenOn": "2021-05-21T12:23:07Z",
+      "side": 1,
+      "message": "didn\u0027t you want to keep the default like what you changed from:\n\n    topic_description \u003d ctx.node.properties.get(\"topic_description\", \"No description provided\")",
+      "revId": "3863f98cae6562af8070a7631720c7a951014ea2",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
