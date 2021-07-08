@@ -20,13 +20,13 @@ tosca_definitions_version: cloudify_dsl_1_3
 
 imports:
     - http://www.getcloudify.org/spec/cloudify/4.5.5/types.yaml
-    - https://nexus.onap.org/service/local/repositories/raw/content/org.onap.dcaegen2.platform.plugins/R6/dcaepolicyplugin/2.4.0/dcaepolicyplugin_types.yaml
+    - plugin:dcaepolicyplugin?version=2.4.0
 
 plugins:
   clamppolicy:
     executor: 'central_deployment_agent'
     package_name: clamppolicyplugin
-    package_version: 1.1.0
+    package_version: 1.1.1
 
 relationships:
   # relationship that maintains mapping between micro-service and corresponding model id

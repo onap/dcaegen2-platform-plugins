@@ -24,7 +24,7 @@ from setuptools import setup
 setup(
     name='clamppolicyplugin',
     description='Cloudify plugin for clamp.nodes.policy node to retrieve the policy model id',
-    version="1.1.0",
+    version="1.1.1",
     author='Vignesh K',
     packages=['clamppolicyplugin'],
     install_requires=[
